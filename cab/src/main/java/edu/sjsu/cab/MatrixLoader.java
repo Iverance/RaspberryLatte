@@ -1,11 +1,12 @@
 package edu.sjsu.cab;
 
-import java.util.Arrays;
 import java.util.Random;
+
+import edu.sjsu.cab.util.MapUtil;
 
 public class MatrixLoader {
 
-	private static int[][] RandomMatrix(int n) {
+	public static int[][] RandomMatrix(int n) {
 		int[][] randomMatrix = new int[n][n];
 
 		Random rand = new Random();
@@ -27,26 +28,10 @@ public class MatrixLoader {
 		return randomMatrix;
 	}
 	
-	public static void printMatrix(int[][] m){
-	    try{
-	        int rows = m.length;
-	        int columns = m[0].length;
-	        String str = "|\t";
 
-	        for(int i=0;i<rows;i++){
-	            for(int j=0;j<columns;j++){
-	                str += m[i][j] + "\t";
-	            }
-
-	            System.out.println(str + "|");
-	            str = "|\t";
-	        }
-
-	    }catch(Exception e){System.out.println("Matrix is empty!!");}
-	}
 
 	public static void main(String[] args) {
 
-		printMatrix(RandomMatrix(4));
+		MapUtil.printMatrix(RandomMatrix(4));
 	}
 }
