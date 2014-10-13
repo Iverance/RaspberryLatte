@@ -1,4 +1,4 @@
-package edu.sjsu.cab;
+package edu.sjsu.cab.algorithm;
 
 import java.util.Random;
 
