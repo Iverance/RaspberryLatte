@@ -1,53 +1,43 @@
 package edu.sjsu.cab.object;
 
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Set;
 
 public class Vertex {
-	private String id;
-	HashMap<String, Integer> neighbors;
-	final static int neighborsNumber=2;
+    private String id;
+    HashSet<Vertex> neighbors;
 
-	public Vertex(String id) {
-		this.id = id;
-		this.neighbors = new HashMap<String, Integer>();
-	}
+    public Vertex(String id) {
+        this.id = id;
+        this.neighbors = new HashSet<Vertex>();
+    }
 
-	public Vertex() {
-		this("empty");
-	}
+    public Vertex() {
+        this("empty");
+        this.neighbors = new HashSet<Vertex>();
+    }
 
-	public void setId(String id) {
-		this.id = id;
-	}
+    public String getId() {
+        return this.id;
+    }
 
-	public boolean addNeighbor(String nbr, Integer weight) {
-		if(neighbors.size()<neighborsNumber){
-			this.neighbors.put(nbr, weight);
-			return true;
-		}else {
-			System.out.print("This point cannot be connected");
-			return false;
-		}
-	}
+    public void setId(String id) {
+        this.id = id;
+    }
 
-	public Set<String> getNeighbors() {
-		return this.neighbors.keySet();
-	}
+    public void addNeighbor(Vertex nbr) {
+        this.neighbors.add(nbr);
+        // if(neighbors.size()<neighborsNumber){
+        // this.neighbors.put(nbr, weight);
+        // return true;
+        // }else {
+        // System.out.print("This point cannot be connected");
+        // return false;
+        // }
+    }
 
-	public String getId() {
-		return this.id;
-	}
+    public Set<Vertex> getNeighbors() {
+        return this.neighbors;
+    }
 
-	public Integer getWeightByNeighbor(String nbr) {
-		return this.neighbors.get(nbr);
-	}
-	
-	public boolean isConnectable() {
-		if(neighbors.size()<neighborsNumber){
-			return true;
-		}else{
-			return false;
-		}
-	}
 }

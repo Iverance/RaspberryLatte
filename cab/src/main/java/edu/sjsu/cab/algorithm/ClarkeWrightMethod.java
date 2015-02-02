@@ -1,139 +1,167 @@
 package edu.sjsu.cab.algorithm;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.PriorityQueue;
-import java.util.Set;
+import java.util.Stack;
 
+import edu.sjsu.cab.object.Edge;
 import edu.sjsu.cab.object.Vertex;
 import edu.sjsu.cab.util.MapUtil;
-import edu.sjsu.cab.util.ValueComparator;
 
 public class ClarkeWrightMethod {
 
-	private int[][] costMatrix;
-	HashMap<String, Integer> sortedSavingMap;
+    private int vertexNumber, edgeNumber, totalSavingValue;
+    private int[][] costMatrix;
+    HashMap<Edge, Integer> sortedSavingEdges;
+    int[] forest, edgeCount;
+    Vertex[] vertice;
+    HashMap<String, Vertex> edgesMap = new HashMap<String, Vertex>();
 
-	public ClarkeWrightMethod(int[][] costMatrix) {
-		this.costMatrix = costMatrix;
-		MapUtil.printMatrix(costMatrix);
-		this.sortedSavingMap = (HashMap<String, Integer>) MapUtil.sortByValue(
-				generateSavingMap(costMatrix), true);
-		System.out.println("savings: " + sortedSavingMap);
-	}
+    public ClarkeWrightMethod(int[][] costMatrix) {
+        this.costMatrix = costMatrix;
+        MapUtil.printMatrix(costMatrix);
+        this.sortedSavingEdges = (HashMap<Edge, Integer>) MapUtil.sortByValue(generateSavingMap(costMatrix), true);
+        System.out.println("savings: " + sortedSavingEdges);
+        vertexNumber = costMatrix.length;
+        edgeNumber = vertexNumber - 1;
+        setTotalSavingValue(0);
+        init();
+    }
 
-	public HashMap<String, Integer> generateSavingMap(int[][] costMatrix) {
-		HashMap<String, Integer> savingMap = new HashMap<String, Integer>();
-		for (int i = 1; i < costMatrix.length; i++) {
-			for (int j = i + 1; j < costMatrix.length; j++) {
-				String pathName = String.valueOf(i) + "-" + String.valueOf(j);
-				Integer saving = costMatrix[0][i] + costMatrix[0][j] - costMatrix[i][j];
-				savingMap.put(pathName, saving);
-			}
-		}
-		return savingMap;
-	}
+    public HashMap<Edge, Integer> generateSavingMap(int[][] costMatrix) {
+        HashMap<Edge, Integer> savingMap = new HashMap<Edge, Integer>();
+        for (int i = 1; i < costMatrix.length; i++) {
+            for (int j = i + 1; j < costMatrix.length; j++) {
+                Integer saving = costMatrix[0][i] + costMatrix[0][j] - costMatrix[i][j];
+                savingMap.put(new Edge(i, j, saving), saving);
+            }
+        }
+        return savingMap;
+    }
 
-	public List<String> getRouteParallelly(String start, String end) {
-		
-		// Rule:
-		// 1.Cannot connect two points which are in one path
-		// 2.Stop if start and end match input
-		// 3. cannot over capacity
-		// 4. each vertexes are only allowed to connect 2 vertex(two edge).
-		 
-		List<String> route = new ArrayList<String>();
-		HashMap<String,Vertex> tempPath = new HashMap<String,Vertex>();
-		Set<Integer> endPoints = new HashSet<Integer>();
-		Vertex startPoint = new Vertex(start);
-		Vertex endPoint = new Vertex(end);
+    public void init() {
+        vertice = new Vertex[vertexNumber];
+        forest = new int[vertexNumber];
+        edgeCount = new int[vertexNumber];
+        for (int i = 0; i < vertexNumber; i++) {
+            forest[i] = i;
+            vertice[i] = new Vertex(String.valueOf(i));
+            edgeCount[i] = 0;
+        }
 
-		//put all vertexes into temp path except start and end. Also calculate the first(closest point) as well
-		HashMap<String, Integer> distanceValue = new HashMap<String, Integer>();
-		for (int i = 1; i < costMatrix.length; i++) {
-			if (!String.valueOf(i).equalsIgnoreCase(end)) {
-				distanceValue.put(String.valueOf(i), costMatrix[0][i]);
-				tempPath.put(String.valueOf(i), new Vertex(String.valueOf(i)));
-			}
-		}
-		//sort the distance and pick the closest one.
-		distanceValue = (HashMap<String, Integer>) MapUtil.sortByValue(distanceValue, false);
-		Entry<String, Integer> closestEntry = distanceValue.entrySet().iterator().next();
-		
-		//initiate the closet Vertex.
-		Vertex closestVertex = tempPath.get(distanceValue.entrySet().iterator().next().getKey());
-		//connect the known edge: 
-		startPoint.addNeighbor(start, -1);
-		startPoint.addNeighbor(closestEntry.getKey(),closestEntry.getValue());
-		closestVertex.addNeighbor(start, closestEntry.getValue());
-		endPoint.addNeighbor(end, -1);
-		
-		tempPath.put(startPoint.getId(), startPoint);
-		tempPath.put(endPoint.getId(), endPoint);
-		
-		//fill the edge table parallelly with sortedSavingMap
-		for (Entry<String, Integer> savingSet : this.sortedSavingMap.entrySet()) {
-			String ends[] = savingSet.getKey().split("-");
-			if(tempPath.get(ends[0]).isConnectable()&&tempPath.get(ends[1]).isConnectable()){
-				int distance = costMatrix[Integer.valueOf(ends[0])][Integer.valueOf(ends[1])];
-				tempPath.get(ends[0]).addNeighbor(ends[1], distance);
-				tempPath.get(ends[1]).addNeighbor(ends[0], distance);
-			}
-		}
-		for (Entry<String, Vertex> connectedPoints : tempPath.entrySet()) {
-			System.out.print(connectedPoints.getKey()+": "+connectedPoints.getValue().getNeighbors()+"\n");
-		}
-		
-		String currentVertex=start;
-		String nextVertex=start;
-		while(!currentVertex.equals(end)){
-			route.add(tempPath.get(currentVertex).getId());
-			for(String neighbor:tempPath.get(currentVertex).getNeighbors()){
-				if(!route.contains(neighbor)) {
-					nextVertex=neighbor;
-					System.out.print("nextVertex: "+nextVertex+"\n");
-				}
-			}
-			currentVertex = nextVertex;
-		}
-		route.add(tempPath.get(end).getId());
-		return route;
-	}
+    }
 
-	public List<Vertex> getRouteSequentially() {
-		// TODO: Merge with Ashley's code
-		return null;
-	}
+    public Stack<Vertex> getRouteParallelly(Integer start, Integer end) {
 
-	public String getClosestVertex(Integer point) {
-		Integer shortestDistance;
-		Integer closestPoint;
-		if (point == 0) {
-			shortestDistance = costMatrix[point][1];
-			closestPoint = 1;
-		} else {
-			shortestDistance = costMatrix[point][0];
-			closestPoint = 0;
-		}
-		for (int i = 0; i < costMatrix.length; i++) {
-			if (costMatrix[point][i] < shortestDistance && point != i) {
-				shortestDistance = costMatrix[point][i];
-				closestPoint = i;
-			}
-		}
-		return String.valueOf(closestPoint);
-	}
+        /*-
+         * Kruskal Algorithm
+         * 
+         * Rule:
+         * 1. Cannot connect two points which are in same minimum spinning tree
+         * 2. traversal all saving edges by sorting saving value with descending order
+         * 3. cannot over capacity (FIXME: add constraints)
+         * 4. each vertexes are only allowed to have two edges, except end point has only one.
+         */
 
-	public static void main(String[] args) {
+        for (Entry<Edge, Integer> savingSet : this.sortedSavingEdges.entrySet()) {
+            Edge edge = savingSet.getKey();
+            if (!(find(edge.getPointA()) == find(edge.getPointB()))) {
+                if (edge.getPointA() == end) {
+                    if (edgeCount[edge.getPointA()] < 1 && edgeCount[edge.getPointB()] < 2) {
+                        union(edge.getPointA(), edge.getPointB());
+                        setTotalSavingValue(getTotalSavingValue() + edge.getWeight());
+                    }
+                } else if (edge.getPointB() == end) {
+                    if (edgeCount[edge.getPointA()] < 2 && edgeCount[edge.getPointB()] < 1) {
+                        union(edge.getPointA(), edge.getPointB());
+                        setTotalSavingValue(getTotalSavingValue() + edge.getWeight());
+                    }
+                } else {
+                    if (edgeCount[edge.getPointA()] < 2 && edgeCount[edge.getPointB()] < 2) {
+                        union(edge.getPointA(), edge.getPointB());
+                        setTotalSavingValue(getTotalSavingValue() + edge.getWeight());
+                    }
+                }
+            }
+        }
+        return generateRoute(end);
+    }
 
-		ClarkeWrightMethod cwm = new ClarkeWrightMethod(MatrixLoader.RandomMatrix(6));
-		for (String temp : cwm.getRouteParallelly("0", "4")) {
-			System.out.print(temp + "-");
-		}
-	}
+    public List<Vertex> getRouteSequentially() {
+        // TODO: Merge with Ashley's code
+        return null;
+    }
 
+    private int find(int i) {
+        int point = Integer.valueOf(i);
+        return point == forest[point] ? point : find(forest[point]);
+    }
+
+    private void union(Integer i, Integer j) {
+        System.out.print("union edge " + i + " - " + j);
+        // compare the each MMS's size, joint the small tree to the bigger tree.
+        if (edgeCount[i] >= edgeCount[j]) {
+            forest[find(j)] = find(i);
+        } else {
+            forest[find(i)] = find(j);
+        }
+
+        connect(vertice[i], vertice[j]);
+        edgeCount[i]++;
+        edgeCount[j]++;
+        System.out.print("\n");
+    }
+
+    private void connect(Vertex vertex, Vertex vertex2) {
+        vertex.addNeighbor(vertex2);
+        vertex2.addNeighbor(vertex);
+    }
+
+    private Stack<Vertex> generateRoute(int end) {
+        Stack<Vertex> route = new Stack<Vertex>();
+        int index = end;
+        boolean findNextVertex = true;
+        while (findNextVertex) {
+            route.push(vertice[index]);
+            findNextVertex = false;
+            // find the next vertex from neighbor
+            for (Vertex neighbor : vertice[index].getNeighbors()) {
+                if (!route.contains(neighbor)) {
+                    index = Integer.valueOf(neighbor.getId());
+                    findNextVertex = true;
+                }
+            }
+        }
+        return route;
+    }
+
+    public void printRoute(Stack<Vertex> route) {
+        while (!route.empty())
+            System.out.print(route.pop().getId()+"-");
+    }
+
+    /**
+     * @return the totalSavingValue
+     */
+    public int getTotalSavingValue() {
+        return totalSavingValue;
+    }
+
+    /**
+     * @param totalSavingValue the totalSavingValue to set
+     */
+    public void setTotalSavingValue(int totalSavingValue) {
+        this.totalSavingValue = totalSavingValue;
+    }
+
+    public static void main(String[] args) throws Exception {
+
+        ClarkeWrightMethod cwm = new ClarkeWrightMethod(MatrixLoader.RandomMatrix(100));
+        cwm.printRoute(cwm.getRouteParallelly(0, 4));
+        System.out.print("\n"+cwm.getTotalSavingValue());
+    }
+
+    
 }
