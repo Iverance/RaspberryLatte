@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
 import java.util.Map.Entry;
 import java.util.PriorityQueue;
 import java.util.Set;
@@ -128,12 +129,38 @@ public class ClarkeWrightMethod {
 		return String.valueOf(closestPoint);
 	}
 
+	public static int getDimensions(){
+
+		Random rand = new Random();		
+		return(rand.nextInt(2)+4);
+		
+	}
+	
 	public static void main(String[] args) {
 
+		/* -------------- JEREMY'S PARALLEL IMPLEMENTATION ------------------- 
 		ClarkeWrightMethod cwm = new ClarkeWrightMethod(MatrixLoader.RandomMatrix(6));
 		for (String temp : cwm.getRouteParallelly("0", "4")) {
 			System.out.print(temp + "-");
-		}
+		}*/
+		
+		
+		//----------------------- ASHLEY'S SEQUENTIAL IMPLEMENTATION
+		//initialize variables 
+				Distance dist = new Distance();
+				int[][] vhpMapping;
+				int m;
+				
+				//randomly create dimensions		
+				m = getDimensions(); // <-- Translate into Nodes
+				
+				vhpMapping = dist.matrixGenerator(m);
+				System.out.println("Dimensions: " + m +"x" + m);
+				//dist.printMatrix(vhpMapping);
+				dist.clarkeAndWright(vhpMapping, m);
+				//vhpMapping = dist.clarkeAndWright(vhpMapping, m);
+				//dist.printMatrix(vhpMapping);
+		
 	}
 
 }
