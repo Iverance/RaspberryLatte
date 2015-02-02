@@ -1,9 +1,9 @@
 package edu.sjsu.cab.algorithm;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Random;
 import java.util.Stack;
 
 import edu.sjsu.cab.object.Edge;
@@ -18,6 +18,13 @@ public class ClarkeWrightMethod {
     int[] forest, edgeCount;
     Vertex[] vertice;
     HashMap<String, Vertex> edgesMap = new HashMap<String, Vertex>();
+
+    public static int getDimensions() {
+
+        Random rand = new Random();
+        return (rand.nextInt(2) + 4);
+
+    }
 
     public ClarkeWrightMethod(int[][] costMatrix) {
         this.costMatrix = costMatrix;
@@ -139,7 +146,7 @@ public class ClarkeWrightMethod {
 
     public void printRoute(Stack<Vertex> route) {
         while (!route.empty())
-            System.out.print(route.pop().getId()+"-");
+            System.out.print(route.pop().getId() + "-");
     }
 
     /**
@@ -150,18 +157,36 @@ public class ClarkeWrightMethod {
     }
 
     /**
-     * @param totalSavingValue the totalSavingValue to set
+     * @param totalSavingValue
+     *            the totalSavingValue to set
      */
     public void setTotalSavingValue(int totalSavingValue) {
         this.totalSavingValue = totalSavingValue;
     }
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
 
+        /* -------------- JEREMY'S PARALLEL IMPLEMENTATION ------------------- */
         ClarkeWrightMethod cwm = new ClarkeWrightMethod(MatrixLoader.RandomMatrix(100));
         cwm.printRoute(cwm.getRouteParallelly(0, 4));
-        System.out.print("\n"+cwm.getTotalSavingValue());
-    }
+        System.out.print("\n" + cwm.getTotalSavingValue());
 
+        // ----------------------- ASHLEY'S SEQUENTIAL IMPLEMENTATION
+        // initialize variables
+        Distance dist = new Distance();
+        int[][] vhpMapping;
+        int m;
+
+        // randomly create dimensions
+        m = getDimensions(); // <-- Translate into Nodes
+
+        vhpMapping = dist.matrixGenerator(m);
+        System.out.println("Dimensions: " + m + "x" + m);
+        // dist.printMatrix(vhpMapping);
+        dist.clarkeAndWright(vhpMapping, m);
+        // vhpMapping = dist.clarkeAndWright(vhpMapping, m);
+        // dist.printMatrix(vhpMapping);
+
+    }
     
 }
