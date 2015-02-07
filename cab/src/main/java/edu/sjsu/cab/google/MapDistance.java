@@ -186,14 +186,14 @@ public class MapDistance {
 
 		final JSONObject obj = new JSONObject(theData);
 		JSONObject res = obj.getJSONArray("routes").getJSONObject(0);
-		System.out.println(res);
+	//	System.out.println(res);
 		JSONArray loc = res.getJSONArray("legs");
-		System.out.println(loc);
+	//	System.out.println(loc);
 
 		String dist = loc.getJSONObject(0).getJSONObject("distance")
 				.getString("text");
 		String distCut = dist.substring(0, dist.indexOf(" "));
-		System.out.println(distCut);
+	//	System.out.println(distCut);
 		double theDistance = Double.parseDouble(distCut);
 
 		return theDistance;
