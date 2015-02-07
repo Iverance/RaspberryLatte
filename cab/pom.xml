@@ -20,6 +20,13 @@
     <artifactId>google-maps-services</artifactId>
     <version>0.1.5</version>
 </dependency>
+
+<dependency>
+	<groupId>org.json</groupId>
+	<artifactId>json</artifactId>
+	<version>20141113</version>
+</dependency>
+
     
   </dependencies>
   
