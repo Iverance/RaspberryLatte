@@ -1,5 +1,5 @@
 package edu.sjsu.cab.algorithm;
-import java.util.*;
+import java.util.Random;
 
 
 public class Vrp
