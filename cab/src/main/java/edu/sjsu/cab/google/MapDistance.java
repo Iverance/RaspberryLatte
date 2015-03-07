@@ -45,7 +45,8 @@ public class MapDistance {
 		//test getting LatLng of addresss
 		
 		String url2 = asdf
-				.getLatLngUrl("1600 Amphitheatre Parkway, Mountain View, CA");
+				.getLatLngUrl("shoreline blvd and U.S. 101");
+		System.out.println(url2);
 		String theData2 = asdf.askGoogle(url2);
 		double[] blah = asdf.getLatLng(theData2);
 		System.out.println(blah[0] + " by " + blah[1]);
