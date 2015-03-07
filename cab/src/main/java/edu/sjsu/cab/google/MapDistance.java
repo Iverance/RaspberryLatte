@@ -166,7 +166,7 @@ public class MapDistance {
 		int High = 38;
 		double R = r.nextInt(High - Low) + Low + r.nextDouble();
 
-		int low2 = -122;
+		int low2 = -121;
 		int high2 = -120;
 
 		double R2 = r.nextInt(high2 - low2) + low2 + r.nextDouble();
