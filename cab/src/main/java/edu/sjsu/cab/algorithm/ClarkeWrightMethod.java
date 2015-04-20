@@ -16,9 +16,10 @@ public class ClarkeWrightMethod {
     /*- for prim
      * distance: distance from each point to current MST 
      * visit: visit record for each point
+     * parent: the record of point's parent
      */
     boolean[] visit;
-    int[] distance;
+    int[] distance, parent;
     int[][] savingMatrix;
 
     /*- for kruskal
@@ -30,6 +31,7 @@ public class ClarkeWrightMethod {
     public ClarkeWrightMethod(int[][] costMatrix) {
         MapUtil.printMatrix(costMatrix);
         savingMatrix = generateSavingMatrix(costMatrix);
+        System.out.println("\n");
         MapUtil.printMatrix(savingMatrix);
         sortedSavingEdges = (HashMap<Edge, Integer>) MapUtil.sortByValue(generateSavingMap(costMatrix), true);
         System.out.println("savings: " + sortedSavingEdges);
@@ -40,7 +42,6 @@ public class ClarkeWrightMethod {
 
     public int[][] generateSavingMatrix(int[][] costMatrix) {
         int[][] savingMatrix = new int[costMatrix.length][costMatrix.length];
-        ;
         for (int i = 1; i < costMatrix.length; i++) {
             for (int j = i + 1; j < costMatrix.length; j++) {
                 savingMatrix[i][j] = costMatrix[0][i] + costMatrix[0][j] - costMatrix[i][j];
@@ -65,6 +66,7 @@ public class ClarkeWrightMethod {
         // prim
         visit = new boolean[vertexNumber];
         distance = new int[vertexNumber];
+        parent = new int[vertexNumber];
         // kruskal
         vertice = new Vertex[vertexNumber];
         forest = new int[vertexNumber];
@@ -89,7 +91,7 @@ public class ClarkeWrightMethod {
         init();
     }
 
-    public Stack<Vertex> getRouteParallelly(Integer start, Integer end) {
+    public Stack<Vertex> getRouteParallelly() {
 
         /*-
          * Kruskal Algorithm
@@ -102,25 +104,15 @@ public class ClarkeWrightMethod {
          */
 
         int totalSavingValue = 0;
+        // start from one of the points that have biggest saving value
+        int start = sortedSavingEdges.entrySet().iterator().next().getKey().getPointA();
 
         for (Entry<Edge, Integer> savingSet : sortedSavingEdges.entrySet()) {
             Edge edge = savingSet.getKey();
             if (!(find(edge.getPointA()) == find(edge.getPointB()))) {
-                if (edge.getPointA() == end) {
-                    if (edgeCount[edge.getPointA()] < 1 && edgeCount[edge.getPointB()] < 2) {
-                        union(edge.getPointA(), edge.getPointB());
-                        totalSavingValue += edge.getWeight();
-                    }
-                } else if (edge.getPointB() == end) {
-                    if (edgeCount[edge.getPointA()] < 2 && edgeCount[edge.getPointB()] < 1) {
-                        union(edge.getPointA(), edge.getPointB());
-                        totalSavingValue += edge.getWeight();
-                    }
-                } else {
-                    if (edgeCount[edge.getPointA()] < 2 && edgeCount[edge.getPointB()] < 2) {
-                        union(edge.getPointA(), edge.getPointB());
-                        totalSavingValue += edge.getWeight();
-                    }
+                if (edgeCount[edge.getPointA()] < 2 && edgeCount[edge.getPointB()] < 2) {
+                    union(edge.getPointA(), edge.getPointB());
+                    totalSavingValue += edge.getWeight();
                 }
             }
         }
@@ -128,15 +120,19 @@ public class ClarkeWrightMethod {
 
         // Generate the path
         Stack<Vertex> path = new Stack<Vertex>();
-        int index = end;
+        int startPoint = 0;
+        for (int i = 0; i < edgeCount.length; i++) {
+            if (edgeCount[i] == 1)
+                startPoint = i;
+        }
         boolean findNextVertex = true;
         while (findNextVertex) {
-            path.push(vertice[index]);
+            path.push(vertice[startPoint]);
             findNextVertex = false;
             // find the next vertex from neighbor
-            for (Vertex neighbor : vertice[index].getNeighbors()) {
+            for (Vertex neighbor : vertice[startPoint].getNeighbors()) {
                 if (!path.contains(neighbor)) {
-                    index = Integer.valueOf(neighbor.getId());
+                    startPoint = Integer.valueOf(neighbor.getId());
                     findNextVertex = true;
                 }
             }
@@ -153,37 +149,47 @@ public class ClarkeWrightMethod {
         /*-
          * Prim Algorithm
          */
-        Stack<Vertex> path = new Stack<Vertex>();
-        int totalSavingValue=0;
+        int totalSavingValue = 0;
 
         // start from one of the points that have biggest saving value
         int start = sortedSavingEdges.entrySet().iterator().next().getKey().getPointA();
-        distance[start] = 0;
-
-        for (int i = 0; i < vertexNumber; i++) {
-            int a = -1, b = -1, min = (int) -1e9;
-            // find out the shortest point from MST
-            for (int j = 0; j < vertexNumber; j++) {
-                if (!visit[j] && distance[j] > min) {
-                    a = j;
-                    min = distance[j];
+        visit[start] = true;
+        int currentPoint = start;
+        int nextPoint = 0;
+       
+        for (int a = 1; a < vertexNumber-1; a++) {
+            int dist = -99999;
+            for (int b = 1; b < vertexNumber; b++) {
+                if (!visit[b] && savingMatrix[currentPoint][b] > dist) {
+                    nextPoint = b;
+                    dist = savingMatrix[currentPoint][b];
                 }
             }
-            if (a == -1)
-                break;
-            visit[a] = true;
-            totalSavingValue+=distance[a];
-            path.push(vertice[a]);
-            for (b = 1; b < vertexNumber; b++) {
-                if (!visit[b] && savingMatrix[a][b] > distance[b]) {
-                    distance[b] = savingMatrix[a][b];
-                }
-            }
-
+            totalSavingValue = totalSavingValue+ dist;
+            visit[nextPoint] = true;
+            connect(vertice[nextPoint], vertice[currentPoint]);
+            currentPoint = nextPoint;
         }
+
+        // Generate the path
+        Stack<Vertex> path = new Stack<Vertex>();
+
+        boolean findNextVertex = true;
+        while (findNextVertex) {
+            path.push(vertice[start]);
+            findNextVertex = false;
+            // find the next vertex from neighbor
+            for (Vertex neighbor : vertice[start].getNeighbors()) {
+                if (!path.contains(neighbor)) {
+                    start = Integer.valueOf(neighbor.getId());
+                    findNextVertex = true;
+                }
+            }
+        }
+
         reset();
         setSequentialTotalSavingValue(totalSavingValue);
-        
+
         return path;
     }
 
@@ -193,7 +199,7 @@ public class ClarkeWrightMethod {
     }
 
     private void union(Integer i, Integer j) {
-//        System.out.print("union edge " + i + " - " + j);
+        // System.out.print("union edge " + i + " - " + j);
         // compare the each MMS's size, joint the small tree to the bigger tree.
         if (edgeCount[i] >= edgeCount[j]) {
             forest[find(j)] = find(i);
@@ -204,7 +210,7 @@ public class ClarkeWrightMethod {
         connect(vertice[i], vertice[j]);
         edgeCount[i]++;
         edgeCount[j]++;
-//        System.out.print("\n");
+        // System.out.print("\n");
     }
 
     private void connect(Vertex vertex, Vertex vertex2) {
@@ -213,8 +219,11 @@ public class ClarkeWrightMethod {
     }
 
     public void printRoute(Stack<Vertex> route) {
-        while (!route.empty())
-            System.out.print(route.pop().getId() + "-");
+        String path = "";
+        while (!route.empty()) {
+            path = route.pop().getId() + path;
+        }
+        System.out.print(path);
     }
 
     /**
@@ -227,31 +236,20 @@ public class ClarkeWrightMethod {
     public void setParallelTotalSavingValue(int value) {
         this.parallelTotalSavingValue = value;
     }
-    
+
     /**
      * @return the sequentialTotalSavingValue
      */
     public int getSequentialTotalSavingValue() {
-        return sequentialTotalSavingValue;
+        return this.sequentialTotalSavingValue;
     }
 
     /**
-     * @param sequentialTotalSavingValue the sequentialTotalSavingValue to set
+     * @param sequentialTotalSavingValue
+     *            the sequentialTotalSavingValue to set
      */
     public void setSequentialTotalSavingValue(int sequentialTotalSavingValue) {
         this.sequentialTotalSavingValue = sequentialTotalSavingValue;
-    }
-    
-    public static void main(String[] args) {
-
-        /* -------------- PARALLEL IMPLEMENTATION ------------------- */
-        ClarkeWrightMethod cwm = new ClarkeWrightMethod(MatrixLoader.RandomMatrix(5));
-        cwm.printRoute(cwm.getRouteParallelly(0, 4));
-        System.out.print("\n" + cwm.getParallelTotalSavingValue()+"\n");
-        
-        /* -------------- SEQUENTIAL IMPLEMENTATION ------------------- */
-        cwm.printRoute(cwm.getRouteSequentially());
-        System.out.print("\n" + cwm.getSequentialTotalSavingValue());
     }
 
 }

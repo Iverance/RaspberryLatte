@@ -27,11 +27,4 @@ public class MatrixLoader {
 
 		return randomMatrix;
 	}
-	
-
-
-	public static void main(String[] args) {
-
-		MapUtil.printMatrix(RandomMatrix(4));
-	}
 }

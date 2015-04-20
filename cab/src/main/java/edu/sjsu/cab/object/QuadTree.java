@@ -6,7 +6,25 @@ public class QuadTree<T> {
 
     private QuadTree<T>[] nodes;
     private double lat;
+
+    public double getLat() {
+        return lat;
+    }
+
+    public void setLat(double lat) {
+        this.lat = lat;
+    }
+
     private double lng;
+
+    public double getLng() {
+        return lng;
+    }
+
+    public void setLng(double lng) {
+        this.lng = lng;
+    }
+
     private T object;
 
     public QuadTree(double plat, double plng, T obj) {

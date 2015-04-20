@@ -8,50 +8,48 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Random;
 
-import com.google.maps.GeoApiContext;
-import com.google.maps.GeocodingApi;
-import com.google.maps.model.GeocodingResult;
-import com.google.maps.model.LatLng;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
-import org.json.*;
+import com.google.maps.model.LatLng;
 
 public class MapDistance {
 
-	public static void main(String[] args) throws Exception {
-
-		/*
-		 * GeoApiContext context = new
-		 * GeoApiContext().setApiKey("AIzaSyBYJcvZ6k8x8eAQdPQv-wCUgfd6A_MocyI");
-		 * GeocodingResult[] results = GeocodingApi.geocode(context,
-		 * "1600 Amphitheatre Parkway Mountain View, CA 94043").await();
-		 * System.out.println(results[0].formattedAddress);
-		 */
-
-		MapDistance asdf = new MapDistance();
-
-		LatLng origin = asdf.randomLL();
-		LatLng dest = asdf.randomLL();
-
-		String url = asdf.getDirectionsUrl(origin, dest);
-
-		//test distance
-		
-		//System.out.println(url);
-		String theData = asdf.askGoogle(url);
-		//System.out.println(theData);
-		double theDistance = asdf.getDistance(theData);
-		System.out.println(theDistance + " miles");
-
-		//test getting LatLng of addresss
-		
-		String url2 = asdf
-				.getLatLngUrl("shoreline blvd and U.S. 101");
-		System.out.println(url2);
-		String theData2 = asdf.askGoogle(url2);
-		double[] blah = asdf.getLatLng(theData2);
-		System.out.println(blah[0] + " by " + blah[1]);
-
-	}
+//	public static void main(String[] args) throws Exception {
+//
+//		/*
+//		 * GeoApiContext context = new
+//		 * GeoApiContext().setApiKey("AIzaSyBYJcvZ6k8x8eAQdPQv-wCUgfd6A_MocyI");
+//		 * GeocodingResult[] results = GeocodingApi.geocode(context,
+//		 * "1600 Amphitheatre Parkway Mountain View, CA 94043").await();
+//		 * System.out.println(results[0].formattedAddress);
+//		 */
+//
+//		MapDistance asdf = new MapDistance();
+//
+//		LatLng origin = asdf.randomLL();
+//		LatLng dest = asdf.randomLL();
+//
+//		String url = asdf.getDirectionsUrl(origin, dest);
+//
+//		//test distance
+//		
+//		//System.out.println(url);
+//		String theData = asdf.askGoogle(url);
+//		//System.out.println(theData);
+//		double theDistance = asdf.getDistance(theData);
+//		System.out.println(theDistance + " miles");
+//
+//		//test getting LatLng of addresss
+//		
+//		String url2 = asdf
+//				.getLatLngUrl("shoreline blvd and U.S. 101");
+//		System.out.println(url2);
+//		String theData2 = asdf.askGoogle(url2);
+//		double[] blah = asdf.getLatLng(theData2);
+//		System.out.println(blah[0] + " by " + blah[1]);
+//
+//	}
 
 	/*
 	 * Form query url for getting directions from origin to destination
