@@ -1,9 +1,9 @@
 angular.module('myApp.googleMapService', [])
     .factory('GoogleMapService', function($rootScope, $timeout, $http) {
 
-var markers = [];
-var latLngs = [];
+
 var directionsDisplay;
+var cache;
 var locations;
         //The service our factory will return
         var googleMapService = {},
@@ -178,10 +178,10 @@ googleMapService.addRoutes = function() {
 	//var start = markers[0];
 	//var end = markers[1];
 	
-	for(var index=0; index<markers.length;index++){
+	for(var index=0; index<cache.markers.length-1;index++){
 	
-    var start = new google.maps.LatLng(markers[index].position.lat(), markers[index].position.lng())
-	var end = new google.maps.LatLng(markers[index+1].position.lat(), markers[index+1].position.lng())
+    var start = new google.maps.LatLng(cache.markers[index].position.lat(), cache.markers[index].position.lng())
+	var end = new google.maps.LatLng(cache.markers[index+1].position.lat(), cache.markers[index+1].position.lng())
 	var request = {
       origin:start,
       destination:end,
@@ -193,7 +193,7 @@ googleMapService.addRoutes = function() {
     if (status == google.maps.DirectionsStatus.OK) {
 		directionsDisplay = new google.maps.DirectionsRenderer();
 		directionsDisplay.setDirections(response);
-		directionsDisplay.setMap(map);
+		directionsDisplay.setMap(cache.map);
     }
 });
 }
@@ -220,7 +220,7 @@ function getLatLng() {
 
             //We create a cache
             if (!arguments.callee.cache) arguments.callee.cache = {};
-            var cache = arguments.callee.cache;
+            cache = arguments.callee.cache;
 
             //If there are markers in the cache we clear them.
             if (cache.markers) cache.markers = clearMarkers(cache.markers);
@@ -280,12 +280,20 @@ function getLatLng() {
                     map: cache.map,
                     title: "none",
                     icon: icon
-                });				
+                });
+				
 
                 //We add it to the cache
                 cache.markers.push(marker);
+				
+				
+				//
+				
+				
+				
+				//
 
-                //When we click on a maker
+                //When we click on a marker
                 google.maps.event.addListener(marker, 'click', function(e) {
 
                     //If owned by the user, allow deletion
@@ -307,6 +315,12 @@ function getLatLng() {
                     $rootScope.$broadcast("hideAllMessages");
                 });
             });
+			
+			//
+			
+			
+			//
+			
 
             //when we click on the map
             google.maps.event.addListener(cache.map, 'click', function(e) {
