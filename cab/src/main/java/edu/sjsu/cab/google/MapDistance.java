@@ -53,11 +53,8 @@ public class MapDistance {
 
 	/*
 	 * Form query url for getting directions from origin to destination
-	 * 
 	 * @param origin LatLng of origin point
-	 * 
 	 * @param dest LatLng of destination point
-	 * 
 	 * @return Url String
 	 */
 	private String getDirectionsUrl(LatLng origin, LatLng dest) {
@@ -84,9 +81,7 @@ public class MapDistance {
 
 	/*
 	 * Form query url for getting latLng for an address
-	 * 
 	 * @param address string of full address
-	 * 
 	 * @return url of query
 	 */
 	private String getLatLngUrl(String address) {
@@ -113,9 +108,7 @@ public class MapDistance {
 
 	/*
 	 * Query Google using url
-	 * 
 	 * @param strUrl url string to be used to query google
-	 * 
 	 * @return string of json response
 	 */
 	private String askGoogle(String strUrl) throws IOException {
@@ -155,7 +148,6 @@ public class MapDistance {
 
 	/*
 	 * Randomly generate a LatLng
-	 * 
 	 * @return random LatLng
 	 */
 	private LatLng randomLL() {
@@ -176,9 +168,7 @@ public class MapDistance {
 
 	/*
 	 * Use string from askGoogle to parse through JSONObject to get distance
-	 * 
 	 * @param theData json string from askGoogle query.
-	 * 
 	 * @return distance between two points
 	 */
 	private double getDistance(String theData) {
@@ -201,9 +191,7 @@ public class MapDistance {
 
 	/*
 	 * method returns array: first elemnt is Lat, second element is Lng
-	 * 
 	 * @param theData JSON string from askGoogle query
-	 * 
 	 * @return array with [lat,lng] of address
 	 */
 	private double[] getLatLng(String theData) {
