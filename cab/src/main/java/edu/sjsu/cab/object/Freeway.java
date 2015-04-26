@@ -100,7 +100,7 @@ public class Freeway {
 	public void printLatLongList(){System.out.println(this.exitLatLong.values().toString());}
 	//public void printExitDescriptionLatLong()
 	
-	/*public static void main(String[] args) {
+	public static void main(String[] args) {
 		
 		//create data structures for 101N/S Freeway
 		Freeway fwy101N = new Freeway();
@@ -257,6 +257,6 @@ public class Freeway {
 		fwy101S.printDescriptionList();
 		fwy101S.printExitAndDescriptionList();
 		latlong = fwy101S.latLongLoader();		
-	}*/
+	}
 
 }
