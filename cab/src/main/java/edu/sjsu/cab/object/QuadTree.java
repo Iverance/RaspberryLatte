@@ -1,10 +1,12 @@
 package edu.sjsu.cab.object;
 
 import edu.sjsu.cab.util.MapUtil;
+import com.google.maps.model.LatLng;
 
 public class QuadTree<T> {
 
     private QuadTree<T>[] nodes;
+<<<<<<< Updated upstream
     private double lat;
 
     public double getLat() {
@@ -25,11 +27,17 @@ public class QuadTree<T> {
         this.lng = lng;
     }
 
+=======
+    //private double lat;
+    //private double lng;
+    private LatLng latlng;
+>>>>>>> Stashed changes
     private T object;
 
-    public QuadTree(double plat, double plng, T obj) {
-        this.lat = plat;
-        this.lng = plng;
+    public QuadTree(LatLng latlong, T obj){//(double plat, double plng, T obj) {
+        //this.lat = plat;
+        //this.lng = plng;
+        this.latlng = latlong;
         this.object = obj;
     }
 
@@ -44,10 +52,10 @@ public class QuadTree<T> {
         }
     }
 
-    public void insert(double plat, double plng, T obj) {
+    public void insert (LatLng latlong, T obj){//(double plat, double plng, T obj) {
         int index = -1;
 
-        switch (this.getDirection(plat, plng)) {
+        switch (this.getDirection(latlong)) {
         case "NE":
             index = 0;
             break;
@@ -62,9 +70,9 @@ public class QuadTree<T> {
             break;
         }
         if (MapUtil.isNullOrEmpty(nodes[index])) {
-            this.nodes[index] = new QuadTree<T>(plat, plng, obj);
+            this.nodes[index] = new QuadTree<T>(latlong, obj);
         } else {
-            this.nodes[index].insert(plat, plng, obj);
+            this.nodes[index].insert(latlong, obj);
         }
     }
 
@@ -76,11 +84,19 @@ public class QuadTree<T> {
         return this.object;
     }
 
+    /*KEEP THIS IF WE ARE GOING TO USE LATLNG instead of double lat, double long */
+    private String getDirection(LatLng latlng) {
+        String NS = (this.latlng.lat > latlng.lat) ? "S" : "N";
+        String EW = (this.latlng.lng > latlng.lng) ? "W" : "E";
+        return NS + EW;
+    }    
+    
+    /*DELETE THIS IF WE ARE GOING TO USE LATLNG instead of double lat, double long
     private String getDirection(double pLat, double pLng) {
         String NS = (this.lat > pLat) ? "S" : "N";
         String EW = (this.lng > pLng) ? "W" : "E";
         return NS + EW;
-    }
+    }*/
 
     @Override
     public String toString() {
@@ -93,7 +109,7 @@ public class QuadTree<T> {
         for (int i = 0; i < increment; ++i) {
             inc = inc + " ";
         }
-        s = inc + this.lng + "/" + this.lat;
+        s = inc + this.latlng.lng + "/" + this.latlng.lat;
 
         for (int i = 0; i < 4; i++) {
             if (!MapUtil.isNullOrEmpty(this.nodes[i])) {
