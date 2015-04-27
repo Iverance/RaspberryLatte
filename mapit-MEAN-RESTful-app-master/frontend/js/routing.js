@@ -18,6 +18,10 @@ routing.config(['$routeProvider',
             templateUrl: 'partials/panel.html',
             controller: 'PanelCtrl'
         }).
+		when('/panel2', {
+            templateUrl: 'partials/panel2.html',
+            controller: 'PanelCtrl'
+        }).
         otherwise({
             redirectTo: '/login'
         });
