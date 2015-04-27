@@ -2,11 +2,19 @@ package edu.sjsu.cab.object;
 
 import edu.sjsu.cab.util.MapUtil;
 
-public class QuadTree<T> {
+public class MapQuadTree<T> {
 
-    private QuadTree<T>[] nodes;
+    private MapQuadTree<T>[] nodes;
     private double lat;
+    private double lng;
+    private T object;
 
+    public MapQuadTree(double plat, double plng, T obj) {
+        this.lat = plat;
+        this.lng = plng;
+        this.object = obj;
+    }
+    
     public double getLat() {
         return lat;
     }
@@ -14,8 +22,6 @@ public class QuadTree<T> {
     public void setLat(double lat) {
         this.lat = lat;
     }
-
-    private double lng;
 
     public double getLng() {
         return lng;
@@ -25,12 +31,39 @@ public class QuadTree<T> {
         this.lng = lng;
     }
 
-    private T object;
+    public Object getObject() {
+        return this.object;
+    }
+    
+    public void setObject(T object) {
+        this.object = object;
+    }
+    
+    //=====functions=====
+    
+    public T getClosestObject(double plat, double plng) {
+        int index = -1;
 
-    public QuadTree(double plat, double plng, T obj) {
-        this.lat = plat;
-        this.lng = plng;
-        this.object = obj;
+        switch (this.getDirection(plat, plng)) {
+        case "NE":
+            index = 0;
+            break;
+        case "SE":
+            index = 1;
+            break;
+        case "SW":
+            index = 2;
+            break;
+        case "NW":
+            index = 3;
+            break;
+        }
+        
+        if (!MapUtil.isNullOrEmpty(nodes[index])) {
+            return nodes[index].getClosestObject(plat, plng);
+        } else {
+            return this.object;
+        }
     }
 
     public void clear() {
@@ -62,7 +95,7 @@ public class QuadTree<T> {
             break;
         }
         if (MapUtil.isNullOrEmpty(nodes[index])) {
-            this.nodes[index] = new QuadTree<T>(plat, plng, obj);
+            this.nodes[index] = new MapQuadTree<T>(plat, plng, obj);
         } else {
             this.nodes[index].insert(plat, plng, obj);
         }
@@ -70,10 +103,6 @@ public class QuadTree<T> {
 
     public void replaceObject(T obj) {
         this.object = obj;
-    }
-
-    public Object getObject() {
-        return this.object;
     }
 
     private String getDirection(double pLat, double pLng) {

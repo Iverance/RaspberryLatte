@@ -15,49 +15,13 @@ import com.google.maps.model.LatLng;
 
 public class MapDistance {
 
-//	public static void main(String[] args) throws Exception {
-//
-//		/*
-//		 * GeoApiContext context = new
-//		 * GeoApiContext().setApiKey("AIzaSyBYJcvZ6k8x8eAQdPQv-wCUgfd6A_MocyI");
-//		 * GeocodingResult[] results = GeocodingApi.geocode(context,
-//		 * "1600 Amphitheatre Parkway Mountain View, CA 94043").await();
-//		 * System.out.println(results[0].formattedAddress);
-//		 */
-//
-//		MapDistance asdf = new MapDistance();
-//
-//		LatLng origin = asdf.randomLL();
-//		LatLng dest = asdf.randomLL();
-//
-//		String url = asdf.getDirectionsUrl(origin, dest);
-//
-//		//test distance
-//		
-//		//System.out.println(url);
-//		String theData = asdf.askGoogle(url);
-//		//System.out.println(theData);
-//		double theDistance = asdf.getDistance(theData);
-//		System.out.println(theDistance + " miles");
-//
-//		//test getting LatLng of addresss
-//		
-//		String url2 = asdf
-//				.getLatLngUrl("shoreline blvd and U.S. 101");
-//		System.out.println(url2);
-//		String theData2 = asdf.askGoogle(url2);
-//		double[] blah = asdf.getLatLng(theData2);
-//		System.out.println(blah[0] + " by " + blah[1]);
-//
-//	}
-
 	/*
 	 * Form query url for getting directions from origin to destination
 	 * @param origin LatLng of origin point
 	 * @param dest LatLng of destination point
 	 * @return Url String
 	 */
-	private String getDirectionsUrl(LatLng origin, LatLng dest) {
+	public String getDirectionsUrl(LatLng origin, LatLng dest) {
 
 		// Origin of route
 		String str_origin = "origin=" + origin.lat + "," + origin.lng;
@@ -84,7 +48,7 @@ public class MapDistance {
 	 * @param address string of full address
 	 * @return url of query
 	 */
-	private String getLatLngUrl(String address) {
+	public String getLatLngUrl(String address) {
 
 		// Address
 		String addressParam = address.replaceAll(" ", "+");
@@ -111,7 +75,7 @@ public class MapDistance {
 	 * @param strUrl url string to be used to query google
 	 * @return string of json response
 	 */
-	private String askGoogle(String strUrl) throws IOException {
+	public String askGoogle(String strUrl) throws IOException {
 		String data = "";
 		InputStream iStream = null;
 		HttpURLConnection urlConnection = null;
@@ -150,7 +114,7 @@ public class MapDistance {
 	 * Randomly generate a LatLng
 	 * @return random LatLng
 	 */
-	private LatLng randomLL() {
+	public LatLng randomLL() {
 		Random r = new Random();
 		int Low = 37;
 		int High = 38;
@@ -171,7 +135,7 @@ public class MapDistance {
 	 * @param theData json string from askGoogle query.
 	 * @return distance between two points
 	 */
-	private double getDistance(String theData) {
+	public double getDistance(String theData) {
 
 		final JSONObject obj = new JSONObject(theData);
 		JSONObject res = obj.getJSONArray("routes").getJSONObject(0);
@@ -194,7 +158,7 @@ public class MapDistance {
 	 * @param theData JSON string from askGoogle query
 	 * @return array with [lat,lng] of address
 	 */
-	private double[] getLatLng(String theData) {
+	public double[] getLatLng(String theData) {
 
 		double lat;
 		double lng;

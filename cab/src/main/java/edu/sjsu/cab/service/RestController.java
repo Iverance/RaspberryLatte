@@ -1,21 +1,30 @@
 package edu.sjsu.cab.service;
 
+import java.util.Map;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import edu.sjsu.cab.object.Freeway;
+import edu.sjsu.cab.service.response.RestResponse;
 
 @org.springframework.web.bind.annotation.RestController
 public class RestController {
 
-    
-    @RequestMapping(method=RequestMethod.GET,value="/greeting")
-    public Freeway greeting(@RequestParam(value="name", defaultValue="World") String name) {
-        return new Freeway();
+    // @formatter:off
+    @RequestMapping(method = RequestMethod.GET, value = "/greeting")
+    public String greeting(@RequestParam(value = "name", defaultValue = "World") String name) {
+        return "Hi! "+name+" The cab server is running!";
     }
-    
-    
+
+    @RequestMapping(value = "/newRequest")
+    public RestResponse newRequest(@RequestParam Map<String,String> requestParams) {
+        String destinationAddress=requestParams.get("destAdd");
+        //PassengerRequest passengerRequest = new PassengerRequest(originalAddress, destinationAddress, destinationLL, destinationLL, numOfPassengers);
+        //TODO: save request to DB 
+        return new RestResponse(111,"Server received the request!");
+    }
 
     
+//    http://localhost:8080/newRequest?originAdd=20,destAdd=ff,pssgrNum=2
 }

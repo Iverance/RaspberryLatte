@@ -10,8 +10,9 @@ import edu.sjsu.cab.util.MapUtil;
 
 public class ClarkeWrightMethod {
 
-    private int vertexNumber, parallelTotalSavingValue, sequentialTotalSavingValue;
-    HashMap<Edge, Integer> sortedSavingEdges;
+    private int vertexNumber;
+    private double parallelTotalSavingValue, sequentialTotalSavingValue;
+    HashMap<Edge, Double> sortedSavingEdges;
     Vertex[] vertice;
     /*- for prim
      * distance: distance from each point to current MST 
@@ -20,7 +21,7 @@ public class ClarkeWrightMethod {
      */
     boolean[] visit;
     int[] distance, parent;
-    int[][] savingMatrix;
+    double[][] savingMatrix;
 
     /*- for kruskal
      * forest: the initial state of the graph, each point is considered as a MST
@@ -28,20 +29,20 @@ public class ClarkeWrightMethod {
      */
     int[] forest, edgeCount;
 
-    public ClarkeWrightMethod(int[][] costMatrix) {
+    public ClarkeWrightMethod(double[][] costMatrix) {
         MapUtil.printMatrix(costMatrix);
         savingMatrix = generateSavingMatrix(costMatrix);
         System.out.println("\n");
         MapUtil.printMatrix(savingMatrix);
-        sortedSavingEdges = (HashMap<Edge, Integer>) MapUtil.sortByValue(generateSavingMap(costMatrix), true);
+        sortedSavingEdges = (HashMap<Edge, Double>) MapUtil.sortByValue(generateSavingMap(costMatrix), true);
         System.out.println("savings: " + sortedSavingEdges);
         vertexNumber = costMatrix.length;
-        setParallelTotalSavingValue(0);
+        setParallelTotalSavingValue((double) 0);
         init();
     }
 
-    public int[][] generateSavingMatrix(int[][] costMatrix) {
-        int[][] savingMatrix = new int[costMatrix.length][costMatrix.length];
+    public double[][] generateSavingMatrix(double[][] costMatrix) {
+        double[][] savingMatrix = new double[costMatrix.length][costMatrix.length];
         for (int i = 1; i < costMatrix.length; i++) {
             for (int j = i + 1; j < costMatrix.length; j++) {
                 savingMatrix[i][j] = costMatrix[0][i] + costMatrix[0][j] - costMatrix[i][j];
@@ -51,11 +52,11 @@ public class ClarkeWrightMethod {
         return savingMatrix;
     }
 
-    public HashMap<Edge, Integer> generateSavingMap(int[][] costMatrix) {
-        HashMap<Edge, Integer> savingMap = new HashMap<Edge, Integer>();
+    public HashMap<Edge, Double> generateSavingMap(double[][] costMatrix) {
+        HashMap<Edge, Double> savingMap = new HashMap<Edge, Double>();
         for (int i = 1; i < costMatrix.length; i++) {
             for (int j = i + 1; j < costMatrix.length; j++) {
-                Integer saving = costMatrix[0][i] + costMatrix[0][j] - costMatrix[i][j];
+                double saving = costMatrix[0][i] + costMatrix[0][j] - costMatrix[i][j];
                 savingMap.put(new Edge(i, j, saving), saving);
             }
         }
@@ -103,11 +104,11 @@ public class ClarkeWrightMethod {
          * 4. each vertex are only allowed to have two edges, but start & end point has only one.
          */
 
-        int totalSavingValue = 0;
+        Double totalSavingValue = (double) 0;
         // start from one of the points that have biggest saving value
         int start = sortedSavingEdges.entrySet().iterator().next().getKey().getPointA();
 
-        for (Entry<Edge, Integer> savingSet : sortedSavingEdges.entrySet()) {
+        for (Entry<Edge, Double> savingSet : sortedSavingEdges.entrySet()) {
             Edge edge = savingSet.getKey();
             if (!(find(edge.getPointA()) == find(edge.getPointB()))) {
                 if (edgeCount[edge.getPointA()] < 2 && edgeCount[edge.getPointB()] < 2) {
@@ -149,23 +150,23 @@ public class ClarkeWrightMethod {
         /*-
          * Prim Algorithm
          */
-        int totalSavingValue = 0;
+        Double totalSavingValue = (double) 0;
 
         // start from one of the points that have biggest saving value
         int start = sortedSavingEdges.entrySet().iterator().next().getKey().getPointA();
         visit[start] = true;
         int currentPoint = start;
         int nextPoint = 0;
-       
-        for (int a = 1; a < vertexNumber-1; a++) {
-            int dist = -99999;
+
+        for (int a = 1; a < vertexNumber - 1; a++) {
+            Double dist = (double) -99999;
             for (int b = 1; b < vertexNumber; b++) {
                 if (!visit[b] && savingMatrix[currentPoint][b] > dist) {
                     nextPoint = b;
                     dist = savingMatrix[currentPoint][b];
                 }
             }
-            totalSavingValue = totalSavingValue+ dist;
+            totalSavingValue = totalSavingValue + dist;
             visit[nextPoint] = true;
             connect(vertice[nextPoint], vertice[currentPoint]);
             currentPoint = nextPoint;
@@ -229,18 +230,18 @@ public class ClarkeWrightMethod {
     /**
      * @return the totalSavingValue
      */
-    public int getParallelTotalSavingValue() {
+    public double getParallelTotalSavingValue() {
         return parallelTotalSavingValue;
     }
 
-    public void setParallelTotalSavingValue(int value) {
+    public void setParallelTotalSavingValue(Double value) {
         this.parallelTotalSavingValue = value;
     }
 
     /**
      * @return the sequentialTotalSavingValue
      */
-    public int getSequentialTotalSavingValue() {
+    public double getSequentialTotalSavingValue() {
         return this.sequentialTotalSavingValue;
     }
 
@@ -248,7 +249,7 @@ public class ClarkeWrightMethod {
      * @param sequentialTotalSavingValue
      *            the sequentialTotalSavingValue to set
      */
-    public void setSequentialTotalSavingValue(int sequentialTotalSavingValue) {
+    public void setSequentialTotalSavingValue(Double sequentialTotalSavingValue) {
         this.sequentialTotalSavingValue = sequentialTotalSavingValue;
     }
 

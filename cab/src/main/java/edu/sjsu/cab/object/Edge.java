@@ -3,12 +3,12 @@ package edu.sjsu.cab.object;
 public class Edge {
     private Integer pointA;
     private Integer pointB;
-    private Integer weight;
+    private Double weight;
     
-    public Edge(Integer i, Integer j, Integer weight) {
+    public Edge(Integer i, Integer j, double saving) {
         setPointA(i);
         setPointB(j);
-        setWeight(weight);
+        setWeight(saving);
     }
     
     /**
@@ -38,13 +38,13 @@ public class Edge {
     /**
      * @return the weight
      */
-    public Integer getWeight() {
+    public Double getWeight() {
         return weight;
     }
     /**
      * @param weight the weight to set
      */
-    public void setWeight(Integer weight) {
+    public void setWeight(Double weight) {
         this.weight = weight;
     }
     

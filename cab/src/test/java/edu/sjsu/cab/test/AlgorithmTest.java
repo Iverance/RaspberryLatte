@@ -13,7 +13,7 @@ public class AlgorithmTest {
     
     @Before
     public void setUp() {
-        cwm = new ClarkeWrightMethod(MatrixLoader.RandomMatrix(5));
+        cwm = new ClarkeWrightMethod(MatrixLoader.randomMatrix(5));
     }
 
     @Test
