@@ -1,5 +1,7 @@
 package edu.sjsu.cab.object;
 
+import java.util.Date;
+
 import com.google.maps.model.LatLng;
 
 public class PassengerRequest {
@@ -9,15 +11,23 @@ public class PassengerRequest {
 	LatLng originLL;
 	LatLng destinationLL;
 	int numOfPassengers;
+	Boolean isTransacFinished;
+	Date passengerLeaveTime;
+	Date passengerArrivalTime;
+	Boolean isDynamicPath;
 	
 	public PassengerRequest(String originAddress, String destinationAddress,
-			LatLng originLL, LatLng destinationLL, int numOfPassengers) {
+			LatLng originLL, LatLng destinationLL, int numOfPassengers, 
+			Date earliestLeaveTime, Date latestArrivalTime, Boolean isDynamicPath ) {
 		super();
 		this.originAddress = originAddress;
 		this.destinationAddress = destinationAddress;
 		this.originLL = originLL;
 		this.destinationLL = destinationLL;
 		this.numOfPassengers = numOfPassengers;
+		this.isTransacFinished = false;
+		this.passengerLeaveTime = latestArrivalTime;
+		this.isDynamicPath = isDynamicPath;
 	}
 	public String getOriginAddress() {
 		return originAddress;

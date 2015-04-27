@@ -1,48 +1,50 @@
 package edu.sjsu.cab.object;
 
-import com.google.maps.model.LatLng;
-
 import edu.sjsu.cab.util.MapUtil;
 
 public class MapQuadTree<T> {
 
     private MapQuadTree<T>[] nodes;
+    private double lat;
+    private double lng;
     private T object;
-    private LatLng latlng;
 
     public MapQuadTree(double plat, double plng, T obj) {
-        this.latlng.lat = plat;
-        this.latlng.lng = plng;
-        this.object = obj;
-    }
-
-    public MapQuadTree(LatLng latlong, T obj) {
-        this.latlng = latlong;
+        this.lat = plat;
+        this.lng = plng;
         this.object = obj;
     }
     
-    public LatLng getLatlng() {
-        return latlng;
+    public double getLat() {
+        return lat;
     }
 
-    public void setLatlng(LatLng latlng) {
-        this.latlng = latlng;
+    public void setLat(double lat) {
+        this.lat = lat;
+    }
+
+    public double getLng() {
+        return lng;
+    }
+
+    public void setLng(double lng) {
+        this.lng = lng;
     }
 
     public Object getObject() {
         return this.object;
     }
-
+    
     public void setObject(T object) {
         this.object = object;
     }
-
-    // =====functions=====
-
-    public T getClosestObject(LatLng latlng) {
+    
+    //=====functions=====
+    
+    public T getClosestObject(double plat, double plng) {
         int index = -1;
 
-        switch (this.getDirection(latlng)) {
+        switch (this.getDirection(plat, plng)) {
         case "NE":
             index = 0;
             break;
@@ -56,9 +58,9 @@ public class MapQuadTree<T> {
             index = 3;
             break;
         }
-
+        
         if (!MapUtil.isNullOrEmpty(nodes[index])) {
-            return nodes[index].getClosestObject(latlng);
+            return nodes[index].getClosestObject(plat, plng);
         } else {
             return this.object;
         }
@@ -75,10 +77,10 @@ public class MapQuadTree<T> {
         }
     }
 
-    public void insert(LatLng latlong, T obj) {// (double plat, double plng, T obj) {
+    public void insert(double plat, double plng, T obj) {
         int index = -1;
 
-        switch (this.getDirection(latlong)) {
+        switch (this.getDirection(plat, plng)) {
         case "NE":
             index = 0;
             break;
@@ -93,9 +95,9 @@ public class MapQuadTree<T> {
             break;
         }
         if (MapUtil.isNullOrEmpty(nodes[index])) {
-            this.nodes[index] = new MapQuadTree<T>(latlong, obj);
+            this.nodes[index] = new MapQuadTree<T>(plat, plng, obj);
         } else {
-            this.nodes[index].insert(latlong, obj);
+            this.nodes[index].insert(plat, plng, obj);
         }
     }
 
@@ -103,9 +105,9 @@ public class MapQuadTree<T> {
         this.object = obj;
     }
 
-    private String getDirection(LatLng latlng) {
-        String NS = (this.latlng.lat > latlng.lat) ? "S" : "N";
-        String EW = (this.latlng.lng > latlng.lng) ? "W" : "E";
+    private String getDirection(double pLat, double pLng) {
+        String NS = (this.lat > pLat) ? "S" : "N";
+        String EW = (this.lng > pLng) ? "W" : "E";
         return NS + EW;
     }
 
@@ -120,7 +122,7 @@ public class MapQuadTree<T> {
         for (int i = 0; i < increment; ++i) {
             inc = inc + " ";
         }
-        s = inc + this.latlng.lng + "/" + this.latlng.lat;
+        s = inc + this.lng + "/" + this.lat;
 
         for (int i = 0; i < 4; i++) {
             if (!MapUtil.isNullOrEmpty(this.nodes[i])) {

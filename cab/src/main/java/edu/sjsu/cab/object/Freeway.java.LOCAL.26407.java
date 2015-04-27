@@ -116,29 +116,30 @@ public class Freeway {
         Scanner in = new Scanner(System.in);
 
         System.out.println("\nThis method retrieves lat and longs. Enter -1 to stop and any number to continue: ");
+        isFinished = in.nextInt();
 
-		isFinished = in.nextInt();
-		
-		while(isFinished != -1){
-			
-			System.out.println("\nEnter latitude #"+i+":");
-			lat = in.nextDouble();
-			System.out.println("\nEnter longtitude #"+i+":");
-			lon = in.nextDouble();
-			latlong.add(Arrays.asList(lat, lon));
-			System.out.println("Added set "+i+":"+latlong.subList(i, i+1)+")");
-			System.out.println("\nThis method retrieves lat and longs. Enter -1 to stop and any number to continue: ");
-			isFinished = in.nextInt();  
-			i++;
-		}
-		
-		System.out.println(latlong.toString());
-		in.close();
-		return latlong;
-		
-	}
-	public void printLatLongList(){System.out.println(this.exitLatLong.values().toString());}
-	//public void printExitDescriptionLatLong()
-	
+        while (isFinished != -1) {
+
+            System.out.println("\nEnter latitude #" + i + ":");
+            lat = in.nextDouble();
+            System.out.println("\nEnter longtitude #" + i + ":");
+            lon = in.nextDouble();
+            latlong.add(Arrays.asList(lat, lon));
+            System.out.println("Added set " + i + ":" + latlong.subList(i, i + 1) + ")");
+            System.out.println("\nThis method retrieves lat and longs. Enter -1 to stop and any number to continue: ");
+            isFinished = in.nextInt();
+            i++;
+        }
+
+        System.out.println(latlong.toString());
+        in.close();
+        return latlong;
+
+    }
+
+    public void printLatLongList() {
+        System.out.println(this.exitLatLong.values().toString());
+    }
+    // public void printExitDescriptionLatLong()
 
 }

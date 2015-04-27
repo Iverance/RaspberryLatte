@@ -1,67 +1,44 @@
 package edu.sjsu.cab.object;
 
+import edu.sjsu.cab.util.MapUtil;
 import com.google.maps.model.LatLng;
 
-import edu.sjsu.cab.util.MapUtil;
+public class QuadTree<T> {
 
-public class MapQuadTree<T> {
+    private QuadTree<T>[] nodes;
+<<<<<<< Updated upstream
+    private double lat;
 
-    private MapQuadTree<T>[] nodes;
-    private T object;
-    private LatLng latlng;
-
-    public MapQuadTree(double plat, double plng, T obj) {
-        this.latlng.lat = plat;
-        this.latlng.lng = plng;
-        this.object = obj;
+    public double getLat() {
+        return lat;
     }
 
-    public MapQuadTree(LatLng latlong, T obj) {
+    public void setLat(double lat) {
+        this.lat = lat;
+    }
+
+    private double lng;
+
+    public double getLng() {
+        return lng;
+    }
+
+    public void setLng(double lng) {
+        this.lng = lng;
+    }
+
+=======
+    //private double lat;
+    //private double lng;
+    private LatLng latlng;
+>>>>>>> Stashed changes
+    private T object;
+
+    public QuadTree(LatLng latlong, T obj){//(double plat, double plng, T obj) {
+        //this.lat = plat;
+        //this.lng = plng;
         this.latlng = latlong;
         this.object = obj;
-    }
-    
-    public LatLng getLatlng() {
-        return latlng;
-    }
-
-    public void setLatlng(LatLng latlng) {
-        this.latlng = latlng;
-    }
-
-    public Object getObject() {
-        return this.object;
-    }
-
-    public void setObject(T object) {
-        this.object = object;
-    }
-
-    // =====functions=====
-
-    public T getClosestObject(LatLng latlng) {
-        int index = -1;
-
-        switch (this.getDirection(latlng)) {
-        case "NE":
-            index = 0;
-            break;
-        case "SE":
-            index = 1;
-            break;
-        case "SW":
-            index = 2;
-            break;
-        case "NW":
-            index = 3;
-            break;
-        }
-
-        if (!MapUtil.isNullOrEmpty(nodes[index])) {
-            return nodes[index].getClosestObject(latlng);
-        } else {
-            return this.object;
-        }
     }
 
     public void clear() {
@@ -75,7 +52,7 @@ public class MapQuadTree<T> {
         }
     }
 
-    public void insert(LatLng latlong, T obj) {// (double plat, double plng, T obj) {
+    public void insert (LatLng latlong, T obj){//(double plat, double plng, T obj) {
         int index = -1;
 
         switch (this.getDirection(latlong)) {
@@ -93,7 +70,7 @@ public class MapQuadTree<T> {
             break;
         }
         if (MapUtil.isNullOrEmpty(nodes[index])) {
-            this.nodes[index] = new MapQuadTree<T>(latlong, obj);
+            this.nodes[index] = new QuadTree<T>(latlong, obj);
         } else {
             this.nodes[index].insert(latlong, obj);
         }
@@ -103,11 +80,23 @@ public class MapQuadTree<T> {
         this.object = obj;
     }
 
+    public Object getObject() {
+        return this.object;
+    }
+
+    /*KEEP THIS IF WE ARE GOING TO USE LATLNG instead of double lat, double long */
     private String getDirection(LatLng latlng) {
         String NS = (this.latlng.lat > latlng.lat) ? "S" : "N";
         String EW = (this.latlng.lng > latlng.lng) ? "W" : "E";
         return NS + EW;
-    }
+    }    
+    
+    /*DELETE THIS IF WE ARE GOING TO USE LATLNG instead of double lat, double long
+    private String getDirection(double pLat, double pLng) {
+        String NS = (this.lat > pLat) ? "S" : "N";
+        String EW = (this.lng > pLng) ? "W" : "E";
+        return NS + EW;
+    }*/
 
     @Override
     public String toString() {

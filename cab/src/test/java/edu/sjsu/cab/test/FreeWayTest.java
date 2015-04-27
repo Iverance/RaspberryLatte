@@ -25,12 +25,14 @@ public class FreeWayTest {
 
     @Test
     public void freeWay101STest() {
+        ArrayList<List<Double>> latlong;
         Freeway fwy101S = new Freeway();
         fwy101S.setArrayOfExits(CabConstant.fwy101S_Exits);
         fwy101S.printExitList();
         fwy101S.setExitDescriptionArray(CabConstant.fwy101S_Exits, CabConstant.fwy101S_Desc);
         fwy101S.printDescriptionList();
         fwy101S.printExitAndDescriptionList();
+        latlong = fwy101S.latLongLoader();      
         //ArrayList<List<Double>> latlong = fwy101S.latLongLoader();
         //System.out.print(latlong.toString());
     }
