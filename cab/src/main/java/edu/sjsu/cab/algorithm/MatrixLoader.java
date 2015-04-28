@@ -1,22 +1,22 @@
 package edu.sjsu.cab.algorithm;
 
 import java.util.ArrayList;
-import java.util.Map;
+import java.util.List;
 import java.util.Random;
 
 import com.google.maps.model.LatLng;
 
-import edu.sjsu.cab.object.PassengerRequest;
+import edu.sjsu.cab.storage.User;
 import edu.sjsu.cab.util.MapUtil;
 
 public class MatrixLoader {
 
-    public static double[][] getMatrixByPassengers(ArrayList<PassengerRequest> requests) {
-        double[][] matrix = new double[requests.size()][requests.size()];
-        for (int i = 0; i < requests.size(); i++) {
-            for (int j = 0; j < requests.size(); j++) {
-                LatLng passenger1 = requests.get(i).getOriginLL();
-                LatLng passenger2 = requests.get(j).getOriginLL();
+    public static double[][] getMatrixByUsers(List<User> users) {
+        double[][] matrix = new double[users.size()][users.size()];
+        for (int i = 0; i < users.size(); i++) {
+            for (int j = 0; j < users.size(); j++) {
+                LatLng passenger1 = new LatLng(users.get(i).getPickupLocationLat(),users.get(i).getPickupLocationLong());
+                LatLng passenger2 = new LatLng(users.get(j).getPickupLocationLat(),users.get(j).getPickupLocationLong());
 
                 if (i == j) {
                     matrix[i][j] = -1;

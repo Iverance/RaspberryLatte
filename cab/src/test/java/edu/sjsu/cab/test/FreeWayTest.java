@@ -32,7 +32,7 @@ public class FreeWayTest {
         fwy101S.setExitDescriptionArray(CabConstant.fwy101S_Exits, CabConstant.fwy101S_Desc);
         fwy101S.printDescriptionList();
         fwy101S.printExitAndDescriptionList();
-        latlong = fwy101S.latLongLoader();      
+        //latlong = fwy101S.latLongLoader();      
         //ArrayList<List<Double>> latlong = fwy101S.latLongLoader();
         //System.out.print(latlong.toString());
     }

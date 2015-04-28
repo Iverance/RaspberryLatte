@@ -1,242 +1,237 @@
 package edu.sjsu.cab.storage;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
-
-public class CabStorageServiceImplementation implements CabStorageService {
-
-	Connection conn = null;
-	Statement stmt = null;
+import org.hibernate.SQLQuery;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 
-	public CabStorageProfile createCabStorage(CabStorage storage)
-			throws Exception {
-		
-		conn = getConnection();
+@Repository
+public class CabStorageServiceImplementation extends CabDaoAbstract implements CabStorageService{
 
-		stmt = conn.createStatement();
-		PreparedStatement ps = null;
+    Connection conn = null;
+    Statement stmt = null;
 
-		try {
+    public User createCabStorage(User user) throws Exception {
 
-			conn.setAutoCommit(false);
-			String sql = "INSERT INTO cabStorage (`userId`,`transactionId`,`email`,`firstName`,"
-					+ "`lastName`,`isDynamicRoute`,`password`,`pickupLocationLat`,`pickupLocationLong`,"
-					+ "`destLocationLat`,`destLocationLong`) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
+        conn = getConnection();
 
-			ps = conn.prepareStatement(sql);
-			ps.setString(1, storage.getUserId());
-			ps.setString(2, storage.getCabTransactionId());
-			ps.setString(3, storage.getDestLocationLat());
-			ps.setString(6, storage.getDestLocationLong());
-			ps.setString(4, storage.getEmail());
-			ps.setString(5, storage.getFirstName());
-			ps.setString(6, storage.getPickupLocationLat());
-			ps.setString(6, storage.getPickupLocationLong());
-			ps.setString(6, storage.getLastName());
+        stmt = conn.createStatement();
+        PreparedStatement ps = null;
 
+        try {
 
-			ps.executeUpdate();
-			conn.commit();
+            conn.setAutoCommit(false);
+            String sql = "INSERT INTO cabStorage (`userId`,`transactionId`,`email`,`firstName`," + "`lastName`,`isDynamicRoute`,`password`,`pickupLocationLat`,`pickupLocationLong`," + "`destLocationLat`,`destLocationLong`) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
 
-		} finally {
-			ps.close();
-			conn = null;
-		}
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, user.getUserId());
+            ps.setString(2, user.getCabTransactionId());
+            ps.setFloat(3, user.getDestLocationLat());
+            ps.setFloat(6, user.getDestLocationLong());
+            ps.setString(4, user.getEmail());
+            ps.setString(5, user.getFirstName());
+            ps.setFloat(6, user.getPickupLocationLat());
+            ps.setFloat(6, user.getPickupLocationLong());
+            ps.setString(6, user.getLastName());
 
-		return (CabStorageProfile) findUserByUuid(storage.getUserId());
-	}
-/*
-	public Boolean deleteCabStorage(Long userId) throws Exception {
+            ps.executeUpdate();
+            conn.commit();
 
-		PreparedStatement ps = null;
-		Boolean success = false;
-		conn = getConnection();
-		
-		try {
+        } finally {
+            ps.close();
+            conn = null;
+        }
 
-			String sql = "DELETE FROM user where user.userId = ?;";
+        return findUserByUuid(user.getUserId()).get(0);
+    }
 
-			ps = conn.prepareStatement(sql);
-			ps.setLong(1, userId);
+    /*
+     * public Boolean deleteCabStorage(Long userId) throws Exception {
+     * 
+     * PreparedStatement ps = null; Boolean success = false; conn = getConnection();
+     * 
+     * try {
+     * 
+     * String sql = "DELETE FROM user where user.userId = ?;";
+     * 
+     * ps = conn.prepareStatement(sql); ps.setLong(1, userId);
+     * 
+     * ps.executeQuery(); success = true; return success;
+     * 
+     * } catch (Exception ex) { success = false; return success; } finally { ps.close(); conn = null; } }
+     * 
+     * public BCabStorageProfile findByUuid(String uuid) throws Exception {
+     * 
+     * PreparedStatement ps = null; BlobStorage blob = null; conn = getConnection();
+     * 
+     * try {
+     * 
+     * String sqlSelect = "SELECT * FROM user where user.userId = ?;";
+     * 
+     * ps = conn.prepareStatement(sqlSelect); ps.setString(1, uuid);
+     * 
+     * ResultSet rs = ps.executeQuery();
+     * 
+     * if (rs.next()) { cab = new CabStorage(); cab.setUserId(rs.getLong("blobStorageId")); . . . }
+     * 
+     * return new CabStorageProfile(cab); } finally { ps.close(); blob = null; conn = null; } }
+     * 
+     * @Override public Boolean deleteCabStorageByUuid(String uuid) throws Exception { PreparedStatement ps = null; Boolean success = false; conn = getConnection();
+     * 
+     * try {
+     * 
+     * String safeSql = "SET SQL_SAFE_UPDATES=0;"; ps = conn.prepareStatement(safeSql); ps.executeQuery();
+     * 
+     * 
+     * String sql = "DELETE FROM user where user.userId = ?";
+     * 
+     * ps = conn.prepareStatement(sql); ps.setString(1, userId);
+     * 
+     * ps.executeQuery();
+     * 
+     * success = true; return success;
+     * 
+     * } catch (Exception ex) { success = false; return success; } finally { ps.close(); conn = null;
+     * 
+     * }
+     * 
+     * }
+     */
 
-			ps.executeQuery();
-			success = true;
-			return success;
+    private Connection getConnection() {
 
-		} catch (Exception ex) {
-			success = false;
-			return success;
-		} finally {
-			ps.close();
-			conn = null;
-		}
-	}
+        Connection localConn = null;
+        try {
 
-	public BCabStorageProfile findByUuid(String uuid) throws Exception {
+            Class.forName(CabDBConfiguration.getJdbcDriver());
+            localConn = DriverManager.getConnection(edu.sjsu.cab.storage.CabDBConfiguration.getLocalDbUrl(), edu.sjsu.cab.storage.CabDBConfiguration.getLocalDbUser(), edu.sjsu.cab.storage.CabDBConfiguration.getLocalDbPass());
 
-		PreparedStatement ps = null;
-		BlobStorage blob = null;
-		conn = getConnection();
-		
-		try {
+            return localConn;
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return localConn;
+    }
 
-			String sqlSelect = "SELECT * FROM user where user.userId = ?;";
+    @Override
+    public Boolean deleteUserStorageByUuid(String userUuid) throws Exception {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-			ps = conn.prepareStatement(sqlSelect);
-			ps.setString(1, uuid);
+    @Override
+    public Boolean deleteTransactionStorageByUuid(String transactionUuid) throws Exception {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-			ResultSet rs = ps.executeQuery();
+    @Override
+    public Boolean deleteDriverByUuid(String driverUuid) throws Exception {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-			if (rs.next()) {
-				cab = new CabStorage();
-				cab.setUserId(rs.getLong("blobStorageId"));
-				.
-				.
-				.
-			}
+    @Override
+    public Boolean deleteVehicleStorageByUuid(String vehicleUuid) throws Exception {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-			return new CabStorageProfile(cab);
-		} finally {
-			ps.close();
-			blob = null;
-			conn = null;
-		}
-	}
+    @Override
+    public Boolean deleteDynamicRouteStorageByUuid(String dynamicRouteId) throws Exception {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-	@Override
-	public Boolean deleteCabStorageByUuid(String uuid) throws Exception {
-		PreparedStatement ps = null;
-		Boolean success = false;
-		conn = getConnection();
+    @Override
+    public Boolean deleteRouteStorageByUuid(String routeId) throws Exception {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-		try {
+    @Override
+    public List<User> findUserByUuid(String uuid) throws Exception {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-			String safeSql = "SET SQL_SAFE_UPDATES=0;";
-			ps = conn.prepareStatement(safeSql);
-			ps.executeQuery();
-			
-			
-			String sql = "DELETE FROM user where user.userId = ?";
+    @Override
+    public List<User> findTransactionByUuid(String uuid) throws Exception {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-			ps = conn.prepareStatement(sql);
-			ps.setString(1, userId);
+    @Override
+    public List<User> findDriverByUuid(String uuid) throws Exception {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-			ps.executeQuery();
+    @Override
+    public List<User> findVehicleByUuid(String uuid) throws Exception {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-			success = true;
-			return success;
+    @Override
+    public List<User> findDynamicRouteByUuid(String uuid) throws Exception {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-		} catch (Exception ex) {
-			success = false;
-			return success;
-		} finally {
-			ps.close();
-			conn = null;
+    @Override
+    public List<User> findRouteByUuid(String uuid) throws Exception {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-		}
+    @Override
+    @Transactional(value="transactionManager")
+    public List<User> findUserByRequest() {
+        // TODO Auto-generated method stub
+        List<User> users= new ArrayList<User>();
+        try {
+            
+            String query = "SELECT * from cab.User where cab.User.isPicked = 'n' LIMIT 10";
+            
+            SQLQuery sessionQuery = getCurrentSession().createSQLQuery(query);
+            List<Object[]> records = sessionQuery.list();
+            
+            for (Object[] record : records) {
+                User user = new User();
 
-	}
-	*/
-	
-	private Connection getConnection(){
-		
-		Connection localConn=null;
-		try {
-
-			Class.forName(CabDBConfiguration.getJdbcDriver());
-			 localConn = DriverManager.getConnection(
-					edu.sjsu.cab.storage.CabDBConfiguration.getLocalDbUrl(),
-					edu.sjsu.cab.storage.CabDBConfiguration.getLocalDbUser(),
-					edu.sjsu.cab.storage.CabDBConfiguration.getLocalDbPass());
-
-			return localConn;
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return localConn;
-	}
-
-	@Override
-	public Boolean deleteUserStorageByUuid(String userUuid) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Boolean deleteTransactionStorageByUuid(String transactionUuid)
-			throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Boolean deleteDriverByUuid(String driverUuid) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Boolean deleteVehicleStorageByUuid(String vehicleUuid)
-			throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Boolean deleteDynamicRouteStorageByUuid(String dynamicRouteId)
-			throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Boolean deleteRouteStorageByUuid(String routeId) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<CabStorageProfile> findUserByUuid(String uuid) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<CabStorageProfile> findTransactionByUuid(String uuid)
-			throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<CabStorageProfile> findDriverByUuid(String uuid)
-			throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<CabStorageProfile> findVehicleByUuid(String uuid)
-			throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<CabStorageProfile> findDynamicRouteByUuid(String uuid)
-			throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<CabStorageProfile> findRouteByUuid(String uuid)
-			throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
+            }
+            
+            
+//            while(rs.next()) {
+//                User user = new User();
+//                user.setCabTransactionId(rs.getString("transactionId"));
+//                user.setDestLocationLat(rs.getFloat("destLocationLat"));
+//                user.setDestLocationLong(rs.getFloat("destLocationLong"));
+//                user.setEmail(rs.getString("email"));
+//                user.setFirstName(rs.getString("firstName"));
+//                user.setIsDyamicRoute(rs.getString("isDyamicRoute"));
+//                user.setIsPicked(rs.getString("isPicked"));
+//                user.setLastName(rs.getString("lastName"));
+//                user.setPassword(rs.getString("password"));
+//                user.setPickupLocationLat(rs.getFloat("pickupLocationLat"));
+//                user.setPickupLocationLong(rs.getFloat("pickupLocationLong"));
+//                user.setUserId(rs.getString("userId"));
+//                users.add(user);
+//             } 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return users;
+    }
 }

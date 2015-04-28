@@ -140,6 +140,7 @@ public class ClarkeWrightMethod {
         }
 
         reset();
+        printRoute(path);
 
         return path;
 
@@ -190,7 +191,9 @@ public class ClarkeWrightMethod {
 
         reset();
         setSequentialTotalSavingValue(totalSavingValue);
-
+        printRoute(path);
+        
+        
         return path;
     }
 
@@ -219,12 +222,13 @@ public class ClarkeWrightMethod {
         vertex2.addNeighbor(vertex);
     }
 
-    public void printRoute(Stack<Vertex> route) {
+    public String printRoute(Stack<Vertex> route) {
         String path = "";
         while (!route.empty()) {
-            path = route.pop().getId() + path;
+            path = route.pop().getId() + ","+path;
         }
         System.out.print(path);
+        return path;
     }
 
     /**

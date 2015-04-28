@@ -11,6 +11,7 @@ CREATE TABLE cab.User
 	firstName VARCHAR(20) NOT NULL,
 	lastName VARCHAR(20) NOT NULL,
 	isDynamicRoute ENUM ('y','n') DEFAULT 'n',
+	isPicked ENUM ('y','n') DEFAULT 'n',
 	password VARCHAR(20),
 	pickupLocationLat FLOAT (11,7),
 	pickupLocationLong FLOAT (11,7),

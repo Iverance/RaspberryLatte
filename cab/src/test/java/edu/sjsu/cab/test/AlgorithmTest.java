@@ -1,7 +1,6 @@
 package edu.sjsu.cab.test;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import edu.sjsu.cab.algorithm.ClarkeWrightMethod;
@@ -18,9 +17,9 @@ public class AlgorithmTest {
 
     @Test
     public void getRouteTest() {
-        cwm.printRoute(cwm.getRouteParallelly());
+        cwm.getRouteParallelly();
         System.out.print("\n" + cwm.getParallelTotalSavingValue() + "\n");
-        cwm.printRoute(cwm.getRouteSequentially());
+        cwm.getRouteSequentially();
         System.out.print("\n" + cwm.getSequentialTotalSavingValue());
     }
 
