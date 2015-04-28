@@ -14,13 +14,13 @@
     </div>
 
     <div class="form-actions">
-        <button type="submit" ng-disabled="form.$invalid || dataLoading" class="btn btn-danger">Login</button>
+        <button type="submit" ng-disabled="form.$invalid || dataLoading" class="btn btn-danger">DRIVERS Login</button>
         <img ng-if="dataLoading"
         src="ajax-loader.gif"/>
     </div>
+	</br>
 	<div class ="form-actions">
-		<button ng-click="login()" type=button>another login</button>
-		<button ng-click="testing()" type=button>TEST!!!!!!</button>
+		<button ng-click="login2()" ng-disabled="form.$invalid || dataLoading" class="btn btn-danger" type=button>RIDERS login</button>
 	</div>
 </form>
 <h3><a href="#sign-up">Sign up!</a></h3>

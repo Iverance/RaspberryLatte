@@ -3,8 +3,13 @@ angular.module('myApp.googleMapService', [])
 
 
 var directionsDisplay;
+var directionsService;
 var cache;
 var locations;
+var markers;
+var routes; 
+var routeObjects = [];
+
         //The service our factory will return
         var googleMapService = {},
 
@@ -170,28 +175,27 @@ googleMapService.addMarker = function() {
 //Add routes to the map
 googleMapService.addRoutes = function() {
 
-	window.alert("add route");
-	
 	//document.getElementById("demo").innerHTML = markers[0].position.lng();
 	//document.getElementById("demoo").innerHTML = map.getCenter();
 	
 	//var start = markers[0];
 	//var end = markers[1];
 	
-	for(var index=0; index<cache.markers.length-1;index++){
+	for(var index=0; index<routes.length-1;index++){
 	
-    var start = new google.maps.LatLng(cache.markers[index].position.lat(), cache.markers[index].position.lng())
-	var end = new google.maps.LatLng(cache.markers[index+1].position.lat(), cache.markers[index+1].position.lng())
+    var start = new google.maps.LatLng(routes[index].position.lat(), routes[index].position.lng())
+	var end = new google.maps.LatLng(routes[index+1].position.lat(), routes[index+1].position.lng())
 	var request = {
       origin:start,
       destination:end,
       travelMode: google.maps.TravelMode.DRIVING
 };
-	var directionsService = new google.maps.DirectionsService();
+	directionsService = new google.maps.DirectionsService();
 
 	directionsService.route(request, function(response, status) {
     if (status == google.maps.DirectionsStatus.OK) {
 		directionsDisplay = new google.maps.DirectionsRenderer();
+		routeObjects.push(directionsDisplay);
 		directionsDisplay.setDirections(response);
 		directionsDisplay.setMap(cache.map);
     }
@@ -206,6 +210,14 @@ function setAllMap(map) {
   }
 }
 
+googleMapService.clearMarkers = function()  {
+	
+	for(var index=0; index<routeObjects.length;index++){
+		routeObjects[index].setMap(null);
+	}
+}
+
+
 function getLatLng() {
     var lati = document.getElementById("latii").value;
 	var longi = document.getElementById("longii").value;
@@ -217,6 +229,8 @@ function getLatLng() {
          * Initialize the Google Map
          **************************/
         function initialize() {
+		
+		routes = []; 
 
             //We create a cache
             if (!arguments.callee.cache) arguments.callee.cache = {};
@@ -286,12 +300,9 @@ function getLatLng() {
                 //We add it to the cache
                 cache.markers.push(marker);
 				
-				
-				//
-				
-				
-				
-				//
+				if(sameUser()){
+					routes.push(marker);
+				}
 
                 //When we click on a marker
                 google.maps.event.addListener(marker, 'click', function(e) {
@@ -316,12 +327,6 @@ function getLatLng() {
                 });
             });
 			
-			//
-			
-			
-			//
-			
-
             //when we click on the map
             google.maps.event.addListener(cache.map, 'click', function(e) {
 

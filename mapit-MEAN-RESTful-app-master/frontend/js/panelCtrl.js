@@ -8,6 +8,8 @@ $scope.testing = function() {
     };
     //The scope logout function
     $scope.logout = function() {
+	
+		GoogleMapService.clearMarkers();
 
         //we clear the credentials from storage
         AuthenticationService.ClearCredentials();
@@ -37,6 +39,32 @@ $scope.testing = function() {
             }).success(function(response) {
                 $scope.message = "";
                 $scope.successMessage = "You mapped it!";
+                $scope.showSuccessMessage = true;
+                GoogleMapService.refreshLocations();
+            });
+        }
+    };
+	
+	$scope.sendMessageDriver = function() {
+        
+        //we hide the error message if there was one
+        $scope.showErrorMessage = false;
+
+        //We need to set a marker!
+        if (!GoogleMapService.isMarkerSet()) {
+            $scope.errorMessage = "Please set a marker first";
+            $scope.showErrorMessage = true;
+        } 
+        else {
+
+            //we post to the api
+            $http.post('/api/locations', {
+				message: "Driver Currently here",
+                longitude: GoogleMapService.getLocation().longitude,
+                latitude: GoogleMapService.getLocation().latitude
+            }).success(function(response) {
+                $scope.message = "Driver Currently here";
+                $scope.successMessage = "Location received";
                 $scope.showSuccessMessage = true;
                 GoogleMapService.refreshLocations();
             });
