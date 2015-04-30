@@ -39,9 +39,36 @@ $scope.testing = function() {
             }).success(function(response) {
                 $scope.message = "";
                 $scope.successMessage = "You mapped it!";
-                $scope.showSuccessMessage = true;
+             //   $scope.showSuccessMessage = true;
                 GoogleMapService.refreshLocations();
             });
+			$location.path('panel3');
+        }
+    };
+	$scope.sendMessageRider= function() {
+        
+        //we hide the error message if there was one
+        $scope.showErrorMessage = false;
+
+        //We need to set a marker!
+        if (!GoogleMapService.isMarkerSet()) {
+            $scope.errorMessage = "Please set a marker first";
+            $scope.showErrorMessage = true;
+        } 
+        else {
+
+            //we post to the api
+            $http.post('/api/locations', {
+                message: $scope.message,
+                longitude: GoogleMapService.getLocation().longitude,
+                latitude: GoogleMapService.getLocation().latitude
+            }).success(function(response) {
+                $scope.message = "";
+                $scope.successMessage = "You mapped it!";
+             //   $scope.showSuccessMessage = true;
+                GoogleMapService.refreshLocations();
+            });
+			$location.path('panel3');
         }
     };
 	

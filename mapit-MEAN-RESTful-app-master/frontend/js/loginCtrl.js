@@ -54,7 +54,7 @@ loginCtrl.controller('LoginCtrl', ['$scope', '$rootScope', '$location', 'Authent
                         //we set the credentials
                         AuthenticationService.SetCredentials($scope.username, $scope.password);
 
-                        //we relocate to /panel
+                        //we relocate to /panel2
                         $location.path('panel2');
 
                     } else {

@@ -14,7 +14,7 @@ signUpCtrl.controller('SignUpCtrl', function($scope, $rootScope, $location, Auth
             AuthenticationService.SignUp($scope.username, $scope.password, function (response) {
                 if (response.success) {
                     AuthenticationService.SetCredentials($scope.username, $scope.password);
-                    $location.path('/panel');
+                    $location.path('/');
                 } else {
                     $scope.error = response.message;
                     $scope.dataLoading = false;

@@ -1,9 +1,9 @@
 <h2>REQUEST A RIDE</h2>
 <div class="alert alert-danger" ng-if="showErrorMessage">{{errorMessage}}</div>
 <div class="alert alert-info" ng-model="successMessage" ng-if="showSuccessMessage">{{successMessage}}</div>
-<form ng-submit="sendMessageRider()">
+<form ng-submit="sendMessage()">
     <div class="form-group">
-	<label for="inputMessage">Where are you?</label>
+	<label for="inputMessage">Where would you like to go?</label>
 	<br/>
         <label for="inputMessage">Message</label>
         <br/>
