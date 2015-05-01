@@ -3,9 +3,9 @@ CREATE DATABASE cab;
 USE cab;
 
 -- CREATE TABLES --
-CREATE TABLE cab.User
+CREATE TABLE cab.Request
 (
-	userId VARCHAR(50) NOT NULL,
+	requestId VARCHAR(50) NOT NULL,
 	transactionId VARCHAR(50),
 	email VARCHAR(100),
 	firstName VARCHAR(20) NOT NULL,
@@ -19,7 +19,7 @@ CREATE TABLE cab.User
 	destLocationLong FLOAT (11,7),
 	userName VARCHAR(20),
 
-	PRIMARY KEY(userId)
+	PRIMARY KEY(requestId)
 	-- FOREIGN KEY (transactionId) REFERENCES Transaction(transactionId)
 );
 
@@ -28,7 +28,7 @@ CREATE TABLE cab.CabTransaction
 	transactionId VARCHAR(50) NOT NULL,
 	driverId VARCHAR(50),
 	dynamicRouteId VARCHAR(25),
-	userId VARCHAR(50),
+	requestId VARCHAR(50),
 	vehicleId VARCHAR(50),
 	currentLocationLat FLOAT (11,7),
 	currentLocationLong FLOAT (11,7),
@@ -47,7 +47,7 @@ CREATE TABLE cab.CabTransaction
 	PRIMARY KEY(transactionId)
 	-- FOREIGN KEY (driverId) REFERENCES Driver(driverId),
 	-- FOREIGN KEY (dynamicRouteId) REFERENCES DynamicRoute(dynamicRouteId),
-	-- FOREIGN KEY (userId) REFERENCES User(userId)
+	-- FOREIGN KEY (requestId) REFERENCES Request(requestId)
 	-- FOREIGN KEY (routeId) REFERENCES Route(routeId)
 );
 
@@ -56,7 +56,7 @@ CREATE TABLE cab.Driver
 (
 	driverId VARCHAR(50) NOT NULL,
 	transactionId VARCHAR(50),
-	userId VARCHAR(50),
+	requestId VARCHAR(50),
 	vehicleId VARCHAR(50),
 	routeId INT,
 	tripName VARCHAR(50),
@@ -65,7 +65,7 @@ CREATE TABLE cab.Driver
     
 	PRIMARY KEY(driverId)
 	-- FOREIGN KEY (transactionId) REFERENCES Transaction(transactionId),
-	-- FOREIGN KEY (userId) REFERENCES User(userId),
+	-- FOREIGN KEY (requestId) REFERENCES Request(requestId),
 	-- FOREIGN KEY (vehicleId) REFERENCES Vehicle(vehicleId)
 	-- FOREIGN KEY (routeId) REFERENCES Route(routeId)
 
@@ -122,12 +122,12 @@ CREATE TABLE cab.Route
 );
 
 -- Map Foreign Keys
-ALTER TABLE cab.User ADD FOREIGN KEY (transactionId) REFERENCES CabTransaction (transactionId);
+ALTER TABLE cab.Request ADD FOREIGN KEY (transactionId) REFERENCES CabTransaction (transactionId);
 ALTER TABLE cab.CabTransaction ADD FOREIGN KEY (driverId) REFERENCES Driver (driverId);
 ALTER TABLE cab.CabTransaction ADD FOREIGN KEY (dynamicRouteId) REFERENCES DynamicRoute(dynamicRouteId);
 ALTER TABLE cab.CabTransaction ADD FOREIGN KEY (routeId) REFERENCES Route(routeId);
 ALTER TABLE cab.Driver ADD FOREIGN KEY (transactionId) REFERENCES CabTransaction(transactionId);
-ALTER TABLE cab.Driver ADD FOREIGN KEY (userId) REFERENCES User (userId);
+ALTER TABLE cab.Driver ADD FOREIGN KEY (requestId) REFERENCES Request (requestId);
 ALTER TABLE cab.Driver ADD FOREIGN KEY (vehicleId) REFERENCES Vehicle (vehicleId);
 ALTER TABLE cab.Driver ADD FOREIGN KEY (routeId) REFERENCES Route (routeId);
 ALTER TABLE cab.Vehicle ADD FOREIGN KEY (transactionId) REFERENCES CabTransaction (transactionId);

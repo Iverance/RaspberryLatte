@@ -1,7 +1,7 @@
 /**
  * 
  */
-package edu.sjsu.cab;
+package edu.sjsu.cab.test;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

@@ -10,11 +10,10 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "user")
-//@NamedQueries({ @NamedQuery(name = "CabStorage.findByUserUuid", query = "SELECT b FROM user b where b.userId = :userId"), })
-public class User {
+@Table(name = "request")
+public class Request {
     @Id
-    @Column(name = "userId", unique = true, nullable = false, length = 50)
+    @Column(name = "requestId", unique = true, nullable = false, length = 50)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String userId;
 
@@ -30,7 +29,7 @@ public class User {
     @Column(name = "lastName", unique = true, nullable = true, length = 100)
     private String lastName;
 
-    @Column(name = "isDyamicRoute", unique = true, nullable = true, length = 100)
+    @Column(name = "isDynamicRoute", unique = true, nullable = true, length = 100)
     private String isDyamicRoute;
 
     @Column(name = "password", unique = true, nullable = true, length = 100)

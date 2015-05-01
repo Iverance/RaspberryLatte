@@ -92,7 +92,7 @@ public class ClarkeWrightMethod {
         init();
     }
 
-    public Stack<Vertex> getRouteParallelly() {
+    public String[] getRouteParallelly() {
 
         /*-
          * Kruskal Algorithm
@@ -106,7 +106,6 @@ public class ClarkeWrightMethod {
 
         Double totalSavingValue = (double) 0;
         // start from one of the points that have biggest saving value
-        int start = sortedSavingEdges.entrySet().iterator().next().getKey().getPointA();
 
         for (Entry<Edge, Double> savingSet : sortedSavingEdges.entrySet()) {
             Edge edge = savingSet.getKey();
@@ -140,13 +139,12 @@ public class ClarkeWrightMethod {
         }
 
         reset();
-        printRoute(path);
 
-        return path;
+        return printRoute(path);
 
     }
 
-    public Stack<Vertex> getRouteSequentially() {
+    public String[] getRouteSequentially() {
 
         /*-
          * Prim Algorithm
@@ -191,10 +189,8 @@ public class ClarkeWrightMethod {
 
         reset();
         setSequentialTotalSavingValue(totalSavingValue);
-        printRoute(path);
         
-        
-        return path;
+        return printRoute(path);
     }
 
     private int find(int i) {
@@ -222,13 +218,13 @@ public class ClarkeWrightMethod {
         vertex2.addNeighbor(vertex);
     }
 
-    public String printRoute(Stack<Vertex> route) {
+    public String[] printRoute(Stack<Vertex> route) {
         String path = "";
         while (!route.empty()) {
-            path = route.pop().getId() + ","+path;
+            path =  path+","+route.pop().getId();
         }
-        System.out.print(path);
-        return path;
+        System.out.print(path.substring(1));
+        return path.substring(1).split(",");
     }
 
     /**
@@ -255,6 +251,15 @@ public class ClarkeWrightMethod {
      */
     public void setSequentialTotalSavingValue(Double sequentialTotalSavingValue) {
         this.sequentialTotalSavingValue = sequentialTotalSavingValue;
+    }
+    
+    public String[] getBestRoute() {
+        String[] pRoute = this.getRouteParallelly();
+        String[] rRoute = this.getRouteSequentially();
+        
+        String[] route = (this.getParallelTotalSavingValue()>=this.getSequentialTotalSavingValue())?pRoute:rRoute;
+        
+        return route;
     }
 
 }

@@ -1,20 +1,45 @@
 package edu.sjsu.cab.algorithm;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import edu.sjsu.cab.object.Marker;
-import edu.sjsu.cab.storage.CabStorageServiceImplementation;
-import edu.sjsu.cab.storage.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import edu.sjsu.cab.object.Marker;
+import edu.sjsu.cab.storage.CabStorageService;
+import edu.sjsu.cab.storage.Request;
+
+@Component
 public class AlgorithmProcessor {
 
-    CabStorageServiceImplementation dataLayer = new CabStorageServiceImplementation();
-    
+    @Autowired
+    CabStorageService dataLayer;
+
     public List<Marker> getMarkers() {
-        List<User> users = dataLayer.findUserByRequest();
+        List<Marker> markers = new ArrayList<Marker>();
+        List<Request> users = dataLayer.findUserByRequest();
         ClarkeWrightMethod cwm = new ClarkeWrightMethod(MatrixLoader.getMatrixByUsers(users));
-        
-        return null;
+        String[] bestRoute = cwm.getBestRoute();
+        for (String index : bestRoute) {
+            markers.add(this.convertUserToMarker(users.get(Integer.valueOf(index))));
+        }
+        Marker marker = new Marker();
+        marker.setLatitude((double) users.get(Integer.valueOf(bestRoute[bestRoute.length-1])).getPickupLocationLat());
+        marker.setLongitude((double) users.get(Integer.valueOf(bestRoute[bestRoute.length-1])).getPickupLocationLong());
+        marker.setMessage("destination");
+        marker.setUsername(users.get(Integer.valueOf(bestRoute[bestRoute.length-1])).getUserId());
+        markers.add(marker);
+        return markers;
     }
-    
+
+    private Marker convertUserToMarker(Request user) {
+        Marker marker = new Marker();
+        marker.setLatitude((double) user.getPickupLocationLat());
+        marker.setLongitude((double) user.getPickupLocationLong());
+        marker.setMessage("passenger");
+        marker.setUsername(user.getUserId());
+        return marker;
+    }
+
 }

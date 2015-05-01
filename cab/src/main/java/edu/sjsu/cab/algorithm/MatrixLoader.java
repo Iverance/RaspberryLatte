@@ -6,12 +6,12 @@ import java.util.Random;
 
 import com.google.maps.model.LatLng;
 
-import edu.sjsu.cab.storage.User;
+import edu.sjsu.cab.storage.Request;
 import edu.sjsu.cab.util.MapUtil;
 
 public class MatrixLoader {
 
-    public static double[][] getMatrixByUsers(List<User> users) {
+    public static double[][] getMatrixByUsers(List<Request> users) {
         double[][] matrix = new double[users.size()][users.size()];
         for (int i = 0; i < users.size(); i++) {
             for (int j = 0; j < users.size(); j++) {

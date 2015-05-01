@@ -4,6 +4,11 @@ import com.google.maps.model.LatLng;
 
 public class CabConstant {
 
+    static final String JDBC_DRIVER = "jdbcDriver";
+    static final String LOCAL_DB_URL = "localDbUrl";
+    static final String LOCAL_DB_USER = "localDbUser";
+    static final String LOCAL_DB_PASS = "localDbPass";
+
     public static String[] fwy101N_Exits = { "353", "355", "356", "357", "360", "362", "365", "366", "367", "371", "373", "377A", "377B", "378", "380", "381", "382", "383", "384", "385", "386A", "386B", "388A", "388B", "388C", "389A", "389B", "391", "392", "393", "394", "395", "396A", "396B",
             "396C", "397", "398", "399A", "399B", "400A", "400B", "400C", "402", "403", "404A", "404B", "406", "408", "409", "411", "412", "414A", "414B", "415", "416", "417A", "417B", "419A", "419B", "420", "422", "423A", "423B", "423C", "424", "425A", "425B", "426A", "426B", "429A", "429B",
             "429C", "430A", "430B", "431", "432", "433A", "433B", "433C", "434A", "434B", "438", "439" };
