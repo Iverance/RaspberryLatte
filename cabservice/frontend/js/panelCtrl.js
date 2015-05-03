@@ -1,7 +1,9 @@
 var panelCtrl = angular.module('myApp.panelCtrl', []);
 panelCtrl.controller('PanelCtrl', function($scope, $rootScope, $location, $http, AuthenticationService, GoogleMapService) {
 
-
+$scope.testing2 = function() {
+        GoogleMapService.calcRoute();
+    };
 
 $scope.testing = function() {
         GoogleMapService.addRoutes();
