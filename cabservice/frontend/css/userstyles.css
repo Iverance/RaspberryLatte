@@ -273,25 +273,24 @@ nav#menu #menu-nav li a:hover {
 ================================================== */
 
 footer {
-	position: relative;
+	position: absolute;
 	width: 100%;
 	height: auto;
 	background: #26292E;
 	text-align: center;
-	z-index: 99;
+	bottom:0;
 }
 
 footer .credits {
 	color: #FFFFFF;
 	font-size: 13px;
 	margin-bottom: 0;
+	opacity:0.6;
 	padding: 20px 0;
 	text-transform: uppercase;	
 }
 
-/* ====================================================
-	BUTTTON BACKGROUND
-	================================================== */
-a.button-background {
-    color:#192743;
+.spacer {
+  clear: both;
+  height: 150px;
 }
