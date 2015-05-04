@@ -24,6 +24,15 @@ var latLngs = [];
     var panoClient;
     var nextPanoId;
   var timerHandle = null;
+  
+  
+  var car ={
+  url:"caricon.png",
+  //size: new google.maps.Size(20,32)
+  //origin: new google.maps.Point(),
+  anchor: new google.maps.Point(35,15)
+  };
+  //var car = new google.maps.MarkerImage("caricon.png");
 
         //The service our factory will return
         var googleMapService = {},
@@ -171,28 +180,11 @@ var latLngs = [];
             });
             return [];
         }
-		
-googleMapService.addMarker = function() {
 
-		var LL = getLatLng();
-
-		var marker = new google.maps.Marker({
-			position: LL,
-			map: map
-		});
-		markers.push(marker);
-		latLngs.push(LL);
-  
-}
 
 //Add routes to the map
 googleMapService.addRoutes = function() {
-	//document.getElementById("demo").innerHTML = markers[0].position.lng();
-	//document.getElementById("demoo").innerHTML = map.getCenter();
-	
-	//var start = markers[0];
-	//var end = markers[1];
-	
+
 	for(var index=0; index<routes.length-1;index++){
 	
     var start = new google.maps.LatLng(routes[index].position.lat(), routes[index].position.lng())
@@ -241,7 +233,6 @@ function createMarker(latlng, label, html) {
         zIndex: Math.round(latlng.lat()*-100000)<<5
         });
         marker.myname = label;
-        // gmarkers.push(marker);
 
     google.maps.event.addListener(marker, 'click', function() {
         infowindow.setContent(contentString); 
@@ -251,8 +242,6 @@ function createMarker(latlng, label, html) {
 }
 
 googleMapService.calcRoute = function(){
-
-
 
 if (timerHandle) { clearTimeout(timerHandle); }
 if (marker) { marker.setMap(null);}
@@ -276,12 +265,8 @@ directionsDisplay.setMap(null);
     }
 directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);
 
-	 //   var start = document.getElementById("start").value;
-	 //   var end = document.getElementById("end").value;
 		var travelMode = google.maps.DirectionsTravelMode.DRIVING
 
-		
-		
 		for(var index=0; index<latLngs.length-1;index++){
 		
 	    var request = {
@@ -308,7 +293,6 @@ directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);
           if (i == 0) { 
             startLocation.latlng = legs[i].start_location;
             startLocation.address = legs[i].start_address;
-            // marker = google.maps.Marker({map:map,position: startLocation.latlng});
             marker = createMarker(legs[i].start_location,"start",legs[i].start_address,"green");
           }
           endLocation.latlng = legs[i].end_location;
@@ -324,17 +308,14 @@ directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);
         }
 		polyline.setMap(cache.map);
         cache.map.fitBounds(bounds);
-//        createMarker(endLocation.latlng,"end",endLocation.address,"red");
-	cache.map.setZoom(18);
+		cache.map.setZoom(18);
 			startAnimation();
     }  
 
-	
  });
  
  }
 }
-
 
 var steps = []
       var step = 50; // 5; // metres
@@ -350,7 +331,6 @@ var steps = []
         // Spawn a new polyline every 20 vertices, because updating a 100-vertex poly is too slow
         if (poly2.getPath().getLength() > 20) {
           poly2=new google.maps.Polyline([polyline.getPath().getAt(lastVertex-1)]);
-          // map.addOverlay(poly2)
         }
 
         if (polyline.GetIndexAtDistance(d) < lastVertex+2) {
@@ -374,22 +354,23 @@ function animate(d) {
         cache.map.panTo(p);
         marker.setPosition(p);
         updatePoly(d);
-		console.log("#####"+d);
+		//console.log("#####"+d);
         timerHandle = setTimeout(function(){animate(step+d);}, tick);
       }
 
 
 function startAnimation() {
         eol=polyline.Distance();
-console.log("#####eol"+eol);
+		//console.log("#####eol"+eol);
         cache.map.setCenter(polyline.getPath().getAt(0));
-        // map.addOverlay(new google.maps.Marker(polyline.getAt(0),G_START_ICON));
-        // map.addOverlay(new GMarker(polyline.getVertex(polyline.getVertexCount()-1),G_END_ICON));
-        // marker = new google.maps.Marker({location:polyline.getPath().getAt(0)} /* ,{icon:car} */);
-        // map.addOverlay(marker);
-        poly2 = new google.maps.Polyline({path: [polyline.getPath().getAt(0)], strokeColor:"#0000FF", strokeWeight:10});
-        // map.addOverlay(poly2);
-        setTimeout(function(){animate(50);},2000);  // Allow time for the initial map display
+         marker = new google.maps.Marker(
+		 {
+			location:polyline.getPath().getAt(0),
+			icon: car
+		 });
+         marker.setMap(cache.map);
+        poly2 = new google.maps.Polyline({path: [polyline.getPath().getAt(0)], strokeColor:"#FF0000", strokeWeight:10});
+        setTimeout(function(){animate(50);},200);  // Allow time for the initial map display
 }
 
 
@@ -398,13 +379,6 @@ console.log("#####eol"+eol);
 
 //*********************
 
-function getLatLng() {
-    var lati = document.getElementById("latii").value;
-	var longi = document.getElementById("longii").value;
-
-	var markerLL = new google.maps.LatLng(lati, longi)
-	return markerLL;
-};
         /***************************
          * Initialize the Google Map
          **************************/
@@ -422,52 +396,30 @@ function getLatLng() {
 
             //else we cache an empty array
             else cache.markers = [];
-
+			
+			var sf = new google.maps.LatLng(37.7699298, -122.4469157);
             //If it's the first time we run the function
             if (cache.firstInit === undefined) {
-				console.log("cache:"+cache.firstInit);
+				//console.log("cache:"+cache.firstInit);
                 //We now have ran it 
                 cache.firstInit = true;
 
-                var mapOptions = {},
-                    bounds,
-                    fitBounds = false;
-
-                //If we have markers to show
-                if (locations.length !== 0) {
-                    bounds = getBounds(locations);
-                    fitBounds = true;
-                }
-                //Else we center on Montreal
-                else {
-                    mapOptions = {
+                var mapOptions = {
 						zoom: 12,
 						center: sf,
-						mapTypeId: google.maps.MapTypeId.TERRAIN
-					  };
-                }
+						mapTypeId: google.maps.MapTypeId.TERRAIN},
+                    bounds,
+                    fitBounds = false;
 
                 //the new map
                 cache.map = new google.maps.Map(document.getElementById('map-canvas'),
                     mapOptions);
 
-                //We set the map to fit the bounds if
-                //there are markers
-                if (fitBounds) cache.map.fitBounds(bounds);
-				
             }
 
 			
 			//*********************
 			
-			
-			
-			
-			address = 'san francisco'
-	  geocoder = new google.maps.Geocoder();
-	geocoder.geocode( { 'address': address}, function(results, status) {
-       cache.map.setCenter(results[0].geometry.location);
-	});
 	
 	 // Create a renderer for directions and bind it to the map.
     var rendererOptions = {
