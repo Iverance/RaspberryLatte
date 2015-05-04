@@ -1,20 +1,35 @@
-var loginCtrl = angular.module('myApp.loginCtrl', []);
-loginCtrl.controller('LoginCtrl', ['$scope', '$rootScope', '$location', 'AuthenticationService', 'GoogleMapService',
-    function($scope, $rootScope, $location, AuthenticationService, GoogleMapService) {
+var loginCtrl = angular.module('myApp.loginCtrl', ['ngRoute', 'ngCookies', 'myApp.authenticationService']);
+
+// loginCtrl.config(['$routeProvider',
+//     function($routeProvider) {
+//         $routeProvider.
+//         when('/back', {
+//             templateUrl: 'partials/sign-up.html',
+//             controller: 'SignUpCtrl'
+//         }).
+//         otherwise({
+//             redirectTo: '/'
+//         });
+
+//     }
+// ]);
+
+loginCtrl.controller('LoginCtrl', ['$scope', '$rootScope', '$location', 'AuthenticationService',
+    function($scope, $rootScope, $location, AuthenticationService ) {
 
         // reset login status
         AuthenticationService.ClearCredentials();
 
-		
-	
-	$scope.testing = function() {
-        GoogleMapService.addMarker();
-    };
 
 
-		
+        // $scope.testing = function() {
+        //     GoogleMapService.addMarker();
+        // };
+
+
+
         //the scope login function
-        $scope.login = function() {
+        $scope.login = function($window) {
 
             //Show the spinner
             $scope.dataLoading = true;
@@ -22,25 +37,31 @@ loginCtrl.controller('LoginCtrl', ['$scope', '$rootScope', '$location', 'Authent
             //Log the user with the service
             AuthenticationService.Login($scope.username, $scope.password,
                 function(response) {
-                    
+
                     if (response.success) {
 
                         //we set the credentials
                         AuthenticationService.SetCredentials($scope.username, $scope.password);
 
+                        $scope.dataLoading = false;
+
+                        console.log("success");
                         //we relocate to /panel
-                        $location.path('panel');
+                        window.location.href = 'http://localhost:3000/';
 
                     } else {
-                        
+
                         //we show an error
                         $scope.error = response.message;
+                        console.log("fail");
 
                         $scope.dataLoading = false;
+
+
                     }
                 });
         };
-		$scope.login2 = function() {
+        $scope.login2 = function() {
 
             //Show the spinner
             $scope.dataLoading = true;
@@ -48,7 +69,7 @@ loginCtrl.controller('LoginCtrl', ['$scope', '$rootScope', '$location', 'Authent
             //Log the user with the service
             AuthenticationService.Login($scope.username, $scope.password,
                 function(response) {
-                    
+
                     if (response.success) {
 
                         //we set the credentials
@@ -58,7 +79,7 @@ loginCtrl.controller('LoginCtrl', ['$scope', '$rootScope', '$location', 'Authent
                         $location.path('panel2');
 
                     } else {
-                        
+
                         //we show an error
                         $scope.error = response.message;
 

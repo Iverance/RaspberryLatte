@@ -8,3 +8,4 @@ release.properties
 .project
 bin/
 .DS_Store
+cabservice/node_modules/

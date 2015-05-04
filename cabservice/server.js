@@ -59,3 +59,4 @@ app.use('/api', router);
 
 // Start the server
 app.listen(process.env.PORT || 3000);
+console.log("server starts at 3000");

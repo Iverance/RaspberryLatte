@@ -8,8 +8,9 @@ angular.module('myApp.authenticationService', [])
         '$cookieStore',
         '$rootScope',
         '$timeout',
-        'GoogleMapService',
-        function(Base64, $http, $cookieStore, $rootScope, $timeout, GoogleMapService) {
+        // 'GoogleMapService',
+        // function(Base64, $http, $cookieStore, $rootScope, $timeout, GoogleMapService) {
+        function(Base64, $http, $cookieStore, $rootScope, $timeout) {
             var service = {};
 
             //The login function
@@ -24,7 +25,7 @@ angular.module('myApp.authenticationService', [])
                         //We refresh the locations to change
                         //the color of our own markers to blue
                         
-                        GoogleMapService.refreshLocations();
+                        // GoogleMapService.refreshLocations();
 
                         callback(response);
                     });
@@ -43,7 +44,7 @@ angular.module('myApp.authenticationService', [])
                         //We refresh the locations to change
                         //the color of our own markers to blue
                         
-                        GoogleMapService.refreshLocations();
+                        // GoogleMapService.refreshLocations();
 
                         callback(response);
                     })
@@ -80,8 +81,8 @@ angular.module('myApp.authenticationService', [])
             };
 
             service.ClearCredentials = function() {
-                GoogleMapService.clearMarker();
-                GoogleMapService.refreshLocations();
+                // GoogleMapService.clearMarker();
+                // GoogleMapService.refreshLocations();
                 $rootScope.globals = {};
                 $cookieStore.remove('globals');
                 $http.defaults.headers.common.Authorization = 'Basic ';
