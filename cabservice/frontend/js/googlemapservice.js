@@ -52,20 +52,20 @@ var latLngs = [];
          **************************/
         googleMapService.refreshLocations = function() {
 
-			//we clear the array holding the api response 
-			locations = [];
+            //we clear the array holding the api response 
+            locations = [];
 
             //Ajax call
-			$http.get('api/locations').success(function(response) {
-				locations = responseToLocations(response);
+            $http.get('api/locations').success(function(response) {
+                locations = responseToLocations(response);
 
                 //We initialize the map
-				initialize();
+                initialize();
 
                 //We remove last marker placed on the map
-				if (lastMarker) lastMarker.setMap(null);
-			}).error(function() {}); 
-		};
+                if (lastMarker) lastMarker.setMap(null);
+            }).error(function() {}); 
+        };
 
         /***************************
          * Returns the position of the marker placed
@@ -185,23 +185,23 @@ var latLngs = [];
 //Add routes to the map
 googleMapService.addRoutes = function() {
 
-	for(var index=0; index<routes.length-1;index++){
-	
+    for(var index=0; index<routes.length-1;index++){
+    
     var start = new google.maps.LatLng(routes[index].position.lat(), routes[index].position.lng())
-	var end = new google.maps.LatLng(routes[index+1].position.lat(), routes[index+1].position.lng())
-	var request = {
+    var end = new google.maps.LatLng(routes[index+1].position.lat(), routes[index+1].position.lng())
+    var request = {
       origin:start,
       destination:end,
       travelMode: google.maps.TravelMode.DRIVING
 };
-	directionsService = new google.maps.DirectionsService();
+    directionsService = new google.maps.DirectionsService();
 
-	directionsService.route(request, function(response, status) {
+    directionsService.route(request, function(response, status) {
     if (status == google.maps.DirectionsStatus.OK) {
-		directionsDisplay = new google.maps.DirectionsRenderer();
-		routeObjects.push(directionsDisplay);
-		directionsDisplay.setDirections(response);
-		directionsDisplay.setMap(cache.map);
+        directionsDisplay = new google.maps.DirectionsRenderer();
+        routeObjects.push(directionsDisplay);
+        directionsDisplay.setDirections(response);
+        directionsDisplay.setMap(cache.map);
     }
 });
 }
@@ -215,10 +215,10 @@ function setAllMap(map) {
 }
 
 googleMapService.clearMarkers = function()  {
-	
-	for(var index=0; index<routeObjects.length;index++){
-		routeObjects[index].setMap(null);
-	}
+    
+    for(var index=0; index<routeObjects.length;index++){
+        routeObjects[index].setMap(null);
+    }
 }
 //***********************************
 
@@ -250,14 +250,14 @@ polyline.setMap(null);
 poly2.setMap(null);
 directionsDisplay.setMap(null);
     polyline = new google.maps.Polyline({
-	path: [],
-	strokeColor: '#FF0000',
-	strokeWeight: 3
+    path: [],
+    strokeColor: '#FF0000',
+    strokeWeight: 3
     });
     poly2 = new google.maps.Polyline({
-	path: [],
-	strokeColor: '#FF0000',
-	strokeWeight: 3
+    path: [],
+    strokeColor: '#FF0000',
+    strokeWeight: 3
     });
     // Create a renderer for directions and bind it to the map.
     var rendererOptions = {
@@ -265,21 +265,21 @@ directionsDisplay.setMap(null);
     }
 directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);
 
-		var travelMode = google.maps.DirectionsTravelMode.DRIVING
+        var travelMode = google.maps.DirectionsTravelMode.DRIVING
 
-		for(var index=0; index<latLngs.length-1;index++){
-		
-	    var request = {
-	        origin: latLngs[index],
-	        destination: latLngs[index+1],
-	        travelMode: travelMode
-	    };
+        for(var index=0; index<latLngs.length-1;index++){
+        
+        var request = {
+            origin: latLngs[index],
+            destination: latLngs[index+1],
+            travelMode: travelMode
+        };
 
-		// Route the directions and pass the response to a
-		// function to create markers for each step.
+        // Route the directions and pass the response to a
+        // function to create markers for each step.
   directionsService.route(request, function(response, status) {
     if (status == google.maps.DirectionsStatus.OK){
-	directionsDisplay.setDirections(response);
+    directionsDisplay.setDirections(response);
 
         var bounds = new google.maps.LatLngBounds();
         var route = response.routes[0];
@@ -287,8 +287,8 @@ directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);
         endLocation = new Object();
 
         // For each route, display summary information.
-	var path = response.routes[0].overview_path;
-	var legs = response.routes[0].legs;
+    var path = response.routes[0].overview_path;
+    var legs = response.routes[0].legs;
         for (i=0;i<legs.length;i++) {
           if (i == 0) { 
             startLocation.latlng = legs[i].start_location;
@@ -306,10 +306,10 @@ directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);
             }
           }
         }
-		polyline.setMap(cache.map);
+        polyline.setMap(cache.map);
         cache.map.fitBounds(bounds);
-		cache.map.setZoom(18);
-			startAnimation();
+        cache.map.setZoom(18);
+            startAnimation();
     }  
 
  });
@@ -354,20 +354,20 @@ function animate(d) {
         cache.map.panTo(p);
         marker.setPosition(p);
         updatePoly(d);
-		//console.log("#####"+d);
+        //console.log("#####"+d);
         timerHandle = setTimeout(function(){animate(step+d);}, tick);
       }
 
 
 function startAnimation() {
         eol=polyline.Distance();
-		//console.log("#####eol"+eol);
+        //console.log("#####eol"+eol);
         cache.map.setCenter(polyline.getPath().getAt(0));
          marker = new google.maps.Marker(
-		 {
-			location:polyline.getPath().getAt(0),
-			icon: car
-		 });
+         {
+            location:polyline.getPath().getAt(0),
+            icon: car
+         });
          marker.setMap(cache.map);
         poly2 = new google.maps.Polyline({path: [polyline.getPath().getAt(0)], strokeColor:"#FF0000", strokeWeight:10});
         setTimeout(function(){animate(50);},200);  // Allow time for the initial map display
@@ -383,9 +383,9 @@ function startAnimation() {
          * Initialize the Google Map
          **************************/
         function initialize() {
-		directionsService = new google.maps.DirectionsService();
-		routes = []; 
-		
+        directionsService = new google.maps.DirectionsService();
+        routes = []; 
+        
 
             //We create a cache
             if (!arguments.callee.cache) arguments.callee.cache = {};
@@ -396,18 +396,18 @@ function startAnimation() {
 
             //else we cache an empty array
             else cache.markers = [];
-			
-			var sf = new google.maps.LatLng(37.7699298, -122.4469157);
+            
+            var sf = new google.maps.LatLng(37.7699298, -122.4469157);
             //If it's the first time we run the function
             if (cache.firstInit === undefined) {
-				//console.log("cache:"+cache.firstInit);
+                //console.log("cache:"+cache.firstInit);
                 //We now have ran it 
                 cache.firstInit = true;
 
                 var mapOptions = {
-						zoom: 12,
-						center: sf,
-						mapTypeId: google.maps.MapTypeId.TERRAIN},
+                        zoom: 12,
+                        center: sf,
+                        mapTypeId: google.maps.MapTypeId.TERRAIN},
                     bounds,
                     fitBounds = false;
 
@@ -417,11 +417,11 @@ function startAnimation() {
 
             }
 
-			
-			//*********************
-			
-	
-	 // Create a renderer for directions and bind it to the map.
+            
+            //*********************
+            
+    
+     // Create a renderer for directions and bind it to the map.
     var rendererOptions = {
       map: cache.map
     }
@@ -431,21 +431,21 @@ function startAnimation() {
     stepDisplay = new google.maps.InfoWindow();
 
     polyline = new google.maps.Polyline({
-	path: [],
-	strokeColor: '#FF0000',
-	strokeWeight: 3
+    path: [],
+    strokeColor: '#FF0000',
+    strokeWeight: 3
     });
     poly2 = new google.maps.Polyline({
-	path: [],
-	strokeColor: '#FF0000',
-	strokeWeight: 3
+    path: [],
+    strokeColor: '#FF0000',
+    strokeWeight: 3
     });
-			
-			
-			//*********************
-			
-			
-			
+            
+            
+            //*********************
+            
+            
+            
             //we add the markers to the map and set the listeners
             locations.forEach(function(n, i) {
 
@@ -461,9 +461,9 @@ function startAnimation() {
                     sameUser() ?
                     'http://maps.google.com/mapfiles/ms/icons/blue-dot.png' :
                     '.png';
-				if(sameUser())
-					latLngs.push(n.latlon);
-					
+                if(sameUser())
+                    latLngs.push(n.latlon);
+                    
                 //We create a marker
                 var marker = new google.maps.Marker({
                     position: n.latlon,
@@ -471,14 +471,14 @@ function startAnimation() {
                     title: "none",
                     icon: icon
                 });
-				
+                
 
                 //We add it to the cache
                 cache.markers.push(marker);
-				
-				if(sameUser()){
-					routes.push(marker);
-				}
+                
+                if(sameUser()){
+                    routes.push(marker);
+                }
 
                 //When we click on a marker
                 google.maps.event.addListener(marker, 'click', function(e) {
@@ -502,7 +502,7 @@ function startAnimation() {
                     $rootScope.$broadcast("hideAllMessages");
                 });
             });
-			
+            
             //when we click on the map
             google.maps.event.addListener(cache.map, 'click', function(e) {
 
@@ -515,15 +515,15 @@ function startAnimation() {
                 //If we are logged in, we can set markers on the map
                 if ($rootScope.loggedIn()) setMarker(e.latLng, cache.map);
             });
-			
+            
         }
 
         //we show the map for the first time on page load
         google.maps.event.addDomListener(window, 'load',
             googleMapService.refreshLocations);
 
-			
-			
-			
+            
+            
+            
         return googleMapService;
     });

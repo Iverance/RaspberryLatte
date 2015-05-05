@@ -1,19 +1,5 @@
 var loginCtrl = angular.module('myApp.loginCtrl', ['ngRoute', 'ngCookies', 'myApp.authenticationService']);
 
-// loginCtrl.config(['$routeProvider',
-//     function($routeProvider) {
-//         $routeProvider.
-//         when('/back', {
-//             templateUrl: 'partials/sign-up.html',
-//             controller: 'SignUpCtrl'
-//         }).
-//         otherwise({
-//             redirectTo: '/'
-//         });
-
-//     }
-// ]);
-
 loginCtrl.controller('LoginCtrl', ['$scope', '$rootScope', '$location', 'AuthenticationService',
     function($scope, $rootScope, $location, AuthenticationService ) {
 
@@ -47,7 +33,7 @@ loginCtrl.controller('LoginCtrl', ['$scope', '$rootScope', '$location', 'Authent
 
                         console.log("success");
                         //we relocate to /panel
-                        window.location.href = 'http://localhost:3000/';
+                        window.location.href = 'http://localhost:3000/userHomePage.html';
 
                     } else {
 
@@ -76,7 +62,7 @@ loginCtrl.controller('LoginCtrl', ['$scope', '$rootScope', '$location', 'Authent
                         AuthenticationService.SetCredentials($scope.username, $scope.password);
 
                         //we relocate to /panel2
-                        $location.path('panel2');
+                        window.location.href = 'http://localhost:3000/userHomePage.html';
 
                     } else {
 

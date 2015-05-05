@@ -1,7 +1,7 @@
 'use strict';
 //THANKS TO http://jasonwatmore.com/post/2014/05/26/AngularJS-Basic-HTTP-Authentication-Example
 //For his authenticationservice
-angular.module('myApp.authenticationService', [])
+var auth = angular.module('myApp.authenticationService', [])
     .factory('AuthenticationService', [
         'Base64',
         '$http',

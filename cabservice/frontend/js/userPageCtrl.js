@@ -1,17 +1,29 @@
-var panelCtrl = angular.module('myApp.panelCtrl', []);
-panelCtrl.controller('PanelCtrl', function($scope, $rootScope, $location, $http, AuthenticationService, GoogleMapService) {
+var userControl = angular.module('myApp.userCtrl', ['ngRoute', 'ngCookies', 'myApp.authenticationService', 'myApp.googleMapService']);
 
-$scope.testing2 = function() {
+
+userControl.run(function($http, $rootScope, $location, $cookieStore, AuthenticationService) {
+
+    //We check if the user is logged in.
+    $rootScope.globals = $cookieStore.get('globals') || {};
+    if ($rootScope.globals.currentUser) {
+        $http.defaults.headers.common['Authorization'] = 'Basic ' + $rootScope.globals.currentUser.authdata; // jshint ignore:line
+    }
+
+});
+
+userControl.controller('UserCtrl', function($scope, $rootScope, $location, $http, AuthenticationService, GoogleMapService) {
+
+    $scope.testing2 = function() {
         GoogleMapService.calcRoute();
     };
 
-$scope.testing = function() {
+    $scope.testing = function() {
         GoogleMapService.addRoutes();
     };
     //The scope logout function
     $scope.logout = function() {
-	
-		GoogleMapService.clearMarkers();
+
+        GoogleMapService.clearMarkers();
 
         //we clear the credentials from storage
         AuthenticationService.ClearCredentials();
@@ -22,7 +34,7 @@ $scope.testing = function() {
 
     //Called when adding a message to the map
     $scope.sendMessage = function() {
-        
+
         //we hide the error message if there was one
         $scope.showErrorMessage = false;
 
@@ -30,8 +42,7 @@ $scope.testing = function() {
         if (!GoogleMapService.isMarkerSet()) {
             $scope.errorMessage = "Please set a marker first";
             $scope.showErrorMessage = true;
-        } 
-        else {
+        } else {
 
             //we post to the api
             $http.post('/api/locations', {
@@ -41,14 +52,14 @@ $scope.testing = function() {
             }).success(function(response) {
                 $scope.message = "";
                 $scope.successMessage = "You mapped it!";
-             //   $scope.showSuccessMessage = true;
+                //   $scope.showSuccessMessage = true;
                 GoogleMapService.refreshLocations();
             });
-			$location.path('panel3');
+            $location.path('panel3');
         }
     };
-	$scope.sendMessageRider= function() {
-        
+    $scope.sendMessageRider = function() {
+
         //we hide the error message if there was one
         $scope.showErrorMessage = false;
 
@@ -56,8 +67,7 @@ $scope.testing = function() {
         if (!GoogleMapService.isMarkerSet()) {
             $scope.errorMessage = "Please set a marker first";
             $scope.showErrorMessage = true;
-        } 
-        else {
+        } else {
 
             //we post to the api
             $http.post('/api/locations', {
@@ -67,15 +77,15 @@ $scope.testing = function() {
             }).success(function(response) {
                 $scope.message = "";
                 $scope.successMessage = "You mapped it!";
-             //   $scope.showSuccessMessage = true;
+                //   $scope.showSuccessMessage = true;
                 GoogleMapService.refreshLocations();
             });
-			$location.path('panel3');
+            $location.path('panel3');
         }
     };
-	
-	$scope.sendMessageDriver = function() {
-        
+
+    $scope.sendMessageDriver = function() {
+
         //we hide the error message if there was one
         $scope.showErrorMessage = false;
 
@@ -83,12 +93,11 @@ $scope.testing = function() {
         if (!GoogleMapService.isMarkerSet()) {
             $scope.errorMessage = "Please set a marker first";
             $scope.showErrorMessage = true;
-        } 
-        else {
+        } else {
 
             //we post to the api
             $http.post('/api/locations', {
-				message: "Driver Currently here",
+                message: "Driver Currently here",
                 longitude: GoogleMapService.getLocation().longitude,
                 latitude: GoogleMapService.getLocation().latitude
             }).success(function(response) {
@@ -107,7 +116,7 @@ $scope.testing = function() {
         var csm = GoogleMapService.getSelectedLocation();
 
         //we delete it using its id
-        $http.delete('/api/locations/' + csm.id).success(function(){
+        $http.delete('/api/locations/' + csm.id).success(function() {
             $scope.successMessage = "Deleted!";
             $scope.showSuccessMessage = true;
             GoogleMapService.refreshLocations();
@@ -116,27 +125,27 @@ $scope.testing = function() {
 
     //listen for allow event
     $rootScope.$on('allow', function() {
-        $scope.$apply(function(){
-           $scope.showDeleteButton = true;
- 
+        $scope.$apply(function() {
+            $scope.showDeleteButton = true;
+
         });
     });
 
     //listen for disallow event
-    $rootScope.$on('disallow', function(){
-        $scope.$apply(function(){
-           $scope.showDeleteButton = false;
- 
+    $rootScope.$on('disallow', function() {
+        $scope.$apply(function() {
+            $scope.showDeleteButton = false;
+
         });
-        
+
     });
 
     //listen for hideAllMessages event
-    $rootScope.$on('hideAllMessages', function(){
-        $scope.$apply(function(){
-           $scope.showErrorMessage = false;
-           $scope.showSuccessMessage = false;
- 
+    $rootScope.$on('hideAllMessages', function() {
+        $scope.$apply(function() {
+            $scope.showErrorMessage = false;
+            $scope.showSuccessMessage = false;
+
         });
 
     });
