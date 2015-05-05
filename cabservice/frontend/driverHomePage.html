@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if (IE 9)]><html class="no-js ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html lang="en-US"> <!--<![endif]-->
+<head>
+
+<!-- Meta Tags -->
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="description" content="Carpool Rideshare Taxi Mobile App">
+<meta name="keywords" content="Carpool, Rideshare, Taxi, Cab, Car, Transportation,
+        Public Transportation, Cheap, Green, Hybrid, Mobile, Fast, Inexpensive,
+        Social Media, Dynamic Routing, Uber, Lyft, User Friendly, UI, Easy">
+<meta name="author" content="Ashley Love Cheng-Ju Chuang Brian Moon">
+
+<title> C.A.B. | Rideshare 2.0</title>   
+<meta name="description" content="A taxi, cab, bus, rideshare, carpool service offering alternatives tp Uber, Lyft, and other mobile on-demand taxi alternatives." /> 
+
+<!-- Mobile Specifics -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="HandheldFriendly" content="true"/>
+<meta name="MobileOptimized" content="320"/>   
+<!-- Mobile Internet Explorer ClearType Technology -->
+<!--[if IEMobile]>  <meta http-equiv="cleartype" content="on">  <![endif]-->
+
+<!-- Main Style -->
+<link href="css/bootstrap.min.css" rel="stylesheet">
+    <!--[if lt IE 9]>
+      <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="css/userstyles.css" rel="stylesheet">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script type="text/javascript"
+                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBYJcvZ6k8x8eAQdPQv-wCUgfd6A_MocyI"></script>
+</head>
+
+
+<body ng-app="myApp">
+
+
+<!-- Header -->
+<header>
+    <div class="sticky-nav">
+      <a id="mobile-nav" class="menu-nav" href="#menu-nav"></a>       
+        <nav id="menu">
+          <ul id="menu-nav">
+              <li class="current"><a href="#home-slider">Home</a></li>
+                <li><a href="#work">Our Work</a></li>
+                <li><a href="#about">About Us</a></li>
+                <li><a href="#contact">Contact</a></li>
+            <li><a href="#myModal" data-toggle="modal">Sign Out</a></li>
+            </ul>
+        </nav>
+        
+    </div>
+</header>
+<!-- End Header -->
+
+<!-- This section is for Splash Screen -->
+
+<!-- End of Splash Screen -->
+
+  <div class="userwrapper">
+      <div class="box">
+          <div class="row row-offcanvas row-offcanvas-left">
+            
+              <!-- main right col -->
+              <div class="column col-sm-12 col-xs-11" id="main">
+                                
+                  <div class="padding">
+                      <div class="full col-sm-9">
+                        
+                          <!-- content -->                      
+                          <div class="row">
+                            
+                           <!-- main col left --> 
+                           <div class="col-sm-7">
+                             
+                                <div class="panel panel-default">
+                                  <div class="panel-thumbnail"><img src="img/gmap_generic.png" class="img-responsive"></div>
+                                  <div class="panel-body">
+                                    <p class="lead" style="text-align: center">What's Your Destination?</p>
+                                  </div>
+                                </div>
+
+                             
+                                 <div class="panel panel-default">
+                                  <div class="panel-heading" title="View scheduled rides" data-toggle="popover" data-trigger="hover" data-content="Some content"><h4> Current Routes</h4></div>
+                                  <div class="panel-body">
+                                      <!-- BEGIN Table of Transaction History -->
+                                                  <table class="table table-responsive"><!-- On rows -->
+                                                    <thead>
+                                                              <tr>
+                                                                <th>#</th>
+                                                                <th>Start Location</th>
+                                                                <th>Destination</th>
+                                                                <th>Driver</th>
+                                                                <th>Date</th>
+                                                              </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                              <tr>
+                                                                <td>1</td>
+                                                                <td>SJSU</td>
+                                                                <td>SFO Airport</td>
+                                                                <td>Jonny Appleseed</td>
+                                                                <td>Right Now</td>
+                                                              </tr>
+                                                            </tbody>
+                                                          </table>
+                                                    </table>
+                                       <!-- END Table for Transaction History -->
+                                    </div>
+                                </div>
+
+                                <div class="well"> 
+                                     <form class="form-horizontal" role="form">
+                                      <h4>Search Ride Listings</h4>
+                                       <div class="form-group" style="padding:14px;">
+                                        <textarea class="form-control" placeholder="Update your status"></textarea>
+                                      </div>
+                                      <button class="btn btn-primary pull-right" type="button">Post</button><ul class="list-inline"><li><a href=""><i class="glyphicon glyphicon-upload"></i></a></li><li><a href=""><i class="glyphicon glyphicon-camera"></i></a></li><li><a href=""><i class="glyphicon glyphicon-map-marker"></i></a></li></ul>
+                                    </form>
+                                </div>
+
+                                 <div class="panel panel-default">
+                                  <div class="panel-heading"><a href="#" class="pull-right">View all</a> <h4>More Stuff Here?</h4></div>
+                                    <div class="panel-body">
+                                      <div class="list-group">
+                                        <a href="http://bootply.com/tagged/modal" class="list-group-item">Do we </a>
+                                        <a href="http://bootply.com/tagged/datetime" class="list-group-item">Need </a>
+                                        <a href="http://bootply.com/tagged/datatable" class="list-group-item">Anything Else</a>
+                                      </div>
+                                    </div>
+                                </div>
+                               
+                             
+                            </div>
+                            
+                            <!-- main col right -->
+                            <div class="col-sm-5">
+                              <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                                <div class="panel panel-default">
+                                  <div class="panel-heading" role="tab" id="headingOne"> </div>
+                                    <div class="panel-body">
+                                      <div class="list-group">
+                                        
+                                        <!-- BEGIN COLLAPSABLE MENU FOR BOOK RIDE/VIEW HISTORY/EDIT PROFILE/BROWSE DESTINATIONS -->
+                                        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                                          <div class="panel panel-default">
+                                            <div class="panel-heading" role="tab" id="headingOne">
+                                              <h3 class="panel-title">
+                                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                                  Book Ride
+                                                </a>
+                                              </h3>
+                                            </div>
+                                            <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                                              <div class="panel-body">
+    
+                                                <!-- BEGIN Book Ride Form -->                
+                                                <div class="container-fluid">
+                                                    <form class="form-horizontal">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-sm-3">Location</label>
+                                                            <div class="col-md-9">
+                                                             <input class="form-control" type="text">
+                                                            </div>
+                                                        </div> 
+                 					<div class="container">
+								<div class="row">
+									<div class="col-md-4">
+									<button class="btn btn-primary btn-large btn-block" data-toggle="tooltip" data-target="getRoute" type="button">Get Route</button>
+									</div>
+								<div class="col-md-4">
+									<button class="btn btn-primary btn-large btn-block" data-toggle="tooltip" data-target="goCarGo" type="button">Go Car Go</button>
+									</div>
+								<div class="col-md-4">
+									<button class="btn btn-primary btn-large btn-block" data-toggle="tooltip" data-target="submit" type="button">Submit</button>
+									</div>
+								</div>
+							</div>
+                                                    </form>
+                                                </div>
+                                                <!-- END Book Ride Form -->                
+                                              </div>
+
+                                            </div>
+                                          </div>
+
+                                          <!-- View History -->
+                                          <div class="panel panel-default">
+                                            <div class="panel-heading" role="tab" id="headingTwo">
+                                              <h3 class="panel-title">
+                                                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                  View History
+                                                </a>
+                                              </h3>
+                                            </div>
+                                            <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                              <div class="panel-body">
+                                                <div class="table-responsive">
+                                                  
+                                                  <!-- BEGIN Table of Transaction History -->
+                                                  <table class="table table-responsive"><!-- On rows -->
+                                                    <thead>
+                                                              <tr>
+                                                                <th>#</th>
+                                                                <th>Start Location</th>
+                                                                <th>Destination</th>
+                                                                <th>Driver</th>
+                                                                <th>Date</th>
+                                                              </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                              <tr>
+                                                                <td>1</td>
+                                                                <td>SJSU</td>
+                                                                <td>SFO Airport</td>
+                                                                <td>Jonny</td>
+                                                                <td>Now</td>
+                                                              </tr>
+                                                            </tbody>
+                                                          </table>
+                                                    </table>
+                                                </div>
+                                              <!-- END Table for Transaction History -->
+
+                                              </div>
+                                            </div>
+                                          </div>
+
+                                          <!-- Edit profile -->
+                                          <div class="panel panel-default">
+                                            <div class="panel-heading" role="tab" id="headingThree">
+                                              <h3 class="panel-title">
+                                                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                                  Edit Profile
+                                                </a>
+                                              </h3>
+                                            </div>
+                                            <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                                              <div class="panel-body">
+                                                
+                                                <!-- BEGIN Edit Profile -->                
+                                                <div class="container-fluid">
+                                                    <form class="form-horizontal">
+                                                        <div class="form-group">
+                                                            <label id = "username" class="control-label col-sm-3">Username</label>
+                                                            <div class="col-md-9">
+                                                             <input class="form-control" type="text">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label id="password" class="control-label col-sm-3">Password</label>
+                                                            <div class="col-md-9">
+                                                             <input class="form-control" type="text">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label id="confpassword" class="control-label col-sm-3">Confirm Password</label>
+                                                            <div class="col-md-9">
+                                                             <input class="form-control" type="text">
+                                                            </div>
+                                                        </div>
+                                                        <button class="btn btn-primary btn-large btn-block" data-toggle="tooltip" id="editProfile" type="button">Save</button>
+                                                    </form>
+                                                </div>
+                                                <!-- END Edit Profile -->                
+
+
+                                              </div>
+                                            </div>
+                                          </div>
+
+                                          <!-- Browse and See trending Destinations -->
+                                          <div class="panel panel-default">
+                                            <div class="panel-heading" role="tab" id="destinationCollapsable">
+                                              <h3 class="panel-title">
+                                                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseDestinations" aria-expanded="false" aria-controls="collapseDestinations">
+                                                  Browse Destinations
+                                                </a>
+                                              </h3>
+                                            </div>
+                                            <div id="collapseDestinations" class="panel-collapse collapse" role="tabpanel" aria-labelledby="destinationCollapsable">
+                                              <div class="panel-body">
+                                                <div class="col-md-12">
+                                                  <input class="form-control" type="text" placeholder="Browse and see trending destinations">
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+
+                                          <!-- Friends Collapsable -->
+                                          <div class="panel panel-default">
+                                            <div class="panel-heading" role="tab" id="friendsCollapsable">
+                                              <h3 class="panel-title">
+                                                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseFriends" aria-expanded="false" aria-controls="collapseFriends">
+                                                  +Friends
+                                                </a>
+                                              </h3>
+                                            </div>
+                                            <div id="collapseFriends" class="panel-collapse collapse" role="tabpanel" aria-labelledby="friendsCollapsable">
+                                              <div class="panel-body">
+                                                <div class="col-md-12">
+                                                  <input class="form-control" type="text" placeholder="Add people to your approved list">
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+
+                                         
+
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                 
+                                  <div class="well"> 
+                                     <form class="form">
+                                      <h4>Sign-up</h4>
+                                      <div class="input-group text-center">
+                                      <input type="text" class="form-control input-lg" placeholder="Enter your email address">
+                                        <span class="input-group-btn"><button class="btn btn-lg btn-primary" type="button">OK</button></span>
+                                      </div>
+                                    </form>
+                                  </div>
+                        
+                                 
+                                 <div class="panel panel-default">
+                                  <div class="panel-thumbnail"><img src="img/San-Francisco-Haight-Ashbury-1_0.jpg" class="img-responsive"></div>
+                                  <div class="panel-body">
+                                    <p class="lead">Trending Destinations</p>
+                                    <p>1,200 Followers, 83 Posts</p>
+                                    
+                                    <p>
+                                      <img src="https://lh6.googleusercontent.com/-5cTTMHjjnzs/AAAAAAAAAAI/AAAAAAAAAFk/vgza68M4p2s/s28-c-k-no/photo.jpg" width="28px" height="28px">
+                                      <img src="https://lh4.googleusercontent.com/-6aFMDiaLg5M/AAAAAAAAAAI/AAAAAAAABdM/XjnG8z60Ug0/s28-c-k-no/photo.jpg" width="28px" height="28px">
+                                      <img src="https://lh4.googleusercontent.com/-9Yw2jNffJlE/AAAAAAAAAAI/AAAAAAAAAAA/u3WcFXvK-g8/s28-c-k-no/photo.jpg" width="28px" height="28px">
+                                      <br><br><br><br>
+                                    </p>
+                                  </div>
+                                </div>
+                              
+                            </div>
+                         </div><!--/row-->
+
+                            
+                          </div>
+                      </div><!-- /col-9 -->
+                  </div><!-- /padding -->
+              </div>
+              <!-- /main -->
+            
+          </div>
+      </div>
+
+
+
+  <!-- script references -->
+    <script src="js/scripts.js"></script>
+
+<!-- Footer -->
+<footer class="footer-user">
+  <p class="credits">&copy;2013 Brushed. <a href="http://themes.alessioatzeni.com/html/brushed/" title="Brushed | Responsive One Page Template">Brushed Template</a> by <a href="http://www.alessioatzeni.com/" title="Alessio Atzeni | Web Designer &amp; Front-end Developer">Alessio Atzeni</a></p>
+</footer>
+<!-- End Footer -->
+
+<!-- Js -->
+<!-- jQuery Core -->
+<script src="_include/js/waypoints.js"></script> <!-- WayPoints -->
+<script src="_include/js/waypoints-sticky.js"></script> <!-- Waypoints for Header -->
+<script src="_include/js/jquery.isotope.js"></script> <!-- Isotope Filter -->
+<script src="_include/js/jquery.fancybox.pack.js"></script> <!-- Fancybox -->
+<script src="_include/js/jquery.fancybox-media.js"></script> <!-- Fancybox for Media -->
+<script src="_include/js/jquery.tweet.js"></script> <!-- Tweet -->
+<script src="_include/js/plugins.js"></script> <!-- Contains: jPreloader, jQuery Easing, jQuery ScrollTo, jQuery One Page Navi -->
+<script src="_include/js/main.js"></script> <!-- Default JS -->
+<script src="js/transition.js"></script> <!-- Default JS -->
+<script src="js/main.js"></script> <!-- Gem jQuery -->
+<script src="https://cdn.localizejs.com/localize.js"></script>
+    <script>!function(a){if(!a.Localize){a.Localize={};for(var e=["translate","untranslate","phrase","initialize","translatePage","setLanguage","getLanguage","detectLanguage","untranslatePage","bootstrap","prefetch","on","off"],t=0;t<e.length;t++)a.Localize[e[t]]=function(){}}}(window);
+    </script>    
+
+<script>
+  Localize.initialize({
+    key: 'LuHOBwujbFmya', 
+    rememberLanguage: true,
+    saveNewPhrases: true,
+    translateBody: true
+  });
+  Localize.setLanguage('de');
+</script>
+<!-- End Js -->
+
+<!-- BEGIN SCRIPTS FOR MAP -->
+    <script src="bower_components/angular/angular.min.js"></script>
+    <script src="bower_components/angular-route/angular-route.min.js"></script>
+    <script src="bower_components/angular-cookies/angular-cookies.min.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/routing.js"></script>
+    <script src="js/authenticationservice.js"></script>
+    <script src="js/googlemapservice.js"></script>
+    <script src="js/loginCtrl.js"></script>
+    <script src="js/panelCtrl.js"></script>
+    <script src="js/signUpCtrl.js"></script>
+    <script type="text/javascript"></script>
+    <script type="text/javascript" src="js/googlemapservice.js"></script>
+<!-- END SCRIPTS FOR MAP -->
+
+</body>
+</html>
