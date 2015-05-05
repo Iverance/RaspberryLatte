@@ -1,4 +1,4 @@
-var signUpCtrl = angular.module('myApp.signUpCtrl', []);
+var signUpCtrl = angular.module('myApp.signUpCtrl', ['ngRoute', 'ngCookies', 'myApp.authenticationService']);
 signUpCtrl.controller('SignUpCtrl', function($scope, $rootScope, $location, AuthenticationService){
 
         // reset login status
@@ -14,7 +14,7 @@ signUpCtrl.controller('SignUpCtrl', function($scope, $rootScope, $location, Auth
             AuthenticationService.SignUp($scope.username, $scope.password, function (response) {
                 if (response.success) {
                     AuthenticationService.SetCredentials($scope.username, $scope.password);
-                    $location.path('/');
+                    window.location.href = 'http://localhost:3000/login.html';
                 } else {
                     $scope.error = response.message;
                     $scope.dataLoading = false;
