@@ -8,7 +8,7 @@ var passport = require('passport');
 var locationController = require('./controllers/location');
 var userController = require('./controllers/user');
 var authController = require('./controllers/auth');
- 
+
 // Connect to the mapit database
 mongoose.connect('mongodb://localhost:27017/mapit');
 
@@ -19,11 +19,10 @@ var app = express();
 // The "extended" syntax allows for rich objects and arrays to be encoded into
 // the urlencoded format, allowing for a JSON-like experience with urlencoded.
 app.use(bodyParser.urlencoded({
-  extended: true
+    extended: true
 }));
 
-app.use(bodyParser.json({
-}));
+app.use(bodyParser.json({}));
 
 // Use the passport package in our application
 app.use(passport.initialize());
@@ -36,23 +35,26 @@ app.use(express.static(__dirname + '/frontend/'));
 
 // Create endpoint handlers for /locations
 router.route('/locations')
-  .post(authController.isAuthenticated, locationController.postLocations)
-  .get(locationController.getLocations);
+    .post(authController.isAuthenticated, locationController.postLocations)
+    .get(locationController.getLocations);
 
 // Create endpoint handlers for /Locations/:Location_id
 router.route('/locations/:location_id')
-  .get(authController.isAuthenticated, locationController.getLocation)
-  .put(authController.isAuthenticated, locationController.putLocation)
-  .delete(authController.isAuthenticated, locationController.deleteLocation);
+    .get(authController.isAuthenticated, locationController.getLocation)
+    .put(authController.isAuthenticated, locationController.putLocation)
+    .delete(authController.isAuthenticated, locationController.deleteLocation);
+
+router.route('/locations/getRoute')
+    .get(authController.isAuthenticated, locationController.getRoute);
 
 //Create endpoint handlers for /users
 router.route('/users')
-  .post(userController.postUsers)
-  .get(authController.isAuthenticated, userController.getUsers);
+    .post(userController.postUsers)
+    .get(authController.isAuthenticated, userController.getUsers);
 
 //Create endpoint handler for authenticating users
 router.route('/authenticate')
-  .post(userController.authenticateUser);
+    .post(userController.authenticateUser);
 
 // Register all our routes with /api
 app.use('/api', router);

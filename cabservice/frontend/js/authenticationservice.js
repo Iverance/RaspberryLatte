@@ -66,14 +66,20 @@ var auth = angular.module('myApp.authenticationService', [])
                     return $rootScope.globals.currentUser.username;
             };
 
-            service.SetCredentials = function(username, password) {
+            $rootScope.getState = function() {
+                if ($rootScope.loggedIn())
+                    return $rootScope.globals.currentUser.state;
+            };
+
+            service.SetCredentials = function(username, password,state) {
                 var authdata = Base64.encode(username + ':' + password);
 
                 $rootScope.globals = {
                     currentUser: {
+                        state: state,
                         username: username,
                         authdata: authdata
-                    }
+                    }   
                 };
 
                 $http.defaults.headers.common['Authorization'] = 'Basic ' + authdata; // jshint ignore:line

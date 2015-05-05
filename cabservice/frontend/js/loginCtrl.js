@@ -27,7 +27,7 @@ loginCtrl.controller('LoginCtrl', ['$scope', '$rootScope', '$location', 'Authent
                     if (response.success) {
 
                         //we set the credentials
-                        AuthenticationService.SetCredentials($scope.username, $scope.password);
+                        AuthenticationService.SetCredentials($scope.username, $scope.password,"driver");
 
                         $scope.dataLoading = false;
 
@@ -59,7 +59,7 @@ loginCtrl.controller('LoginCtrl', ['$scope', '$rootScope', '$location', 'Authent
                     if (response.success) {
 
                         //we set the credentials
-                        AuthenticationService.SetCredentials($scope.username, $scope.password);
+                        AuthenticationService.SetCredentials($scope.username, $scope.password,"rider");
 
                         //we relocate to /panel2
                         window.location.href = 'http://localhost:3000/userHomePage.html';

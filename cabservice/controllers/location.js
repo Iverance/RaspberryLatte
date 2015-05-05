@@ -108,6 +108,17 @@ exports.getLocation = function(req, res) {
 };
 
 // **********************************
+// GET a Route
+// **********************************
+// Create endpoint /api/locations/getRoute for GET
+exports.getRoute = function(req, res) {
+    // Use the Location model to find a specific location
+    console.log(req.user._id);
+    
+};
+
+
+// **********************************
 // UPDATE a Location
 // **********************************
 // Create endpoint /api/locations/:location_id for PUT
