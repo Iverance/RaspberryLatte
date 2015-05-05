@@ -33,7 +33,7 @@ loginCtrl.controller('LoginCtrl', ['$scope', '$rootScope', '$location', 'Authent
 
                         console.log("success");
                         //we relocate to /panel
-                        window.location.href = 'http://localhost:3000/userHomePage.html';
+                        window.location.href = 'http://localhost:3000/driverHomePage.html';
 
                     } else {
 
