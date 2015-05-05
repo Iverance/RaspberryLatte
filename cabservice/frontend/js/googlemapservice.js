@@ -267,8 +267,9 @@ directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);
 
 		var travelMode = google.maps.DirectionsTravelMode.DRIVING
 
+		//loop through each marker
 		for(var index=0; index<latLngs.length-1;index++){
-		
+		console.log("latlng"+latLngs[index]);
 	    var request = {
 	        origin: latLngs[index],
 	        destination: latLngs[index+1],
