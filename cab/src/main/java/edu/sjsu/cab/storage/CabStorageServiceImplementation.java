@@ -149,7 +149,7 @@ public class CabStorageServiceImplementation extends CabDaoAbstract implements C
         try {
             DetachedCriteria detachedCriteria = DetachedCriteria.forClass(Request.class);
             detachedCriteria.add(Restrictions.eq("isPicked", "n"));
-            users = findByCriteriaWithLimit(detachedCriteria, 10);
+            users = findByCriteriaWithLimit(detachedCriteria, 4);
         } catch (Exception e) {
             e.printStackTrace();
         }
