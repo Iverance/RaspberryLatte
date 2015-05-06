@@ -405,7 +405,7 @@ angular.module('myApp.googleMapService', [])
         }
 
         function animate(d) {
-		cache.map.setZoom(13);
+            cache.map.setZoom(13);
             // alert("animate("+d+")");
             if (d > eol) {
                 cache.map.panTo(endLocation.latlng);
@@ -515,8 +515,8 @@ angular.module('myApp.googleMapService', [])
             //*********************
 
 
-			var count=0;
-			
+            var count = 0;
+
             //we add the markers to the map and set the listeners
             locations.forEach(function(n, i) {
 
@@ -524,7 +524,6 @@ angular.module('myApp.googleMapService', [])
                 //that added the current marker
                 function sameUser() {
                     var username = $rootScope.getUsername();
-                    console.log($rootScope.getState());
                     return username && n.username === username;
                 }
 
@@ -533,50 +532,50 @@ angular.module('myApp.googleMapService', [])
                     sameUser() ?
                     'http://maps.google.com/mapfiles/ms/icons/blue-dot.png' :
                     '.png';
-                if (sameUser() && count <3){
+                if (sameUser() && count < 3) {
                     latLngs.push(n.latlon);
-					count ++;
-					}
-                //We create a marker
-				if (count <3){
-                var marker = new google.maps.Marker({
-                    position: n.latlon,
-                    map: cache.map,
-                    title: "none",
-                    icon: icon
-                });
-				
-
-                //We add it to the cache
-
-                cache.markers.push(marker);
-
-                if (sameUser()) {
-                    routes.push(marker);
+                    count++;
                 }
+                //We create a marker
+                if (count < 3) {
+                    var marker = new google.maps.Marker({
+                        position: n.latlon,
+                        map: cache.map,
+                        title: "none",
+                        icon: icon
+                    });
 
-                //When we click on a marker
-                google.maps.event.addListener(marker, 'click', function(e) {
 
-                    //If owned by the user, allow deletion
-                    if (sameUser()) $rootScope.$broadcast("allow");
+                    //We add it to the cache
 
-                    //Else disallow
-                    else $rootScope.$broadcast("disallow");
+                    cache.markers.push(marker);
 
-                    //We clear the marker set on the map
-                    googleMapService.clearMarker();
+                    if (sameUser()) {
+                        routes.push(marker);
+                    }
 
-                    //the current selected marker
-                    currentSelectedMarker = n;
+                    //When we click on a marker
+                    google.maps.event.addListener(marker, 'click', function(e) {
 
-                    //we open the message
-                    n.message.open(cache.map, marker);
+                        //If owned by the user, allow deletion
+                        if (sameUser()) $rootScope.$broadcast("allow");
 
-                    //we hide all alert messages
-                    $rootScope.$broadcast("hideAllMessages");
-                });
-				}
+                        //Else disallow
+                        else $rootScope.$broadcast("disallow");
+
+                        //We clear the marker set on the map
+                        googleMapService.clearMarker();
+
+                        //the current selected marker
+                        currentSelectedMarker = n;
+
+                        //we open the message
+                        n.message.open(cache.map, marker);
+
+                        //we hide all alert messages
+                        $rootScope.$broadcast("hideAllMessages");
+                    });
+                }
             });
 
             //when we click on the map
@@ -589,7 +588,10 @@ angular.module('myApp.googleMapService', [])
                 $rootScope.$broadcast("hideAllMessages");
 
                 //If we are logged in, we can set markers on the map
-                if ($rootScope.loggedIn()) setMarker(e.latLng, cache.map);
+                // if ($rootScope.loggedIn()) setMarker(e.latLng, cache.map);
+                if ($rootScope.loggedIn()) 
+                    setMarker(e.latLng, cache.map);
+                
             });
 
         }
@@ -726,12 +728,26 @@ angular.module('myApp.googleMapService', [])
                 $rootScope.$broadcast("hideAllMessages");
 
                 //If we are logged in, we can set markers on the map
-                if ($rootScope.loggedIn()) setMarker(e.latLng, cache.map);
+                if ($rootScope.loggedIn()) 
+                    setMarker(e.latLng, cache.map);
+                
             });
 
         }
 
+        // $rootScope.getTempMarker = function() {
+        //     if ($rootScope.loggedIn())
+        //         return $rootScope.templatlng;
+        // };
 
+        // $rootScope.setTempMarker = function(e) {
+        //     if ($rootScope.loggedIn()) {
+        //         $rootScope.templatlng = {
+        //             lat: e.latLng.j,
+        //             lng: e.latLng.C
+        //         };
+        //     }
+        // };
 
 
         //we show the map for the first time on page load

@@ -46,12 +46,12 @@ router.route('/locations/:location_id')
     .delete(authController.isAuthenticated, locationController.deleteLocation);
 
 // Create endpoint handlers for /booked
-router.route('/booked')
+router.route('/bookeds')
     .post(authController.isAuthenticated, bookedController.postBooked)
-    .get(bookedController.getBooked);
-
-router.route('/booked/getBooked')
     .get(authController.isAuthenticated, bookedController.getBooked);
+
+// router.route('/booked/getBooked')
+//     .get(authController.isAuthenticated, bookedController.getBooked);
 
 router.route('/locations/getRoute')
     .get(authController.isAuthenticated, locationController.getRoute);
@@ -61,11 +61,9 @@ router.route('/users')
     .post(userController.postUsers)
     .get(authController.isAuthenticated, userController.getUsers);
 
-<<<<<<< HEAD
-=======
+
 router.route('/users/update')
     .post(userController.updateUsers);
->>>>>>> eba071519f456f09fc919f61944425fa5506ea88
 
 //Create endpoint handler for authenticating users
 router.route('/authenticate')

@@ -13,13 +13,54 @@ userControl.run(function($http, $rootScope, $location, $cookieStore, Authenticat
 
 userControl.controller('UserCtrl', function($scope, $rootScope, $location, $http, AuthenticationService, GoogleMapService) {
 
-    $scope.rideDone = function() {
+    $scope.randoms = [{
+        name: "Yes"
+    }, {
+        name: "No"
+    }];
+    $scope.decision = $scope.randoms[0];
 
-        //pass data to DB
-
-        //clear Markers
-        GoogleMapService.clearMarkers();
+    $scope.setLatLng = function(m) {
+        if (m == "l") {
+            $scope.rLocaion = GoogleMapService.getLocation().latitude + "," + GoogleMapService.getLocation().longitude;
+        } else {
+            $scope.rDestination = GoogleMapService.getLocation().latitude + "," + GoogleMapService.getLocation().longitude;
+        }
     };
+
+    $scope.bookRide = function() {
+        var rLocaion = $scope.rLocaion.split(",");
+        var rDestination = $scope.rDestination.split(",");
+
+        var rideRequest = {
+            rideWithRandoms: $scope.decision.name,
+            numPeople: $scope.pNum,
+            destination_long: rDestination[1],
+            destination_lat: rDestination[0],
+            location_long: rLocaion[1],
+            location_lat: rLocaion[0],
+            username: $rootScope.getUsername()
+        };
+
+
+        $http.post('/api/bookeds', rideRequest)
+            .success(function(response) {
+                console.log(rideRequest);
+                console.log(response);
+
+            });
+        sendMessage({
+            message: "start",
+            longitude: rLocaion[1],
+            latitude: rLocaion[0]
+        });
+        sendMessage({
+            message: "end",
+            longitude: rDestination[1],
+            latitude: rDestination[0]
+        });
+    };
+
     $scope.testing2 = function() {
         GoogleMapService.calcRoute();
     };
@@ -44,8 +85,8 @@ userControl.controller('UserCtrl', function($scope, $rootScope, $location, $http
         AuthenticationService.Login($scope.username, $scope.password,
             function(response) {
 
-                console.log("start update with "+$scope.username+$scope.password);
-                
+                console.log("start update with " + $scope.username + $scope.password);
+
                 if (response.success) {
 
                     AuthenticationService.Update($scope.username, $scope.newpassword,
@@ -71,81 +112,102 @@ userControl.controller('UserCtrl', function($scope, $rootScope, $location, $http
     };
 
     //Called when adding a message to the map
-    $scope.sendMessage = function() {
+    function sendMessage(marker) {
 
         //we hide the error message if there was one
         $scope.showErrorMessage = false;
 
         //We need to set a marker!
-        if (!GoogleMapService.isMarkerSet()) {
-            $scope.errorMessage = "Please set a marker first";
-            $scope.showErrorMessage = true;
-        } else {
 
-            //we post to the api
-            $http.post('/api/locations', {
-                message: $scope.message,
-                longitude: GoogleMapService.getLocation().longitude,
-                latitude: GoogleMapService.getLocation().latitude
-            }).success(function(response) {
+
+        //we post to the api
+        $http.post('/api/locations', marker)
+            .success(function(response) {
                 $scope.message = "";
                 $scope.successMessage = "You mapped it!";
                 //   $scope.showSuccessMessage = true;
                 GoogleMapService.refreshLocations();
             });
-            $location.path('panel3');
-        }
-    };
-    $scope.sendMessageRider = function() {
-
-        //we hide the error message if there was one
-        $scope.showErrorMessage = false;
-
-        //We need to set a marker!
-        if (!GoogleMapService.isMarkerSet()) {
-            $scope.errorMessage = "Please set a marker first";
-            $scope.showErrorMessage = true;
-        } else {
-
-            //we post to the api
-            $http.post('/api/locations', {
-                message: $scope.message,
-                longitude: GoogleMapService.getLocation().longitude,
-                latitude: GoogleMapService.getLocation().latitude
-            }).success(function(response) {
-                $scope.message = "";
-                $scope.successMessage = "You mapped it!";
-                //   $scope.showSuccessMessage = true;
-                GoogleMapService.refreshLocations();
-            });
-            $location.path('panel3');
-        }
     };
 
-    $scope.sendMessageDriver = function() {
 
-        //we hide the error message if there was one
-        $scope.showErrorMessage = false;
 
-        //We need to set a marker!
-        if (!GoogleMapService.isMarkerSet()) {
-            $scope.errorMessage = "Please set a marker first";
-            $scope.showErrorMessage = true;
-        } else {
+    // //Called when adding a message to the map
+    // $scope.sendMessage = function() {
 
-            //we post to the api
-            $http.post('/api/locations', {
-                message: "Driver Currently here",
-                longitude: GoogleMapService.getLocation().longitude,
-                latitude: GoogleMapService.getLocation().latitude
-            }).success(function(response) {
-                $scope.message = "Driver Currently here";
-                $scope.successMessage = "Location received";
-                $scope.showSuccessMessage = true;
-                GoogleMapService.refreshLocations();
-            });
-        }
-    };
+    //     //we hide the error message if there was one
+    //     $scope.showErrorMessage = false;
+
+    //     //We need to set a marker!
+    //     if (!GoogleMapService.isMarkerSet()) {
+    //         $scope.errorMessage = "Please set a marker first";
+    //         $scope.showErrorMessage = true;
+    //     } else {
+
+    //         //we post to the api
+    //         $http.post('/api/locations', {
+    //             message: $scope.message,
+    //             longitude: GoogleMapService.getLocation().longitude,
+    //             latitude: GoogleMapService.getLocation().latitude
+    //         }).success(function(response) {
+    //             $scope.message = "";
+    //             $scope.successMessage = "You mapped it!";
+    //             //   $scope.showSuccessMessage = true;
+    //             GoogleMapService.refreshLocations();
+    //         });
+    //         $location.path('panel3');
+    //     }
+    // };
+    // $scope.sendMessageRider = function() {
+
+    //     //we hide the error message if there was one
+    //     $scope.showErrorMessage = false;
+
+    //     //We need to set a marker!
+    //     if (!GoogleMapService.isMarkerSet()) {
+    //         $scope.errorMessage = "Please set a marker first";
+    //         $scope.showErrorMessage = true;
+    //     } else {
+
+    //         //we post to the api
+    //         $http.post('/api/locations', {
+    //             message: $scope.message,
+    //             longitude: GoogleMapService.getLocation().longitude,
+    //             latitude: GoogleMapService.getLocation().latitude
+    //         }).success(function(response) {
+    //             $scope.message = "";
+    //             $scope.successMessage = "You mapped it!";
+    //             //   $scope.showSuccessMessage = true;
+    //             GoogleMapService.refreshLocations();
+    //         });
+    //         $location.path('panel3');
+    //     }
+    // };
+
+    // $scope.sendMessageDriver = function() {
+
+    //     //we hide the error message if there was one
+    //     $scope.showErrorMessage = false;
+
+    //     //We need to set a marker!
+    //     if (!GoogleMapService.isMarkerSet()) {
+    //         $scope.errorMessage = "Please set a marker first";
+    //         $scope.showErrorMessage = true;
+    //     } else {
+
+    //         //we post to the api
+    //         $http.post('/api/locations', {
+    //             message: "Driver Currently here",
+    //             longitude: GoogleMapService.getLocation().longitude,
+    //             latitude: GoogleMapService.getLocation().latitude
+    //         }).success(function(response) {
+    //             $scope.message = "Driver Currently here";
+    //             $scope.successMessage = "Location received";
+    //             $scope.showSuccessMessage = true;
+    //             GoogleMapService.refreshLocations();
+    //         });
+    //     }
+    // };
 
     //scope function to delete a marker
     $scope.deleteMessage = function() {

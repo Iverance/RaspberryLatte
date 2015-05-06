@@ -44,7 +44,7 @@ exports.getLocations = function(req, res) {
     // Use the Location model to find all locations
     // from particular user with their username
     console.log("start getLocations");
-    Location.find({}).lean().exec(function(err, locations) {
+    Location.find({}).sort({date: -1}).lean().limit(2).exec(function(err, locations) {
         if(err){
             res.send(err);
             return;

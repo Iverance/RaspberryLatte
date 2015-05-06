@@ -115,7 +115,7 @@
                                             </ul>
                                         </form>
                                     </div>
-                                   <!-- <div class="panel panel-default">
+                                    <!-- <div class="panel panel-default">
                                         <div class="panel-heading"><a href="#" class="pull-right">View all</a>
                                             <h4>More Stuff Here?</h4></div>
                                         <div class="panel-body">
@@ -127,11 +127,11 @@
                                         </div>
                                     </div> -->
                                 </div>
+                                <!-- end of col left -->
                                 <!-- main col right -->
                                 <div class="col-sm-5">
                                     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                                         <div class="panel panel-default">
-                                            <div class="panel-heading" role="tab" id="headingOne"> </div>
                                             <div class="panel-body">
                                                 <div class="list-group">
                                                     <!-- BEGIN COLLAPSABLE MENU FOR BOOK RIDE/VIEW HISTORY/EDIT PROFILE/BROWSE DESTINATIONS -->
@@ -139,10 +139,10 @@
                                                         <div class="panel panel-default">
                                                             <div class="panel-heading" role="tab" id="headingOne">
                                                                 <h3 class="panel-title">
-                                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                                                  Book Ride
-                                                </a>
-                                              </h3>
+                                                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                                                      Book Ride
+                                                                    </a>
+                                                                </h3>
                                                             </div>
                                                             <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
                                                                 <div class="panel-body">
@@ -152,27 +152,27 @@
                                                                             <div class="form-group">
                                                                                 <label class="control-label col-sm-3">Location</label>
                                                                                 <div class="col-md-9">
-                                                                                    <input class="form-control" type="text">
+                                                                                    <input ng-model="rLocaion" ng-click="setLatLng('l')" class="form-control" type="text">
                                                                                 </div>
                                                                             </div>
                                                                             <div class="form-group">
                                                                                 <label class="control-label col-sm-3">Destination</label>
                                                                                 <div class="col-md-9">
-                                                                                    <input class="form-control" type="text">
+                                                                                    <input ng-model="rDestination" ng-click="setLatLng('r')" class="form-control" type="text">
                                                                                 </div>
                                                                             </div>
                                                                             <div class="form-group">
                                                                                 <label class="control-label col-sm-3"># People</label>
                                                                                 <div class="col-md-5">
-                                                                                    <input class="form-control" type="text">
+                                                                                    <input ng-model="pNum" class="form-control" type="text">
                                                                                 </div>
                                                                             </div>
                                                                             <div class="form-group">
                                                                                 <label class="control-label col-sm-3">Ride with Randoms?</label>
                                                                                 <div class="col-md-3">
-                                                                                    <select class="form-control" name="randoms">
-                                                                                        <option value="randoms">Yes!</option>
-                                                                                        <option value="norandoms">No :-(</option>
+                                                                                    <select ng-model="decision" ng-options="random.name for random in randoms" class="form-control" name="randoms">
+                                                                                       <!--  <option ng-model="randoms" value="randoms">Yes!</option>
+                                                                                        <option ng-model="norandoms" value="norandoms">No :-(</option> -->
                                                                                     </select>
                                                                                 </div>
                                                                                 <label class="control-label col-sm-4">Get Location</label>
@@ -180,7 +180,7 @@
                                                                                     <input type="checkbox" value="">
                                                                                 </div>
                                                                             </div>
-                                                                            <button class="btn btn-primary btn-large btn-block" data-toggle="tooltip" data-target="confirmBookRide" type="button" ng-click="rideBooked()">Book Ride</button>
+                                                                            <button ng-click="bookRide()" class="btn btn-primary btn-large btn-block" data-toggle="tooltip" data-target="confirmBookRide" type="button" ng-click="rideBooked()">Book Ride</button>
                                                                         </form>
                                                                     </div>
                                                                     <!-- END Book Ride Form -->
@@ -191,10 +191,9 @@
                                                         <div class="panel panel-default">
                                                             <div class="panel-heading" role="tab" id="headingTwo">
                                                                 <h3 class="panel-title">
-                                                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                                  View History
-                                                </a>
-                                              </h3>
+                                                                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                                  View History</a>
+                                                            </h3>
                                                             </div>
                                                             <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
                                                                 <div class="panel-body">
@@ -221,24 +220,23 @@
                                                                                 </tr>
                                                                             </tbody>
                                                                         </table>
-                                                                        </table>
                                                                     </div>
-                                                                    <!-- END Table for Transaction History -->
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                        <!-- END Table for Transaction History -->
                                                         <!-- Edit profile -->
                                                         <div class="panel panel-default">
                                                             <div class="panel-heading" role="tab" id="headingThree">
                                                                 <h3 class="panel-title">
-                                                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                                  Edit Profile
-                                                </a>
-                                              </h3>
+                                                                    <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                                                      Edit Profile
+                                                                    </a>
+                                                                </h3>
                                                             </div>
                                                             <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
                                                                 <div class="panel-body">
-                                                                    <!-- BEGIN Edit Profile -->
+                                                                    <!-- BEGIN Edit Profile form-->
                                                                     <div class="container-fluid">
                                                                         <form class="form-horizontal">
                                                                             <div class="form-group">
@@ -262,18 +260,19 @@
                                                                             <button ng-click="editProfile()" class="btn btn-primary btn-large btn-block" data-toggle="tooltip" id="editProfile" type="button">Update</button>
                                                                         </form>
                                                                     </div>
-                                                                    <!-- END Edit Profile -->
+                                                                    <!-- END Edit Profile form-->
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                        <!-- END Edit Profile-->
                                                         <!-- Browse and See trending Destinations -->
                                                         <div class="panel panel-default">
                                                             <div class="panel-heading" role="tab" id="destinationCollapsable">
                                                                 <h3 class="panel-title">
-                                                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseDestinations" aria-expanded="false" aria-controls="collapseDestinations">
-                                                  Browse Destinations
-                                                </a>
-                                              </h3>
+                                                                    <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseDestinations" aria-expanded="false" aria-controls="collapseDestinations">
+                                                                      Browse Destinations
+                                                                    </a>
+                                                                </h3>
                                                             </div>
                                                             <div id="collapseDestinations" class="panel-collapse collapse" role="tabpanel" aria-labelledby="destinationCollapsable">
                                                                 <div class="panel-body">
@@ -283,14 +282,15 @@
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                        <!-- End Browse and See trending Destinations -->
                                                         <!-- Friends Collapsable -->
                                                         <div class="panel panel-default">
                                                             <div class="panel-heading" role="tab" id="friendsCollapsable">
                                                                 <h3 class="panel-title">
-                                                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseFriends" aria-expanded="false" aria-controls="collapseFriends">
-                                                  +Friends
-                                                </a>
-                                              </h3>
+                                                                    <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseFriends" aria-expanded="false" aria-controls="collapseFriends">
+                                                                      +Friends
+                                                                    </a>
+                                                                </h3>
                                                             </div>
                                                             <div id="collapseFriends" class="panel-collapse collapse" role="tabpanel" aria-labelledby="friendsCollapsable">
                                                                 <div class="panel-body">
@@ -300,14 +300,15 @@
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                        <!-- End Friends Collapsable -->
                                                         <!-- Drivers Collapsable -->
                                                         <div class="panel panel-default">
                                                             <div class="panel-heading" role="tab" id="driversCollapsable">
                                                                 <h3 class="panel-title">
-                                                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseDrivers" aria-expanded="false" aria-controls="collapseDrivers">
-                                                  +Drivers
-                                                </a>
-                                              </h3>
+                                                                    <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseDrivers" aria-expanded="false" aria-controls="collapseDrivers">
+                                                                      +Drivers
+                                                                    </a>
+                                                                </h3>
                                                             </div>
                                                             <div id="collapseDrivers" class="panel-collapse collapse" role="tabpanel" aria-labelledby="driversCollapsable">
                                                                 <div class="panel-body">
@@ -356,8 +357,8 @@
                     </div>
                     <!-- /padding -->
                 </div>
-                <!-- /main -->
             </div>
+            <!-- /main -->
         </div>
         <!-- script references -->
         <script src="js/scripts.js"></script>
