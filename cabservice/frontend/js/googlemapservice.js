@@ -52,7 +52,7 @@ angular.module('myApp.googleMapService', [])
          * Refresh the locations
          **************************/
         googleMapService.refreshLocations = function() {
-            if ($rootScope.getState == "rider") {
+            if ($rootScope.getState() == "rider") {
                 //we clear the array holding the api response 
                 locations = [];
 
@@ -369,7 +369,7 @@ angular.module('myApp.googleMapService', [])
                         }
                         polyline.setMap(cache.map);
                         cache.map.fitBounds(bounds);
-                        cache.map.setZoom(18);
+                        cache.map.setZoom(10);
                         startAnimation();
                     }
 
@@ -379,7 +379,7 @@ angular.module('myApp.googleMapService', [])
         }
 
         var steps = []
-        var step = 50; // 5; // metres
+        var step = 500; // 5; // metres
         var tick = 100; // milliseconds
         var eol;
         var k = 0;
@@ -514,7 +514,8 @@ angular.module('myApp.googleMapService', [])
             //*********************
 
 
-
+			var count=0;
+			
             //we add the markers to the map and set the listeners
             locations.forEach(function(n, i) {
 
@@ -531,19 +532,22 @@ angular.module('myApp.googleMapService', [])
                     sameUser() ?
                     'http://maps.google.com/mapfiles/ms/icons/blue-dot.png' :
                     '.png';
-                if (sameUser())
+                if (sameUser() && count <3){
                     latLngs.push(n.latlon);
-
+					count ++;
+					}
                 //We create a marker
+				if (count <3){
                 var marker = new google.maps.Marker({
                     position: n.latlon,
                     map: cache.map,
                     title: "none",
                     icon: icon
                 });
-
+				
 
                 //We add it to the cache
+
                 cache.markers.push(marker);
 
                 if (sameUser()) {
@@ -571,6 +575,7 @@ angular.module('myApp.googleMapService', [])
                     //we hide all alert messages
                     $rootScope.$broadcast("hideAllMessages");
                 });
+				}
             });
 
             //when we click on the map
