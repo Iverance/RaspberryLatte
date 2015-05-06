@@ -37,7 +37,7 @@
 }
 
 #map-canvas {
-    height: 400px;
+    height: 325px;
 }
 
 .control-panel {
@@ -663,10 +663,10 @@ small.text-muted {
 .button-padding {
     padding-bottom:10px;
   }
-  #show-button { cursor: pointer; }
-#hide-button { cursor: pointer; display: none; }
+#book { cursor: pointer; }
+#rideFinished { cursor: pointer; display: none; }
 
 /*Some stylings to the buttons*/
-#show-button, #hide-button  { color: #fff; border-radius: 5px; padding: 10px 50px; }
-#show-button { background: #0703af; }
-#hide-button { background: #af2303; }
+#book, #rideFinished  { color: #fff; border-radius: 5px; padding: 10px 50px; }
+#book { background: #0703af; }
+#rideFinished { background: #af2303; }

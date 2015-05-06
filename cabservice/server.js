@@ -6,6 +6,7 @@ var passport = require('passport');
 
 // //we import the controllers
 var locationController = require('./controllers/location');
+var bookedController = require('./controllers/booked');
 var userController = require('./controllers/user');
 var authController = require('./controllers/auth');
 
@@ -44,6 +45,14 @@ router.route('/locations/:location_id')
     .put(authController.isAuthenticated, locationController.putLocation)
     .delete(authController.isAuthenticated, locationController.deleteLocation);
 
+// Create endpoint handlers for /booked
+router.route('/booked')
+    .post(authController.isAuthenticated, bookedController.postBooked)
+    .get(bookedController.getBooked);
+
+router.route('/booked/getBooked')
+    .get(authController.isAuthenticated, bookedController.getBooked);
+
 router.route('/locations/getRoute')
     .get(authController.isAuthenticated, locationController.getRoute);
 
@@ -51,6 +60,7 @@ router.route('/locations/getRoute')
 router.route('/users')
     .post(userController.postUsers)
     .get(authController.isAuthenticated, userController.getUsers);
+
 
 //Create endpoint handler for authenticating users
 router.route('/authenticate')
