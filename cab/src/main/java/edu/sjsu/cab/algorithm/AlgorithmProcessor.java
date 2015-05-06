@@ -18,7 +18,8 @@ public class AlgorithmProcessor {
 
     public List<Marker> getMarkers() {
         List<Marker> markers = new ArrayList<Marker>();
-        List<Request> users = dataLayer.findUserByRequest();
+        //TODO: make it is not hard coded
+        List<Request> users = dataLayer.findUserByRequest(-122.40880966186523,37.78821704497664);
         ClarkeWrightMethod cwm = new ClarkeWrightMethod(MatrixLoader.getMatrixByUsers(users));
         String[] bestRoute = cwm.getBestRoute();
         for (String index : bestRoute) {
@@ -28,7 +29,7 @@ public class AlgorithmProcessor {
         marker.setLatitude((double) users.get(Integer.valueOf(bestRoute[bestRoute.length-1])).getPickupLocationLat());
         marker.setLongitude((double) users.get(Integer.valueOf(bestRoute[bestRoute.length-1])).getPickupLocationLong());
         marker.setMessage("destination");
-        marker.setUsername(users.get(Integer.valueOf(bestRoute[bestRoute.length-1])).getUserId());
+        marker.setUsername(users.get(Integer.valueOf(bestRoute[bestRoute.length-1])).getFirstName());
         markers.add(marker);
         return markers;
     }
