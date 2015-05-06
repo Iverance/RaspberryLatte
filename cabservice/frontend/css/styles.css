@@ -654,3 +654,12 @@ small.text-muted {
     padding-left:3px;
   }
 }
+
+
+/*
+ * button padding
+ * --------------------------------------------------
+ */
+.button-padding {
+    padding-bottom:10px;
+  }
