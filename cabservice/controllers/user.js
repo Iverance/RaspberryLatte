@@ -6,11 +6,11 @@ var User = require('../models/user');
 // **********************************
 // Create endpoint /api/users for GET
 exports.getUsers = function(req, res) {
-  User.find(function(err, users) {
-    if (err)
-      res.send(err);
-    res.json(users);
-  });
+    User.find(function(err, users) {
+        if (err)
+            res.send(err);
+        res.json(users);
+    });
 };
 
 // **********************************
@@ -18,23 +18,66 @@ exports.getUsers = function(req, res) {
 // **********************************
 // Create endpoint /api/users for POST
 exports.postUsers = function(req, res) {
-    if(!req.body.username || !req.body.password){
-        res.json({ message: 'Error processing the request' });
+    if (!req.body.username || !req.body.password) {
+        res.json({
+            message: 'Error processing the request'
+        });
         return;
     }
-  var user = new User({
-    username: req.body.username,
-    password: req.body.password
-  });
+    var user = new User({
+        username: req.body.username,
+        password: req.body.password
+    });
 
-  user.save(function(err) {
-      if (err){
-      res.json({message: 'User might already exist'});
-      return;
-      }
+    user.save(function(err) {
+        if (err) {
+            res.json({
+                message: 'User might already exist'
+            });
+            return;
+        }
 
-    res.json({ success: 'New user added' });
-  });
+        res.json({
+            success: 'New user added'
+        });
+    });
+};
+
+// **********************************
+// POST updateUsers
+// **********************************
+// Create endpoint /api/users/update for POST
+exports.updateUsers = function(req, res) {
+    if (!req.body.username || !req.body.password) {
+        res.json({
+            message: 'Error processing the request'
+        });
+        return;
+    }
+    var user = new User({
+        username: req.body.username,
+        password: req.body.password
+    });
+
+    var conditions = {
+            username: req.body.username
+        },
+        options = {
+            upsert: true
+        };
+
+    user.update(conditions, user, function(err, numAffected) {
+        if (err) {
+            res.json({
+                message: 'Update fail'
+            });
+            return;
+        }
+
+        res.json({
+            success: 'Update successfully'
+        });
+    });
 };
 
 // **********************************
@@ -42,25 +85,36 @@ exports.postUsers = function(req, res) {
 // **********************************
 // Create endpoint /api/authenticate for POST
 exports.authenticateUser = function(req, res) {
-    if(!req.body.username || !req.body.password){
-        res.json({ message: 'Error processing the request' });
+    if (!req.body.username || !req.body.password) {
+        res.json({
+            message: 'Error processing the request'
+        });
         return;
     }
-    User.findOne({username: req.body.username}, function(err, user){
-        if(!user){
-            res.json({message: 'User doesn\'t exists'});
+    User.findOne({
+        username: req.body.username
+    }, function(err, user) {
+        if (!user) {
+            res.json({
+                message: 'User doesn\'t exists'
+            });
             return;
         }
-        user.verifyPassword(req.body.password, function(err, isMatch){
-            if(err){
-                res.json({message: err});
+        user.verifyPassword(req.body.password, function(err, isMatch) {
+            if (err) {
+                res.json({
+                    message: err
+                });
                 return;
-            } else if(!isMatch){
-                res.json({message: "Wrong password."});
+            } else if (!isMatch) {
+                res.json({
+                    message: "Wrong password."
+                });
             } else {
-                res.json({success: "authenticated!"});
+                res.json({
+                    success: "authenticated!"
+                });
             }
         });
     });
 };
-

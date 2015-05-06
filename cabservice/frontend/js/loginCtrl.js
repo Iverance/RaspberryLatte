@@ -15,7 +15,7 @@ loginCtrl.controller('LoginCtrl', ['$scope', '$rootScope', '$location', 'Authent
 
 
         //the scope login function
-        $scope.login = function($window) {
+        $scope.login = function() {
 
             //Show the spinner
             $scope.dataLoading = true;
@@ -33,7 +33,7 @@ loginCtrl.controller('LoginCtrl', ['$scope', '$rootScope', '$location', 'Authent
 
                         console.log("success");
                         //we relocate to /panel
-                        window.location.href = 'http://localhost:3000/driverHomePage.html';
+                        window.location.href = 'http://localhost:3000/driverHomePage_BigMap.html';
 
                     } else {
 

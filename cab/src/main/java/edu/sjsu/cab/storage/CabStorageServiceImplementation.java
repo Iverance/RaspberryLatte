@@ -3,8 +3,8 @@ package edu.sjsu.cab.storage;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Restrictions;
+import org.hibernate.SQLQuery;
+import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -143,16 +143,24 @@ public class CabStorageServiceImplementation extends CabDaoAbstract implements C
 
     @Override
     @Transactional(value = "transactionManager")
-    public List<Request> findUserByRequest() {
+    public List<Request> findUserByRequest(Double lat, Double lng) {
         // TODO Auto-generated method stub
-        List<Request> users = new ArrayList<Request>();
+        List<Request> request = new ArrayList<Request>();
         try {
-            DetachedCriteria detachedCriteria = DetachedCriteria.forClass(Request.class);
-            detachedCriteria.add(Restrictions.eq("isPicked", "n"));
-            users = findByCriteriaWithLimit(detachedCriteria, 10);
+            // @formatter:off
+            String query = "SELECT * FROM cab.Request "
+                    + "WHERE cab.Request.isPicked = 'n' "
+                    + "ORDER BY ABS( pickupLocationLat - ("+String.valueOf(lat)+"))+ABS(pickupLocationLong-("+String.valueOf(lng)+")) "
+                    + "LIMIT 4";
+            // @formatter:on
+            request = (List<Request>) getCurrentSession().createSQLQuery(query).setResultTransformer( Transformers.aliasToBean(Request.class)).list();
+
+//            DetachedCriteria detachedCriteria = DetachedCriteria.forClass(Request.class);
+//            detachedCriteria.add(Restrictions.eq("isPicked", "n"));
+//            users = findByCriteriaWithLimit(detachedCriteria, 4);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return users;
+        return request;
     }
 }

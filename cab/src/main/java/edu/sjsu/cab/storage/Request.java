@@ -5,8 +5,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
@@ -15,10 +13,10 @@ public class Request {
     @Id
     @Column(name = "requestId", unique = true, nullable = false, length = 50)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String userId;
+    private String requestId;
 
     @Column(name = "transactionId", unique = true, nullable = true, length = 100)
-    private String cabTransactionId;
+    private String transactionId;
 
     @Column(name = "email", unique = true, nullable = true, length = 100)
     private String email;
@@ -30,7 +28,7 @@ public class Request {
     private String lastName;
 
     @Column(name = "isDynamicRoute", unique = true, nullable = true, length = 100)
-    private String isDyamicRoute;
+    private char isDynamicRoute;
 
     @Column(name = "password", unique = true, nullable = true, length = 100)
     private String password;
@@ -48,22 +46,25 @@ public class Request {
     private Float destLocationLong;
     
     @Column(name = "isPicked", unique = true, nullable = true, length = 100)
-    private String isPicked;
+    private char isPicked;
+    
+    @Column(name = "userName", unique = true, nullable = false, length = 100)
+    private String userName;
 
-    public String getUserId() {
-        return userId;
+    public String getRequestId() {
+        return requestId;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setRequestId(String requestId) {
+        this.requestId = requestId;
     }
 
     public String getCabTransactionId() {
-        return cabTransactionId;
+        return transactionId;
     }
 
     public void setCabTransactionId(String cabTransactionId) {
-        this.cabTransactionId = cabTransactionId;
+        this.transactionId = cabTransactionId;
     }
 
     public String getEmail() {
@@ -88,14 +89,6 @@ public class Request {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public String getIsDyamicRoute() {
-        return isDyamicRoute;
-    }
-
-    public void setIsDyamicRoute(String isDyamicRoute) {
-        this.isDyamicRoute = isDyamicRoute;
     }
 
     public String getPassword() {
@@ -138,12 +131,36 @@ public class Request {
         this.destLocationLong = destLocationLong;
     }
 
-    public String getIsPicked() {
+    public char getIsPicked() {
         return isPicked;
     }
 
-    public void setIsPicked(String isPicked) {
+    public void setIsPicked(char isPicked) {
         this.isPicked = isPicked;
+    }
+
+    public String getTransactionId() {
+        return transactionId;
+    }
+
+    public void setTransactionId(String transactionId) {
+        this.transactionId = transactionId;
+    }
+
+    public char getIsDynamicRoute() {
+        return isDynamicRoute;
+    }
+
+    public void setIsDynamicRoute(char isDynamicRoute) {
+        this.isDynamicRoute = isDynamicRoute;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
     
     

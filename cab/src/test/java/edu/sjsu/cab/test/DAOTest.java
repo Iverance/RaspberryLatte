@@ -17,10 +17,10 @@ public class DAOTest extends BaseTest{
 
     @Test
     public void getUsers() {
-        List<Request> users = dao.findUserByRequest();
+        List<Request> users = dao.findUserByRequest(-122.40880966186523,37.78821704497664);
         for(Request user:users) {
-            System.out.print(user.getUserId()+'\n');
-            Assert.notNull(user.getUserId());
+            System.out.print(user.getRequestId()+'\n');
+            Assert.notNull(user.getRequestId());
         }
     }
 
