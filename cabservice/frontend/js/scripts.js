@@ -26,11 +26,15 @@ $(function () {
 });
 
 /* *****************************************************************
-	POPOVER SETTINGS
+    BOOK RIDE TOGGLE BUTTON
 ******************************************************************* */
-$(document).ready(function(){
-    $("#driver").tootltip();   
-});
-$(document).ready(function(){
-    $('[data-toggle="popover"]').popover();   
-});
+$(document).ready(function() {
+  $("#show-button").click(function () {
+   $("#hide-button").show()
+   $("#show-button").hide()
+  });
+  $("#hide-button").click(function () {
+   $("#show-button").show()
+   $("#hide-button").hide()
+  });
+ });

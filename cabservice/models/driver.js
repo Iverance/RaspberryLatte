@@ -11,4 +11,5 @@ var DriverSchema = new mongoose.Schema({
 
 // We bind the Beer model to the BeerSchema
 module.exports = mongoose.model('Driver', DriverSchema);
+console.log("Driver Schema initailized");
 

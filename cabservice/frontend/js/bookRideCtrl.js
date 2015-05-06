@@ -1,7 +1,7 @@
-var userControl = angular.module('myApp.userCtrl', ['ngRoute', 'ngCookies', 'myApp.authenticationService', 'myApp.googleMapService']);
+var driverControl = angular.module('myApp.driverCtrl', ['ngRoute', 'ngCookies', 'myApp.authenticationService', 'myApp.googleMapService']);
 
 
-userControl.run(function($http, $rootScope, $location, $cookieStore, AuthenticationService) {
+driverControl.run(function($http, $rootScope, $location, $cookieStore, AuthenticationService) {
 
     //We check if the user is logged in.
     $rootScope.globals = $cookieStore.get('globals') || {};
@@ -11,15 +11,8 @@ userControl.run(function($http, $rootScope, $location, $cookieStore, Authenticat
 
 });
 
-userControl.controller('UserCtrl', function($scope, $rootScope, $location, $http, AuthenticationService, GoogleMapService) {
+driverControl.controller('DriverCtrl', function($scope, $rootScope, $location, $http, AuthenticationService, GoogleMapService) {
 
-    $scope.rideDone = function() {
-
-        //pass data to DB
-
-        //clear Markers
-        GoogleMapService.clearMarkers();
-    };
     $scope.testing2 = function() {
         GoogleMapService.calcRoute();
     };
@@ -36,38 +29,7 @@ userControl.controller('UserCtrl', function($scope, $rootScope, $location, $http
         AuthenticationService.ClearCredentials();
 
         //we relocate to login page
-        window.location.href = 'http://localhost:3000';
-    };
-
-    $scope.editProfile = function() {
-
-        AuthenticationService.Login($scope.username, $scope.password,
-            function(response) {
-
-                console.log("start update with "+$scope.username+$scope.password);
-                
-                if (response.success) {
-
-                    AuthenticationService.Update($scope.username, $scope.newpassword,
-                        function(response) {
-
-                            if (response.success) {
-
-                                AuthenticationService.SetCredentials($scope.username, $scope.newpassword, "rider");
-                                console.log("update success");
-                                window.location.href = 'http://localhost:3000/userHomePage.html';
-
-                            }
-                        });
-
-                } else {
-
-                    //we show an error
-                    $scope.error = response.message;
-                    console.log($scope.error);
-
-                }
-            });
+        $location.path('/');
     };
 
     //Called when adding a message to the map
@@ -159,16 +121,6 @@ userControl.controller('UserCtrl', function($scope, $rootScope, $location, $http
             $scope.showSuccessMessage = true;
             GoogleMapService.refreshLocations();
         });
-    };
-
-    $scope.invoice = {
-        records: [{
-            num: 1,
-            location: 'SJSU',
-            destination: 'SFO Airport',
-            driver: 'Jonny',
-            date: 'Now'
-        }]
     };
 
     //listen for allow event
