@@ -379,7 +379,7 @@ angular.module('myApp.googleMapService', [])
         }
 
         var steps = []
-        var step = 500; // 5; // metres
+        var step = 50; // 5; // metres
         var tick = 100; // milliseconds
         var eol;
         var k = 0;
@@ -405,6 +405,7 @@ angular.module('myApp.googleMapService', [])
         }
 
         function animate(d) {
+		cache.map.setZoom(13);
             // alert("animate("+d+")");
             if (d > eol) {
                 cache.map.panTo(endLocation.latlng);
