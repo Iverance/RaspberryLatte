@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if (IE 9)]><html class="no-js ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!-->
+<html lang="en-US" ng-app="myApp.userCtrl">
+<!--<![endif]-->
+
+<head>
+    <!-- Meta Tags -->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="description" content="Carpool Rideshare Taxi Mobile App">
+    <meta name="keywords" content="Carpool, Rideshare, Taxi, Cab, Car, Transportation,
+        Public Transportation, Cheap, Green, Hybrid, Mobile, Fast, Inexpensive,
+        Social Media, Dynamic Routing, Uber, Lyft, User Friendly, UI, Easy">
+    <meta name="author" content="Ashley Love Cheng-Ju Chuang Brian Moon">
+    <title> C.A.B. | Rideshare 2.0</title>
+    <meta name="description" content="A taxi, cab, bus, rideshare, carpool service offering alternatives tp Uber, Lyft, and other mobile on-demand taxi alternatives." />
+    <!-- Mobile Specifics -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="HandheldFriendly" content="true" />
+    <meta name="MobileOptimized" content="320" />
+    <!-- Mobile Internet Explorer ClearType Technology -->
+    <!--[if IEMobile]>  <meta http-equiv="cleartype" content="on">  <![endif]-->
+    <!-- Main Style -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!--[if lt IE 9]>
+      <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="css/userstyles.css" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBYJcvZ6k8x8eAQdPQv-wCUgfd6A_MocyI"></script>
+</head>
+
+<body ng-controller="UserCtrl">
+    <!-- Header -->
+    <header>
+        <div class="sticky-nav">
+            <a id="mobile-nav" class="menu-nav" href="#menu-nav"></a>
+            <nav id="menu">
+                <ul id="menu-nav">
+                    <li class="current"><a href="#home-slider">Home</a></li>
+                    <li><a href="#myModal" data-toggle="modal">Sign Out</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <!-- End Header -->
+    <!-- This section is for Splash Screen -->
+    <!-- End of Splash Screen -->
+    <div class="userwrapper">
+        <div class="box">
+            <div class="row row-offcanvas row-offcanvas-left">
+                <!-- main right col -->
+                <div class="column col-sm-12 col-xs-11" id="main">
+                    <div class="padding">
+                        <div class="full col-sm-9">
+                            <!-- content -->
+                            <div class="row">
+                                <!-- main col left -->
+                                <div class="col-sm-12">
+                                    <div class="panel panel-default">
+                                        <div class="panel-thumbnail">
+                                            <div id="map-canvas"></div>
+                                        </div>
+                                        <div class="panel-body">
+                                            <p class="lead" style="text-align: center">What's Your Destination?</p>
+                                        </div>
+                                    </div>
+
+                                    <!--- BEGIN Driver Buttons -->
+                                     <div class="container button-padding">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <button class="btn btn-primary btn-large btn-block" data-toggle="tooltip" data-target="getRoute" type="button">Get Passengers</button>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <button class="btn btn-primary btn-large btn-block" data-toggle="tooltip" data-target="goCarGo" type="button">I'm Driving</button>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <button class="btn btn-primary btn-large btn-block" data-toggle="tooltip" data-target="submit" type="button">Taking A Break</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                     <!-- END Driver Buttons -->
+
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading" title="View scheduled rides" data-toggle="popover" data-trigger="hover" data-content="Some content">
+                                            <h4> Passengers </h4></div>
+                                        <div class="panel-body">
+                                            <!-- BEGIN Table of Transaction History -->
+                                            <table class="table table-responsive">
+                                                <!-- On rows -->
+                                                <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>Passenger Name</th>
+                                                        <th>Location</th>
+                                                        <th>Destination</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>1</td>
+                                                        <td>SJSU</td>
+                                                        <td>SFO Airport</td>
+                                                        <td>Jonny Appleseed</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <!-- END Table for Transaction History -->
+                                        </div>
+                                    </div>
+                                   
+                                
+                                </div>
+                            </div>
+                        </div>
+                    <!--/row-->
+                    </div>
+                </div>
+                <!-- /col-9 -->
+            </div>
+            <!-- /padding -->
+                </div>
+                <!-- /main -->
+            </div>
+        </div>
+        <!-- script references -->
+        <script src="js/scripts.js"></script>
+        <!-- Footer -->
+        <footer class="footer-user">
+            <p class="credits">&copy;2013 Brushed Template. <a href="http://themes.alessioatzeni.com/html/brushed/" title="Brushed | Responsive One Page Template">Brushed Template</a> by <a href="http://www.alessioatzeni.com/" title="Alessio Atzeni | Adapted by &amp; Front-end Developer">C.A.B.</a></p>
+        </footer>
+        <!-- End Footer -->
+        <!-- Js -->
+        <!-- jQuery Core -->
+        <script src="_include/js/waypoints.js"></script>
+        <!-- WayPoints -->
+        <script src="_include/js/waypoints-sticky.js"></script>
+        <!-- Waypoints for Header -->
+        <script src="_include/js/jquery.isotope.js"></script>
+        <!-- Isotope Filter -->
+        <script src="_include/js/jquery.fancybox.pack.js"></script>
+        <!-- Fancybox -->
+        <script src="_include/js/jquery.fancybox-media.js"></script>
+        <!-- Fancybox for Media -->
+        <script src="_include/js/jquery.tweet.js"></script>
+        <!-- Tweet -->
+        <script src="_include/js/plugins.js"></script>
+        <!-- Contains: jPreloader, jQuery Easing, jQuery ScrollTo, jQuery One Page Navi -->
+        <script src="_include/js/main.js"></script>
+        <!-- Default JS -->
+        <script src="js/transition.js"></script>
+        <!-- Default JS -->
+        <script src="js/main.js"></script>
+        <!-- Gem jQuery -->
+        <script src="https://cdn.localizejs.com/localize.js"></script>
+        <script>
+        ! function(a) {
+            if (!a.Localize) {
+                a.Localize = {};
+                for (var e = ["translate", "untranslate", "phrase", "initialize", "translatePage", "setLanguage", "getLanguage", "detectLanguage", "untranslatePage", "bootstrap", "prefetch", "on", "off"], t = 0; t < e.length; t++) a.Localize[e[t]] = function() {}
+            }
+        }(window);
+        </script>
+        <script>
+        Localize.initialize({
+            key: 'LuHOBwujbFmya',
+            rememberLanguage: true,
+            saveNewPhrases: true,
+            translateBody: true
+        });
+        Localize.setLanguage('de');
+        </script>
+        <!-- End Js -->
+        <!-- BEGIN SCRIPTS FOR MAP -->
+        <script src="bower_components/jquery/dist/jquery.min.js"></script>
+        <script src="bower_components/angular/angular.min.js"></script>
+        <script src="bower_components/angular-route/angular-route.min.js"></script>
+        <script src="bower_components/angular-cookies/angular-cookies.min.js"></script>
+        <script src="assets/js/scripts.js"></script>
+        <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+        <script src="assets/js/jquery.backstretch.min.js"></script>
+        <script src="js/userPageCtrl.js"></script>
+        <script src="js/authenticationservice.js"></script>
+        <script src="js/googlemapservice.js"></script>
+        <!-- END SCRIPTS FOR MAP -->
+</body>
+
+</html>

@@ -67,6 +67,24 @@ var latLngs = [];
             }).error(function() {}); 
         };
 
+		
+		/***************************
+         * refresh locations from java backend
+         **************************/
+        googleMapService.refreshLocationsForDriver = function() {
+		
+		$http.get('http://localhost:8080/getRoute').success(function(response) {
+                locations = responseToLocations(response);
+				console.log(locations);
+                //We initialize the map
+                initializeDriverSide();
+
+                //We remove last marker placed on the map
+                if (lastMarker) lastMarker.setMap(null);
+            }).error(function() {}); 
+		
+		};
+		
         /***************************
          * Returns the position of the marker placed
          * on the map
@@ -142,6 +160,37 @@ var latLngs = [];
             }
             return locations;
         }
+		function responseToDummy(response) {
+			
+            //We push into our locations array
+            for (var i = 0, l = response.length; i < l; i++) {
+
+                var r = response[i];
+				console.log(r);
+				console.log(r.latitude);
+				console.log(r.longitude);
+                //The message we'll put in the infowindow
+                var contentString = '<div class="info-box"><h5>' +
+                    r.username +
+                    ' said:</h5><p>' +
+                    r.message +
+                    '</p><br/></div>';
+
+                //add to the locations
+                locations.push(new Location(
+                    new google.maps.LatLng(r.latitude, r.longitude),
+                    new google.maps.InfoWindow({
+                        content: contentString,
+                        maxWidth: 320
+                    }),
+                    r.username,
+                    r._id
+                ));
+            }
+            return locations;
+        }
+		
+		
 
         /***************************
          * Set a marker on the map
@@ -519,10 +568,149 @@ function startAnimation() {
             });
             
         }
+		
+		/***************************
+         * Initialize the Google Map
+         **************************/
+        function initializeDriverSide() {
+        directionsService = new google.maps.DirectionsService();
+        routes = []; 
+        
+
+            //We create a cache
+            if (!arguments.callee.cache) arguments.callee.cache = {};
+            cache = arguments.callee.cache;
+
+            //If there are markers in the cache we clear them.
+            if (cache.markers) cache.markers = clearMarkers(cache.markers);
+
+            //else we cache an empty array
+            else cache.markers = [];
+            
+            var sf = new google.maps.LatLng(37.7699298, -122.4469157);
+            //If it's the first time we run the function
+            if (cache.firstInit === undefined) {
+                //console.log("cache:"+cache.firstInit);
+                //We now have ran it 
+                cache.firstInit = true;
+
+                var mapOptions = {
+                        zoom: 12,
+                        center: sf,
+                        mapTypeId: google.maps.MapTypeId.TERRAIN},
+                    bounds,
+                    fitBounds = false;
+
+                //the new map
+                cache.map = new google.maps.Map(document.getElementById('map-canvas'),
+                    mapOptions);
+
+            }
+
+            
+            //*********************
+            
+    
+     // Create a renderer for directions and bind it to the map.
+    var rendererOptions = {
+      map: cache.map
+    }
+    directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);
+    
+    // Instantiate an info window to hold step text.
+    stepDisplay = new google.maps.InfoWindow();
+
+    polyline = new google.maps.Polyline({
+    path: [],
+    strokeColor: '#FF0000',
+    strokeWeight: 3
+    });
+    poly2 = new google.maps.Polyline({
+    path: [],
+    strokeColor: '#FF0000',
+    strokeWeight: 3
+    });
+            
+            
+            //*********************
+            
+            
+            
+            //we add the markers to the map and set the listeners
+            locations.forEach(function(n, i) {
+
+                //Inner function to check if the user is the same as the user
+                //that added the current marker
+                function sameUser() {
+                    var username = $rootScope.getUsername();
+                    return username && n.username === username;
+                }
+
+                //We set the color to blue is same user, else don't load
+                var icon =
+                    'http://maps.google.com/mapfiles/ms/icons/blue-dot.png';
+                    latLngs.push(n.latlon);
+                    
+                //We create a marker
+                var marker = new google.maps.Marker({
+                    position: n.latlon,
+                    map: cache.map,
+                    title: "none",
+                    icon: icon
+                });
+                
+
+                //We add it to the cache
+                cache.markers.push(marker);
+                
+                if(sameUser()){
+                    routes.push(marker);
+                }
+
+                //When we click on a marker
+                google.maps.event.addListener(marker, 'click', function(e) {
+
+                    //If owned by the user, allow deletion
+                    if (sameUser()) $rootScope.$broadcast("allow");
+
+                    //Else disallow
+                    else $rootScope.$broadcast("disallow");
+
+                    //We clear the marker set on the map
+                    googleMapService.clearMarker();
+
+                    //the current selected marker
+                    currentSelectedMarker = n;
+
+                    //we open the message
+                    n.message.open(cache.map, marker);
+
+                    //we hide all alert messages
+                    $rootScope.$broadcast("hideAllMessages");
+                });
+            });
+            
+            //when we click on the map
+            google.maps.event.addListener(cache.map, 'click', function(e) {
+
+                //we disallow deleting
+                $rootScope.$broadcast("disallow");
+
+                //we hide all alert messages
+                $rootScope.$broadcast("hideAllMessages");
+
+                //If we are logged in, we can set markers on the map
+                if ($rootScope.loggedIn()) setMarker(e.latLng, cache.map);
+            });
+            
+        }
+		
+		
+		
 
         //we show the map for the first time on page load
         google.maps.event.addDomListener(window, 'load',
-            googleMapService.refreshLocations);
+            googleMapService.refreshLocationsForDriver);
 
             
             

@@ -37,7 +37,7 @@
 }
 
 #map-canvas {
-    height: 300px;
+    height: 400px;
 }
 
 .control-panel {
@@ -654,3 +654,12 @@ small.text-muted {
     padding-left:3px;
   }
 }
+
+
+/*
+ * button padding
+ * --------------------------------------------------
+ */
+.button-padding {
+    padding-bottom:10px;
+  }
