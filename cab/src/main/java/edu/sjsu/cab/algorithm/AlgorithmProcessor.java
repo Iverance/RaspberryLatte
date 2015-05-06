@@ -38,7 +38,7 @@ public class AlgorithmProcessor {
         marker.setLatitude((double) user.getPickupLocationLat());
         marker.setLongitude((double) user.getPickupLocationLong());
         marker.setMessage("passenger");
-        marker.setUsername(user.getUserId());
+        marker.setUsername(user.getFirstName());
         return marker;
     }
 
