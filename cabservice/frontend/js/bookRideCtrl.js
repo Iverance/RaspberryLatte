@@ -1,7 +1,7 @@
-var userControl = angular.module('myApp.userCtrl', ['ngRoute', 'ngCookies', 'myApp.authenticationService', 'myApp.googleMapService']);
+var driverControl = angular.module('myApp.driverCtrl', ['ngRoute', 'ngCookies', 'myApp.authenticationService', 'myApp.googleMapService']);
 
 
-userControl.run(function($http, $rootScope, $location, $cookieStore, AuthenticationService) {
+driverControl.run(function($http, $rootScope, $location, $cookieStore, AuthenticationService) {
 
     //We check if the user is logged in.
     $rootScope.globals = $cookieStore.get('globals') || {};
@@ -11,15 +11,8 @@ userControl.run(function($http, $rootScope, $location, $cookieStore, Authenticat
 
 });
 
-userControl.controller('UserCtrl', function($scope, $rootScope, $location, $http, AuthenticationService, GoogleMapService) {
+driverControl.controller('DriverCtrl', function($scope, $rootScope, $location, $http, AuthenticationService, GoogleMapService) {
 
-    $scope.rideDone = function() {
-
-        //pass data to DB
-
-        //clear Markers
-        GoogleMapService.clearMarkers();
-    };
     $scope.testing2 = function() {
         GoogleMapService.calcRoute();
     };
