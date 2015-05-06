@@ -24,7 +24,7 @@ var auth = angular.module('myApp.authenticationService', [])
 
                         //We refresh the locations to change
                         //the color of our own markers to blue
-                        
+
                         // GoogleMapService.refreshLocations();
 
                         callback(response);
@@ -43,7 +43,7 @@ var auth = angular.module('myApp.authenticationService', [])
 
                         //We refresh the locations to change
                         //the color of our own markers to blue
-                        
+
                         // GoogleMapService.refreshLocations();
 
                         callback(response);
@@ -51,6 +51,23 @@ var auth = angular.module('myApp.authenticationService', [])
                     .error(function(response) {
                         callback(response);
                     });
+            };
+
+            //The login function
+            service.Update = function(username, newpassword, callback) {
+
+                $http.post('/api/users/update', {
+                        username: username,
+                        password: newpassword
+                    })
+                    .success(function(response) {
+
+                        callback(response);
+                    })
+                    .error(function(response) {
+                        callback(response);
+                    });
+
             };
 
             //we add the loggedIn method to the $rootScope
@@ -71,7 +88,7 @@ var auth = angular.module('myApp.authenticationService', [])
                     return $rootScope.globals.currentUser.state;
             };
 
-            service.SetCredentials = function(username, password,state) {
+            service.SetCredentials = function(username, password, state) {
                 var authdata = Base64.encode(username + ':' + password);
 
                 $rootScope.globals = {
@@ -79,7 +96,7 @@ var auth = angular.module('myApp.authenticationService', [])
                         state: state,
                         username: username,
                         authdata: authdata
-                    }   
+                    }
                 };
 
                 $http.defaults.headers.common['Authorization'] = 'Basic ' + authdata; // jshint ignore:line

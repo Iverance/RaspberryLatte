@@ -454,6 +454,7 @@ function startAnimation() {
                 //that added the current marker
                 function sameUser() {
                     var username = $rootScope.getUsername();
+                    console.log($rootScope.getState());
                     return username && n.username === username;
                 }
 

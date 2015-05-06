@@ -29,7 +29,38 @@ userControl.controller('UserCtrl', function($scope, $rootScope, $location, $http
         AuthenticationService.ClearCredentials();
 
         //we relocate to login page
-        $location.path('/');
+        window.location.href = 'http://localhost:3000';
+    };
+
+    $scope.editProfile = function() {
+
+        AuthenticationService.Login($scope.username, $scope.password,
+            function(response) {
+
+                console.log("start update with "+$scope.username+$scope.password);
+                
+                if (response.success) {
+
+                    AuthenticationService.Update($scope.username, $scope.newpassword,
+                        function(response) {
+
+                            if (response.success) {
+
+                                AuthenticationService.SetCredentials($scope.username, $scope.newpassword, "rider");
+                                console.log("update success");
+                                window.location.href = 'http://localhost:3000/userHomePage.html';
+
+                            }
+                        });
+
+                } else {
+
+                    //we show an error
+                    $scope.error = response.message;
+                    console.log($scope.error);
+
+                }
+            });
     };
 
     //Called when adding a message to the map
@@ -121,6 +152,16 @@ userControl.controller('UserCtrl', function($scope, $rootScope, $location, $http
             $scope.showSuccessMessage = true;
             GoogleMapService.refreshLocations();
         });
+    };
+
+    $scope.invoice = {
+        records: [{
+            num: 1,
+            location: 'SJSU',
+            destination: 'SFO Airport',
+            driver: 'Jonny',
+            date: 'Now'
+        }]
     };
 
     //listen for allow event

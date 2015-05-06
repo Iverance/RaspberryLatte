@@ -42,11 +42,8 @@
             <a id="mobile-nav" class="menu-nav" href="#menu-nav"></a>
             <nav id="menu">
                 <ul id="menu-nav">
-                    <li class="current"><a href="#home-slider">Home</a></li>
-                    <li><a href="#work">Our Work</a></li>
-                    <li><a href="#about">About Us</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                    <li><a href="#myModal" data-toggle="modal">Sign Out</a></li>
+                    <li class="current"><a href="index.html">Home</a></li>
+                    <li><a href="" ng-click="logout()">Sign Out</a></li>
                 </ul>
             </nav>
         </div>
@@ -247,22 +244,22 @@
                                                                             <div class="form-group">
                                                                                 <label id="username" class="control-label col-sm-3">Username</label>
                                                                                 <div class="col-md-9">
-                                                                                    <input class="form-control" type="text">
+                                                                                    <input ng-model="username" class="form-control" type="text">
                                                                                 </div>
                                                                             </div>
                                                                             <div class="form-group">
-                                                                                <label id="password" class="control-label col-sm-3">Password</label>
+                                                                                <label id="password" class="control-label col-sm-3">Current Password</label>
                                                                                 <div class="col-md-9">
-                                                                                    <input class="form-control" type="text">
+                                                                                    <input ng-model="password" class="form-control" type="text">
                                                                                 </div>
                                                                             </div>
                                                                             <div class="form-group">
-                                                                                <label id="confpassword" class="control-label col-sm-3">Confirm Password</label>
+                                                                                <label id="confpassword" class="control-label col-sm-3">New Password</label>
                                                                                 <div class="col-md-9">
-                                                                                    <input class="form-control" type="text">
+                                                                                    <input ng-model="newpassword" class="form-control" type="text">
                                                                                 </div>
                                                                             </div>
-                                                                            <button class="btn btn-primary btn-large btn-block" data-toggle="tooltip" id="editProfile" type="button">Save</button>
+                                                                            <button ng-click="editProfile()" class="btn btn-primary btn-large btn-block" data-toggle="tooltip" id="editProfile" type="button">Update</button>
                                                                         </form>
                                                                     </div>
                                                                     <!-- END Edit Profile -->

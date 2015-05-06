@@ -52,6 +52,9 @@ router.route('/users')
     .post(userController.postUsers)
     .get(authController.isAuthenticated, userController.getUsers);
 
+router.route('/users/update')
+    .post(userController.updateUsers);
+
 //Create endpoint handler for authenticating users
 router.route('/authenticate')
     .post(userController.authenticateUser);

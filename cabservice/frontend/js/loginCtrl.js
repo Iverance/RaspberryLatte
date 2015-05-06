@@ -15,7 +15,7 @@ loginCtrl.controller('LoginCtrl', ['$scope', '$rootScope', '$location', 'Authent
 
 
         //the scope login function
-        $scope.login = function($window) {
+        $scope.login = function() {
 
             //Show the spinner
             $scope.dataLoading = true;
